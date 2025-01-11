@@ -2,25 +2,30 @@
 
 %% Üldised vormistamise seaded %%
 
+\usepackage[utf8]{inputenc}
+
 \LoadClass[12pt]{article}
 \usepackage[a4paper, left=25.4mm, right=25.4mm, top=25.4mm, bottom=25.4mm]{geometry}
+
+\RequirePackage[defaultsups,largesc,trueslanted]{newtxtext} % defaultsups,largesc,trueslanted to match old times more closely
+\RequirePackage{tgcursor} % Courier
 
 \usepackage{parskip}
 \usepackage{titlesec}
 \AddToHook{cmd/section/before}{\clearpage} % Esimese taseme peatükid algavad uuelt lehelt
 
 % Peatükkide pealkirjad
-\titleformat{\section}{\fontsize{14}{14}\fontspec{PT Serif}\selectfont\bfseries}{\thesection.}{6pt}{}
+\titleformat{\section}{\fontsize{14}{14}\fontfamily{PTSerif-TLF}\selectfont\bfseries}{\thesection.}{6pt}{}
 \titlespacing{\section}{0pt}{0pt}{7.5pt}
-\titleformat{\subsection}{\fontsize{13}{13}\fontspec{PT Serif}\selectfont\bfseries}{\thesubsection}{6pt}{}
+\titleformat{\subsection}{\fontsize{13}{13}\fontfamily{PTSerif-TLF}\selectfont\bfseries}{\thesubsection}{6pt}{}
 \titlespacing{\subsection}{0pt}{12pt}{4pt}
-\titleformat{\subsubsection}{\fontspec{PT Serif}\selectfont\bfseries}{\thesubsubsection}{6pt}{}
-\titleformat{\subsubsubsection}{\fontspec{PT Serif}\selectfont\bfseries\textit}{\thesubsubsection}{6pt}{}
-\titleformat{\subsubsubsubsection}{\fontspec{PT Serif}\selectfont\textit}{\thesubsubsubsection}{6pt}{}
+\titleformat{\subsubsection}{\fontfamily{PTSerif-TLF}\selectfont\bfseries}{\thesubsubsection}{6pt}{}
+\titleformat{\subsubsubsection}{\fontfamily{PTSerif-TLF}\selectfont\bfseries\textit}{\thesubsubsection}{6pt}{}
+\titleformat{\subsubsubsubsection}{\fontfamily{PTSerif-TLF}\selectfont\textit}{\thesubsubsubsection}{6pt}{}
 
 \usepackage{xcolor}
 \definecolor{sixthHeadingGray}{rgb}{0.35, 0.35, 0.35}
-\titleformat{\subsubsubsubsection}{\fontspec{PT Serif}\selectfont\textit\color{sixthHeadingGray}}{\thesection}{12pt}{}
+\titleformat{\subsubsubsubsection}{\fontfamily{PTSerif-TLF}\selectfont\textit\color{sixthHeadingGray}}{\thesection}{12pt}{}
 
 % Sisukord
 \usepackage{titletoc}
@@ -66,7 +71,7 @@
 \definecolor{colorGreen}{rgb}{0,0.6,0}
 \definecolor{colorPurple}{rgb}{0.58,0,0.82}
 
-\lstdefinestyle{koodinäiteStiil}{
+\lstdefinestyle{koodinaiteStiil}{
     frame=single,
     framexleftmargin=10pt,
     framextopmargin=10pt,
@@ -86,8 +91,11 @@
     tabsize=2
 }
 \lstset{
-    style=koodinäiteStiil,
-    escapeinside={(*}{*)}
+    style=koodinaiteStiil,
+    escapeinside={(*}{*)},
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={õ}{{\~o}}1 {ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1,
 }
 
 % Jalus
@@ -101,22 +109,26 @@
 \renewcommand\Large{\@setfontsize\Large{14}{16}}
 
 \newcommand{\textarial}[1]{
-    \bgroup\fontspec{Arial}\selectfont #1\egroup
+    \bgroup\sffamily\selectfont #1\egroup
 }
 \newcommand{\textarialbold}[1]{
-    \bgroup\fontspec{Arial}\selectfont \textbf #1\egroup
+    \bgroup\sffamily\selectfont \textbf #1\egroup
 }
 \newcommand{\bold}[1]{
     \bgroup \textbf #1\egroup
 }
 
-\usepackage{lua-ul}
+% \usepackage{lua-ul}
 \usepackage{breakurl}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
 \urlstyle{same}
 \definecolor{linkGreen}{rgb}{0.15, 0.33, 0.09}
 \usepackage{soul}
-\newcommand\link[1]{\textcolor{linkGreen}{\underLine[height=1pt, top=-0.25ex]{\burl{#1}}}}
+\usepackage[normalem]{ulem}
+% \setlength{\ULdepth}{0.15ex}
+\renewcommand{\ULthickness}{1pt}
+% \usepackage{href-ul}
+\newcommand\link[1]{\textcolor{linkGreen}{\uline{\burl{#1}}}}
 
 \usepackage[marginal]{footmisc}
 \setlength{\footnotemargin}{4pt}
@@ -199,7 +211,7 @@
         {
             {\fontsize{16}{16} \selectfont \textbf \@author} \\
             \vspace{2mm}
-            {\fontsize{20}{24} \selectfont \textarialbold \@title} \\
+            {\fontsize{21}{24} \selectfont \textarialbold \@title} \\
             \vspace{3mm}
             {\Large \bold \@thesis}
         }
