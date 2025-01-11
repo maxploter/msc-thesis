@@ -54,15 +54,15 @@ Teie lõputöö väljanägemisele ja arusaamise parandamisele aitavad väga palj
 \subsubsection{Joonised}
 Joonisteks nimetame kõiksuguseid lõputöösse lisatud pilte, olgu nendeks graafikud, fotod või ekraanitõmmised. Need kõik tuleb nimetada joonisteks, lisada number ja pealdis. Siin Overleaf LaTeX-i mallis käib käib see nii, et tuleb pilt laadida üles \verb|figures| kausta. Seejärel saab pilti kasutada järgneva koodiga:
 
-\begin{lstlisting}[language=tex]
+\begin{minted}[escapeinside=||]{tex}
 \begin{figure}[h]
     \centering
     \captionsetup{justification=centering}
-    \includegraphics[width=\textwidth]{figures/(*\textbf{Joonis1-Nimi.png}*)}
-    \caption{(*\textbf{Joonise pealdise tekst.}*)}
-    \label{fig:(*\textbf{jooniseNimi}*)}
+    \includegraphics[width=\textwidth]{figures/|\textbf{Joonis1-Nimi.png}|}
+    \caption{|\textbf{Joonise pealdise tekst.}|}
+    \label{fig:|\textbf{jooniseNimi}|}
 \end{figure}
-\end{lstlisting}
+\end{minted}
 
 Ülal koodis tuleb kirjutada \verb|figures| kaustas asuva pildifaili failinimi koos laiendiga, lühike joonise pealdise tekst ja joonisele ristviitamiseks joonise lühinimi ehk \emph{label}.
 
@@ -106,7 +106,7 @@ Tabeli puhul kehtivad samad soovitused nagu jooniste puhul. Ainus erinevus on, e
 \end{table}
 
 Ülal olev tabel \ref{tabel:elementideErinevused} on loodud järgneva koodiga:
-\begin{lstlisting}[language=tex]
+\begin{minted}[escapeinside=||]{tex}
 \begin{table}[htb!]
     \centering
     \caption{Jooniste ja tabelite vormistamise erinevused lõputöös.}
@@ -122,7 +122,7 @@ Tabeli puhul kehtivad samad soovitused nagu jooniste puhul. Ainus erinevus on, e
     Koodinäide  & All või puudub      &   Programmi kood, pseudokood  \\
     \end{tblr}
 \end{table}
-\end{lstlisting}
+\end{minted}
 
 See kood on sarnane eelnelnud jooniste koodiga, kuid sisaldab kahte keskkonda. Esiteks on keskond \verb|table|, mille sees on ka tabelile eelnev pealdis. Seejärel tuleb keskkond \verb|tblr|, kus on siis juba tabel ise. Antud juhul on määratud tabeli laiuseks terve lehe laius \verb|1.0\textwidth| ning tabelile kõik jooned \verb|hlines| ja \verb|vlines|. Tabeli tulbad oleme koostanud nii, et kaks esimest on kitsad (\verb|Q|) ning viimasesse pannakse kogu ülejäänud ruum (\verb|X|). Tulbad on joondatud nii, et esimene tulp on paremjoondusega \verb|r| ning teised keskjoondusega \verb|c|. Esimese tulpa ja esimese rea oleme kirjutanud rasvase kirjaga ning tulp indeksiga (3,2) on värvitud helesiniseks.
 
@@ -131,14 +131,13 @@ Programmi kood on soovitatav kirjutada püsisammulise (\emph{monospace}) kirjast
 
 Koodinäite vormistamine ei ole nii reguleeritud nagu piltide ja tabelite puhul. Lühikesi koodinäiteid saab kirjutada teksti sisse. Näiteks me võime kirjutada, et muutuja deklareerimine ja väärtuse omistamine käib koodiga \verb|var a = 10;|. Pikema koodinäite puhul tuleks teha eraldi plokk, näiteks nii:
 
-\begin{lstlisting}[language=PostScript]
+\begin{minted}{javascript}
 function add(a, b) {
-
     return a + b;
 }
-\end{lstlisting}
+\end{minted}
 
-Ülalolevas näites on kasutatud \verb|lstlisting| keskkonda \verb|listings| paketist. See keskkond on stiliseeritud lisama koodinäitele ümber joont ja kasutama püsisammulist kirjastiili. Teatud programmeerimiskeeli oskab see pakett ka ise värvida\footnote{\link{https://www.overleaf.com/learn/latex/Code_listing\#Supported_languages}}. Koodiplokki ümbritsev tekst peab piisavalt selgelt vastavat koodi sisuliselt käsitlema.
+Ülalolevas näites on kasutatud \verb|minted| keskkonda \verb|minted| paketist. See keskkond on stiliseeritud lisama koodinäitele ümber joont ja kasutama püsisammulist kirjastiili. Teatud programmeerimiskeeli oskab see pakett ka ise värvida\footnote{\link{https://www.overleaf.com/learn/latex/Code_listing\#Supported_languages}}. Koodiplokki ümbritsev tekst peab piisavalt selgelt vastavat koodi sisuliselt käsitlema.
 
 \subsubsection{Matemaatilised valemid}
 Matemaatiliste valemite vormistamine LaTeX-is on suhteliselt lihtne. Lühikese valemi kirjutamiseks teksti sisse tuleb see ümbritseda \verb|$|-märkidega. Näiteks liitmist kirjeldab valem $a+b=c$. Suurema ja viidatava valemi jaoks tuleb valem lisada \verb|equation| keskkonna sisse.
@@ -148,12 +147,12 @@ Matemaatiliste valemite vormistamine LaTeX-is on suhteliselt lihtne. Lühikese v
 \end{equation}
 
 Ülalolev näide on tehtud koodiga:
-\begin{lstlisting}[language=tex]
+\begin{minted}{tex}
 \begin{equation}
     \frac{a + b}{c} = d
     \label{eq:abcd}
 \end{equation}
-\end{lstlisting}
+\end{minted}
 
 Nagu näha, siis valemile saab lisada ka lühinime (\emph{label}), talle tekib automaatselt number ning seda lühinime saab kasutada, et valemit numbri järgi viidata. Näiteks ülalolev näide siin mallis on numbriga \ref{eq:abcd}.
 

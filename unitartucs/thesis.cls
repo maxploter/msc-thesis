@@ -66,36 +66,11 @@
 
 
 % Koodinäited
-\usepackage{listings}
-
-\definecolor{colorGreen}{rgb}{0,0.6,0}
-\definecolor{colorPurple}{rgb}{0.58,0,0.82}
-
-\lstdefinestyle{koodinaiteStiil}{
+\usepackage{minted}
+\setminted{
     frame=single,
-    framexleftmargin=10pt,
-    framextopmargin=10pt,
-    framexbottommargin=10pt,
-    xleftmargin=14pt,
-    commentstyle=\color{colorGreen},
-    keywordstyle=\color{magenta},
-    stringstyle=\color{colorPurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2
-}
-\lstset{
-    style=koodinaiteStiil,
-    escapeinside={(*}{*)},
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={õ}{{\~o}}1 {ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1,
+    framesep=10pt,
+    fontsize=\footnotesize,
 }
 
 % Jalus
