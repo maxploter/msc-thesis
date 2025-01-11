@@ -170,10 +170,7 @@
 
         % Päis
         {
-            {
-             {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}
-             {\fontsize{15}{15}\selectfont Ü\fontsize{12}{12}\selectfont LIKOOL}
-            } \\
+            \fontsize{15}{15}\selectfont \textsc{Tartu Ülikool} \\
             \fontsize{14}{16}\selectfont
             Arvutiteaduse instituut\\
             \@curriculum\\
