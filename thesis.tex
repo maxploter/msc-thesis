@@ -1,0 +1,60 @@
+% Valime eesti keele. Infolehel, võõrsõnades ja tsitaatides on ka inglise keel.
+\documentclass[estonian]{unitartucs/thesis}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fontspec}
+
+
+%% Üldised seadistused
+
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+\usepackage[style=ieee]{biblatex} % Siin saate valida viitamisstiili
+\bibliography{viited.bib} % Selles failis on Teie bibliograafia kirjed
+
+
+%% Lõputöö info:
+
+\title{Lõputöö pealkiri}
+\titleOtherLanguage{Thesis Title in English}
+
+\author{Autori Nimi}
+\date{2024}
+\supervisor{Juhendaja nimi\degree{kraad} \and Teise juhendaja nimi\degree{kraad}} 
+\curriculum{Informaatika õppekava}
+\thesis{Bakalaureusetöö (9 EAP)}
+\thesisKeywords{Kujundus, paigutus, mall}
+
+\init
+
+%% Siit algab dokument
+
+\begin{document}
+
+\maketitle
+
+\linespread{1.45} \selectfont
+
+\input{sections/0-info}
+\input{sections/0-visuaalneKokkuvõte}
+
+\tableofcontents
+
+\input{sections/1-sissejuhatus}
+\input{sections/2-vormistamine}
+\input{sections/3-tekstiloome}
+\input{sections/4-kokkuvõte}
+
+\clearpage
+\printbibliography[heading=bibintoc]
+
+\input{sections/10-lisad}
+\input{sections/11-litsents}
+
+\end{document}
+
+
+

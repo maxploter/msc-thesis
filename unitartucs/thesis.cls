@@ -1,0 +1,290 @@
+\ProvidesClass{unitartucs-thesis}[Tartu Ülikooli arvutiteaduse instituudi bakalaureuse ja magistri õppeastmete lõputööde LaTeX mall]
+
+%% Üldised vormistamise seaded %%
+
+\LoadClass[12pt]{article}
+\usepackage[a4paper, left=25.4mm, right=25.4mm, top=25.4mm, bottom=25.4mm]{geometry}
+
+\usepackage{parskip}
+\usepackage{titlesec}
+\AddToHook{cmd/section/before}{\clearpage} % Esimese taseme peatükid algavad uuelt lehelt
+
+% Peatükkide pealkirjad
+\titleformat{\section}{\fontsize{14}{14}\fontspec{PT Serif}\selectfont\bfseries}{\thesection.}{6pt}{}
+\titlespacing{\section}{0pt}{0pt}{7.5pt}
+\titleformat{\subsection}{\fontsize{13}{13}\fontspec{PT Serif}\selectfont\bfseries}{\thesubsection}{6pt}{}
+\titlespacing{\subsection}{0pt}{12pt}{4pt}
+\titleformat{\subsubsection}{\fontspec{PT Serif}\selectfont\bfseries}{\thesubsubsection}{6pt}{}
+\titleformat{\subsubsubsection}{\fontspec{PT Serif}\selectfont\bfseries\textit}{\thesubsubsection}{6pt}{}
+\titleformat{\subsubsubsubsection}{\fontspec{PT Serif}\selectfont\textit}{\thesubsubsubsection}{6pt}{}
+
+\usepackage{xcolor}
+\definecolor{sixthHeadingGray}{rgb}{0.35, 0.35, 0.35}
+\titleformat{\subsubsubsubsection}{\fontspec{PT Serif}\selectfont\textit\color{sixthHeadingGray}}{\thesection}{12pt}{}
+
+% Sisukord
+\usepackage{titletoc}
+\titlecontents{section}[0pt]{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace\normalsize}
+{\contentsmargin{0pt}\normalsize}
+{\titlerule*[.3pc]{.}\contentspage}
+
+\titlecontents{subsection}[16pt]{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace\normalsize}
+{\contentsmargin{0pt}\normalsize}
+{\titlerule*[.3pc]{.}\contentspage}
+
+\titlecontents{subsubsection}[32pt]{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace\normalsize}
+{\contentsmargin{0pt}\normalsize}
+{\titlerule*[.3pc]{.}\contentspage}
+
+% Joonised
+\usepackage{wrapfig}
+\usepackage[export]{adjustbox}
+
+% Mähitud joonise vasak ruum
+\BeforeBeginEnvironment{wrapfigure}{\setlength{\columnsep}{30pt}} 
+
+% Mähitud joonise ülemine ruum
+\patchcmd\WF@putfigmaybe{\lower\intextsep}{}{}{\fail}%
+\AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}} 
+
+% Tabelid
+%\usepackage{tabularx}
+%\usepackage{makecell}
+\usepackage{tabularray}
+\AtBeginEnvironment{table}{\bigskip\bigskip}
+\AtEndEnvironment{table}{\bigskip}
+
+\definecolor{colorCellHighlight}{rgb}{0.85, 0.91, 0.97}
+
+
+% Koodinäited
+\usepackage{listings}
+
+\definecolor{colorGreen}{rgb}{0,0.6,0}
+\definecolor{colorPurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{koodinäiteStiil}{
+    frame=single,
+    framexleftmargin=10pt,
+    framextopmargin=10pt,
+    framexbottommargin=10pt,
+    xleftmargin=14pt,
+    commentstyle=\color{colorGreen},
+    keywordstyle=\color{magenta},
+    stringstyle=\color{colorPurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,
+    captionpos=b,                    
+    keepspaces=true,
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{
+    style=koodinäiteStiil,
+    escapeinside={(*}{*)}
+}
+
+% Jalus
+\renewcommand{\footnoterule}{%
+  \kern 0pt
+  \hrule width 145pt height 0.01pt
+  \kern 12pt
+}
+
+% Üldised teksti seadistused    
+\renewcommand\Large{\@setfontsize\Large{14}{16}}
+
+\newcommand{\textarial}[1]{
+    \bgroup\fontspec{Arial}\selectfont #1\egroup
+}
+\newcommand{\textarialbold}[1]{
+    \bgroup\fontspec{Arial}\selectfont \textbf #1\egroup
+}
+\newcommand{\bold}[1]{
+    \bgroup \textbf #1\egroup
+}
+
+\usepackage{lua-ul}
+\usepackage{breakurl}
+\usepackage[hidelinks,pdfusetitle]{hyperref}
+\urlstyle{same}
+\definecolor{linkGreen}{rgb}{0.15, 0.33, 0.09}
+\usepackage{soul}
+\newcommand\link[1]{\textcolor{linkGreen}{\underLine[height=1pt, top=-0.25ex]{\burl{#1}}}}
+
+\usepackage[marginal]{footmisc}
+\setlength{\footnotemargin}{4pt}
+
+\RequirePackage[labelsep=period]{caption} %Punkt pealdiste sildi lõpus
+
+\widowpenalty=10000
+\clubpenalty=10000
+\hyphenpenalty=10000
+\hbadness=10000
+\sloppy
+\usepackage{microtype}
+
+\addtolength{\skip\footins}{40pt plus 5pt}
+
+% Tekstimuutujatega seotud seadistused 
+\newcommand\supervisor[1]{\renewcommand\@supervisor{#1}}
+\newcommand\@supervisor{\@latex@error{No \noexpand\supervisor given}\@ehc}
+
+\newcommand\curriculum[1]{\renewcommand\@curriculum{#1}}
+\newcommand\@curriculum{\@latex@error{No \noexpand\curriculum given}\@ehc}
+
+\newcommand\thesis[1]{\renewcommand\@thesis{#1}}
+\newcommand\@thesis{\@latex@error{No \noexpand\thesis given}\@ehc}
+
+\newcommand\titleOtherLanguage[1]{\renewcommand\@titleOtherLanguage{#1}}
+\newcommand\@titleOtherLanguage{\@latex@error{No \noexpand\titleOtherLanguage given}\@ehc}
+
+\newcommand\thesisKeywords[1]{\renewcommand\@thesisKeywords{#1}}
+\newcommand\@thesisKeywords{\@latex@error{No \noexpand\thesisKeywords given}\@ehc}
+
+\newcounter{@supervisori}
+\newcounter{@supervisors}
+
+%% Tõlked %%
+
+
+\newcommand{\supervisorname}{Juhendaja}
+\newcommand{\supervisorsname}{Juhendajad}
+\newcommand{\infoname}{Infoleht}
+\renewcommand{\abstractname}{Lühikokkuvõte}
+\newcommand{\keywordsname}{Võtmesõnad}
+\newcommand{\keywordsnameOtherLanguage}{Keywords}
+\renewcommand{\refname}{Viited}%
+\renewcommand{\appendixname}{Lisad}%
+\newcommand{\appendixtocname}{Lisad}%
+\newcommand{\appendixpagename}{Lisad}%
+
+\usepackage[estonian]{babel}
+\addto\captionsestonian{
+  \renewcommand{\contentsname}%
+    {Sisukord}%
+}
+
+
+%% Tiitellehe vormistus %%
+
+\renewcommand*{\maketitle}{
+    \setbox0=\vbox{\setcounter{@supervisors}{1}\newcommand*{\degree}[1]{}\renewcommand*{\and}{\stepcounter{@supervisors}}\@supervisor}%
+    \thispagestyle{empty}
+
+    \vspace*{-9.1 mm}
+   
+    \begin{center}
+    
+        % Päis
+        { 
+            \Large
+            {
+             {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}
+             {\fontsize{15}{15}\selectfont Ü\fontsize{12}{12}\selectfont LIKOOL}
+            } \\
+            Arvutiteaduse instituut\\
+            \@curriculum\\
+        }
+    
+        \vspace{63mm}
+    
+        % Pealkiri
+        {
+            {\fontsize{16}{16} \selectfont \textbf \@author} \\
+            \vspace{2mm}
+            {\fontsize{20}{24} \selectfont \textarialbold \@title} \\
+            \vspace{3mm}
+            {\Large \bold \@thesis}
+        }
+        
+    \end{center}
+
+    \vspace{17mm}
+
+    % Juhendajad
+    {
+        \begin{flushright}
+            {
+                \large
+                
+                \renewcommand*{\and}{\\ }
+                \newcommand*{\degree}[1]{, ##1}
+            
+                \ifnum\value{@supervisors}>1\supervisorsname\else\supervisorname\fi: \\ \@supervisor
+            
+            }
+        \end{flushright}
+    }
+
+    \vfill
+
+    % Jalus
+    \centerline{\large Tartu {\@date}}
+}
+
+
+%% Infolehe vormistus %%
+
+\newenvironment{@info}[1]{
+    \noindent\textbf{\large #1}
+    \vspace*{1ex} % TODO: why 3ex only in one language in old template?
+
+    \renewenvironment{abstract}{
+        \noindent\textbf{\abstractname:}
+
+        \noindent\ignorespaces % TODO: why need \ignorespaces?
+    }{\vspace*{1ex}}
+
+    \newcommand*{\keywords}[1]{
+        \noindent\textbf{\keywordsname:} ##1
+        
+        \vspace*{1ex}
+    }
+
+    \newcommand*{\cercs}[1]{
+        \noindent\textbf{CERCS:} ##1
+
+        \vspace*{1ex}
+    }
+}{\filbreak\vspace{4ex}}
+
+\newenvironment{infoEst}{
+    \renewcommand{\abstractname}{Lühikokkuvõte}
+    \renewcommand{\keywordsname}{Võtmesõnad}
+    \begin{@info}{\@title}}{\end{@info}
+}
+\newenvironment{infoEng}{
+    \renewcommand{\abstractname}{Abstract}
+    \renewcommand{\keywordsname}{Keywords}
+    \begin{@info}{\@titleOtherLanguage}}{\end{@info}
+}
+
+
+%% PDF-faili järjehoidjate seadistus %%
+
+
+\usepackage[numbered,open]{bookmark}
+
+%% Meta-andmed %%
+
+\newcommand{\updateMetadata}{
+    \hypersetup{
+        pdftitle={\@title},
+        pdfsubject={\@title},
+        pdfauthor={\@author},
+        pdfkeywords={\@thesisKeywords}
+    }
+}
+
+\newcommand{\init}{
+    \DeclareLanguageMapping{estonian}{unitartucs/estonian}
+    \updateMetadata
+    \makeatletter
+}
