@@ -247,16 +247,12 @@
 
 %% Meta-andmed %%
 
-\newcommand{\updateMetadata}{
+\AtEndPreamble{
+    \DeclareLanguageMapping{estonian}{unitartucs/estonian}
     \hypersetup{
         pdftitle={\@title},
         pdfsubject={\@title},
         pdfauthor={\@author},
         pdfkeywords={\@keywords}
     }
-}
-
-\newcommand{\init}{
-    \DeclareLanguageMapping{estonian}{unitartucs/estonian}
-    \updateMetadata
 }
