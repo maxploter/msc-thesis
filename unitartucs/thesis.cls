@@ -44,11 +44,11 @@
 \usepackage[export]{adjustbox}
 
 % Mähitud joonise vasak ruum
-\BeforeBeginEnvironment{wrapfigure}{\setlength{\columnsep}{30pt}} 
+\BeforeBeginEnvironment{wrapfigure}{\setlength{\columnsep}{30pt}}
 
 % Mähitud joonise ülemine ruum
 \patchcmd\WF@putfigmaybe{\lower\intextsep}{}{}{\fail}%
-\AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}} 
+\AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}}
 
 % Tabelid
 %\usepackage{tabularx}
@@ -76,11 +76,11 @@
     keywordstyle=\color{magenta},
     stringstyle=\color{colorPurple},
     basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
+    breakatwhitespace=false,
     breaklines=true,
-    captionpos=b,                    
+    captionpos=b,
     keepspaces=true,
-    showspaces=false,                
+    showspaces=false,
     showstringspaces=false,
     showtabs=false,
     tabsize=2
@@ -97,7 +97,7 @@
   \kern 12pt
 }
 
-% Üldised teksti seadistused    
+% Üldised teksti seadistused
 \renewcommand\Large{\@setfontsize\Large{14}{16}}
 
 \newcommand{\textarial}[1]{
@@ -132,7 +132,7 @@
 
 \addtolength{\skip\footins}{40pt plus 5pt}
 
-% Tekstimuutujatega seotud seadistused 
+% Tekstimuutujatega seotud seadistused
 \newcommand\supervisor[1]{\renewcommand\@supervisor{#1}}
 \newcommand\@supervisor{\@latex@error{No \noexpand\supervisor given}\@ehc}
 
@@ -179,11 +179,11 @@
     \thispagestyle{empty}
 
     \vspace*{-9.1 mm}
-   
+
     \begin{center}
-    
+
         % Päis
-        { 
+        {
             \Large
             {
              {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}
@@ -192,9 +192,9 @@
             Arvutiteaduse instituut\\
             \@curriculum\\
         }
-    
+
         \vspace{63mm}
-    
+
         % Pealkiri
         {
             {\fontsize{16}{16} \selectfont \textbf \@author} \\
@@ -203,7 +203,7 @@
             \vspace{3mm}
             {\Large \bold \@thesis}
         }
-        
+
     \end{center}
 
     \vspace{17mm}
@@ -213,12 +213,12 @@
         \begin{flushright}
             {
                 \large
-                
+
                 \renewcommand*{\and}{\\ }
                 \newcommand*{\degree}[1]{, ##1}
-            
+
                 \ifnum\value{@supervisors}>1\supervisorsname\else\supervisorname\fi: \\ \@supervisor
-            
+
             }
         \end{flushright}
     }
@@ -244,7 +244,7 @@
 
     \newcommand*{\keywords}[1]{
         \noindent\textbf{\keywordsname:} ##1
-        
+
         \vspace*{1ex}
     }
 
