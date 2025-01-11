@@ -82,16 +82,6 @@
 
 % Üldised teksti seadistused
 
-\newcommand{\textarial}[1]{
-    \bgroup\sffamily\selectfont #1\egroup
-}
-\newcommand{\textarialbold}[1]{
-    \bgroup\sffamily\selectfont \textbf #1\egroup
-}
-\newcommand{\bold}[1]{
-    \bgroup \textbf #1\egroup
-}
-
 % \usepackage{lua-ul}
 \usepackage{breakurl}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
@@ -180,11 +170,11 @@
 
         % Pealkiri
         {
-            {\fontsize{16}{16} \selectfont \textbf \@author} \\
+            {\fontsize{16}{16}\selectfont \textbf{\@author}} \\
             \vspace{2mm}
-            {\fontsize{21}{24} \selectfont \textarialbold \@title} \\
+            {\fontsize{21}{24}\selectfont \textbf{\textsf{\@title}}} \\
             \vspace{3mm}
-            {\fontsize{14}{16}\selectfont \bold \@thesis}
+            {\fontsize{14}{16}\selectfont \textbf{\@thesis}}
         }
 
     \end{center}
