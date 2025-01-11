@@ -216,7 +216,7 @@
     }{\vspace*{1ex}}
 
     \renewcommand*{\keywords}[1]{
-        \noindent\textbf{\keywordsname:} ##1
+        \noindent\textbf{\keywordsname:} \ifstrempty{##1}{\@keywords}{##1}
 
         \vspace*{1ex}
     }
@@ -259,5 +259,4 @@
 \newcommand{\init}{
     \DeclareLanguageMapping{estonian}{unitartucs/estonian}
     \updateMetadata
-    \makeatletter
 }
