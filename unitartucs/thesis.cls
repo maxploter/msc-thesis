@@ -15,17 +15,17 @@
 \AddToHook{cmd/section/before}{\clearpage} % Esimese taseme peatükid algavad uuelt lehelt
 
 % Peatükkide pealkirjad
-\titleformat{\section}{\fontsize{14}{14}\fontfamily{PTSerif-TLF}\selectfont\bfseries}{\thesection.}{6pt}{}
+\titleformat{\section}{\fontsize{16}{16}\rmfamily\selectfont\bfseries}{\thesection.}{6pt}{}
 \titlespacing{\section}{0pt}{0pt}{7.5pt}
-\titleformat{\subsection}{\fontsize{13}{13}\fontfamily{PTSerif-TLF}\selectfont\bfseries}{\thesubsection}{6pt}{}
+\titleformat{\subsection}{\fontsize{15}{15}\rmfamily\selectfont\bfseries}{\thesubsection}{6pt}{}
 \titlespacing{\subsection}{0pt}{12pt}{4pt}
-\titleformat{\subsubsection}{\fontfamily{PTSerif-TLF}\selectfont\bfseries}{\thesubsubsection}{6pt}{}
-\titleformat{\subsubsubsection}{\fontfamily{PTSerif-TLF}\selectfont\bfseries\textit}{\thesubsubsection}{6pt}{}
-\titleformat{\subsubsubsubsection}{\fontfamily{PTSerif-TLF}\selectfont\textit}{\thesubsubsubsection}{6pt}{}
+\titleformat{\subsubsection}{\fontsize{14}{14}\rmfamily\selectfont\bfseries}{\thesubsubsection}{6pt}{}
+\titleformat{\paragraph}{\fontsize{14}{14}\rmfamily\selectfont\bfseries\itshape}{\theparagraph}{6pt}{}
+\titleformat{\subparagraph}{\fontsize{14}{14}\rmfamily\selectfont\itshape}{\thesubparagraph}{6pt}{}
 
 \usepackage{xcolor}
-\definecolor{sixthHeadingGray}{rgb}{0.35, 0.35, 0.35}
-\titleformat{\subsubsubsubsection}{\fontfamily{PTSerif-TLF}\selectfont\textit\color{sixthHeadingGray}}{\thesection}{12pt}{}
+% \definecolor{sixthHeadingGray}{rgb}{0.35, 0.35, 0.35}
+% \titleformat{\subsubsubsubsection}{\rmfamily\selectfont\textit\color{sixthHeadingGray}}{\thesection}{12pt}{}
 
 % Sisukord
 \usepackage{titletoc}
