@@ -121,8 +121,8 @@
 \newcommand\titleOtherLanguage[1]{\renewcommand\@titleOtherLanguage{#1}}
 \newcommand\@titleOtherLanguage{\@latex@error{No \noexpand\titleOtherLanguage given}\@ehc}
 
-\newcommand\thesisKeywords[1]{\renewcommand\@thesisKeywords{#1}}
-\newcommand\@thesisKeywords{\@latex@error{No \noexpand\thesisKeywords given}\@ehc}
+\newcommand\keywords[1]{\renewcommand\@keywords{#1}}
+\newcommand\@keywords{\@latex@error{No \noexpand\keywords given}\@ehc}
 
 \newcounter{@supervisori}
 \newcounter{@supervisors}
@@ -215,7 +215,7 @@
         \noindent\ignorespaces % TODO: why need \ignorespaces?
     }{\vspace*{1ex}}
 
-    \newcommand*{\keywords}[1]{
+    \renewcommand*{\keywords}[1]{
         \noindent\textbf{\keywordsname:} ##1
 
         \vspace*{1ex}
@@ -252,7 +252,7 @@
         pdftitle={\@title},
         pdfsubject={\@title},
         pdfauthor={\@author},
-        pdfkeywords={\@thesisKeywords}
+        pdfkeywords={\@keywords}
     }
 }
 
