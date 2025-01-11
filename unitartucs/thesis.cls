@@ -81,7 +81,6 @@
 }
 
 % Üldised teksti seadistused
-\renewcommand\Large{\@setfontsize\Large{14}{16}}
 
 \newcommand{\textarial}[1]{
     \bgroup\sffamily\selectfont #1\egroup
@@ -171,11 +170,11 @@
 
         % Päis
         {
-            \Large
             {
              {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}
              {\fontsize{15}{15}\selectfont Ü\fontsize{12}{12}\selectfont LIKOOL}
             } \\
+            \fontsize{14}{16}\selectfont
             Arvutiteaduse instituut\\
             \@curriculum\\
         }
@@ -188,7 +187,7 @@
             \vspace{2mm}
             {\fontsize{21}{24} \selectfont \textarialbold \@title} \\
             \vspace{3mm}
-            {\Large \bold \@thesis}
+            {\fontsize{14}{16}\selectfont \bold \@thesis}
         }
 
     \end{center}
