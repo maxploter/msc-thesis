@@ -101,6 +101,10 @@
 % \usepackage{href-ul}
 \newcommand\link[1]{\textcolor{linkGreen}{\uline{\burl{#1}}}}
 
+\newcommand*{\toclevel@subsubsubsection}{4}
+\renewcommand*{\toclevel@paragraph}{5}
+\renewcommand*{\toclevel@subparagraph}{6}
+
 \usepackage[marginal]{footmisc}
 \setlength{\footnotemargin}{4pt}
 
