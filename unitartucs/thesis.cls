@@ -100,15 +100,6 @@
 \patchcmd\WF@putfigmaybe{\lower\intextsep}{}{}{\fail}%
 \AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}}
 
-
-% Koodinäited
-\usepackage{minted}
-\setminted{
-    frame=single,
-    framesep=10pt,
-    fontsize=\footnotesize,
-}
-
 % Joonealused märkused
 \addtolength{\skip\footins}{40pt plus 5pt}
 \renewcommand{\footnoterule}{%
