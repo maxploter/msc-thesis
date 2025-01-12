@@ -101,6 +101,7 @@
 \setlength{\footnotemargin}{4pt}
 
 \RequirePackage[labelsep=period]{caption} %Punkt pealdiste sildi lõpus
+\captionsetup{justification=centering} % Mitmerealise sildi viimane rida keskel mitte vasakul.
 
 \widowpenalty=10000
 \clubpenalty=10000
