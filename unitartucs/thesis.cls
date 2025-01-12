@@ -97,8 +97,6 @@
 
 % \usepackage{lua-ul}
 \usepackage{breakurl}
-\usepackage[hidelinks,pdfusetitle]{hyperref}
-\urlstyle{same}
 \definecolor{linkGreen}{rgb}{0.15, 0.33, 0.09}
 \usepackage{soul}
 \usepackage[normalem]{ulem}
@@ -107,9 +105,6 @@
 % \usepackage{href-ul}
 \newcommand\link[1]{\textcolor{linkGreen}{\uline{\burl{#1}}}}
 
-\newcommand*{\toclevel@subsubsubsection}{4}
-\renewcommand*{\toclevel@paragraph}{5}
-\renewcommand*{\toclevel@subparagraph}{6}
 
 \usepackage[marginal]{footmisc}
 \setlength{\footnotemargin}{4pt}
@@ -255,20 +250,22 @@
     \begin{@info}{\@titleOtherLanguage}}{\end{@info}
 }
 
-
-%% PDF-faili järjehoidjate seadistus %%
-
-
-\usepackage[numbered,open]{bookmark}
-
-%% Meta-andmed %%
-
+% Lingid ja meta-andmed
 \AtEndPreamble{
-    \DeclareLanguageMapping{estonian}{unitartucs/estonian}
-    \hypersetup{
+    \usepackage[hidelinks,pdfusetitle]{hyperref} % hyperref-i peab laadima viimasena
+    \urlstyle{same} % Lingid sama fondiga nagu tekst
+    % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
+    \newcommand*{\toclevel@subsubsubsection}{4}
+    \renewcommand*{\toclevel@paragraph}{5}
+    \renewcommand*{\toclevel@subparagraph}{6}
+    \hypersetup{ % PDF-i meta-andmed
         pdftitle={\@title},
         pdfsubject={\@title},
         pdfauthor={\@author},
         pdfkeywords={\@keywords}
     }
+
+    \usepackage[numbered,open]{bookmark} % PDF-i sisukord
+
+    \DeclareLanguageMapping{estonian}{unitartucs/estonian}
 }
