@@ -230,15 +230,16 @@
     }
 }{\filbreak\vspace{4ex}}
 
-\newenvironment{infoEst}{
+\newenvironment{info}{\begin{@info}{\@title}}{\end{@info}}
+\newenvironment{otherinfo}[2]{\begin{otherlanguage}{#1}\begin{@info}{#2}}{\end{@info}\end{otherlanguage}}
+
+\addto\captionsestonian{%
     \renewcommand{\abstractname}{Lühikokkuvõte}
     \renewcommand{\keywordsname}{Võtmesõnad}
-    \begin{@info}{\@title}}{\end{@info}
 }
-\newenvironment{infoEng}{
+\addto\captionsenglish{%
     \renewcommand{\abstractname}{Abstract}
     \renewcommand{\keywordsname}{Keywords}
-    \begin{@info}{\@titleOtherLanguage}}{\end{@info}
 }
 
 % Lingid ja meta-andmed
