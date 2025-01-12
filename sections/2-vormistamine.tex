@@ -87,44 +87,46 @@ Jooniseid tehes on soovitatav luua enda lõputöö jaoks ühtlane värvipalett j
 \subsubsection{Tabelid}
 Peale jooniste saab lõputöösse lisada ka andmetabeleid. Tabelite lisamisel tuleks arvestada, et väga suuri tabeleid on raske lugeda ja võib-olla peaks nendel kujutatut esitama hoopis graafikuna. Mõnikord on aga oluline andmed esitada just tabeli kujul. Väiksemad tabelid sobivad väga hästi lõputöö sisusse. Suuremad tabelid saab esitada lõputöö lisades, kas sektsioonis Lisad või isegi eraldi failina lõpuööga kaasapandud failide komplektis.
 
-Tabeli puhul kehtivad samad soovitused nagu jooniste puhul. Ainus erinevus on, et tabeli pealdis käib tabeli kohale (jooniste puhul käib alla). Vaata näiteks tabel \ref{tabel:elementideErinevused}. Siin mallis kasutatakse LaTeX paketti \verb|tabularray|, mille lihtsa juhendi leiab aadressilt: \link{https://www.latex-tables.com/ressources/tabularray.html}.
+Tabeli puhul kehtivad samad soovitused nagu jooniste puhul. Ainus erinevus on, et tabeli pealdis käib tabeli kohale (jooniste puhul käib alla). Vaata näiteks tabel \ref{tabel:elementideErinevused}.
 
 \begin{table}[htb!]
     \centering
     \caption{Jooniste ja tabelite vormistamise erinevused lõputöö dokumendis.}
     \label{tabel:elementideErinevused}
-    \begin{tblr}{width=1.0\textwidth, hlines, vlines,
-                    colspec = { Q[r,font=\bfseries] Q[c] X[c] },
-                    row{1} = {font=\bfseries},
-                    cell{3}{2} = {bg = colorCellHighlight},
-                }
-                &   Pealdise asukoht    &   Sisu        \\
-    Joonis      & All                   &   Pildid, graafikud, fotod, ekraanitõmmised        \\
-    Tabel       & Kohal                 &    Andmed       \\
-    Koodinäide  & All või puudub        &    Programmi kood, pseudokood       \\
-    \end{tblr}
+    \begin{tabular}{|r|c|c|}
+    \hline
+    & \textbf{Pealdise asukoht} & \textbf{Sisu} \\
+    \hline
+    \textbf{Joonis} & All &   Pildid, graafikud, fotod, ekraanitõmmised \\
+    \hline
+    \textbf{Tabel} & \cellcolor{cellhighlight} Kohal & Andmed \\
+    \hline
+    \textbf{Koodinäide} & All või puudub & Programmi kood, pseudokood \\
+    \hline
+    \end{tabular}
 \end{table}
 
 Ülal olev tabel \ref{tabel:elementideErinevused} on loodud järgneva koodiga:
-\begin{minted}[escapeinside=||]{tex}
+\begin{minted}{tex}
 \begin{table}[htb!]
     \centering
-    \caption{Jooniste ja tabelite vormistamise erinevused lõputöös.}
+    \caption{Jooniste ja tabelite vormistamise erinevused lõputöö dokumendis.}
     \label{tabel:elementideErinevused}
-    \begin{tblr}{width=1.0\textwidth, hlines, vlines,
-                    colspec = { Q[r,font=\bfseries] Q[c] X[c] },
-                    row{1} = {font=\bfseries},
-                    cell{3}{2} = {bg = colorCellHighlight},
-                }
-                & Pealdise asukoht    &   Sisu                        \\
-    Joonis      & All                 &   Pildid, graafikud...        \\
-    Tabel       & Kohal               &   Andmed                      \\
-    Koodinäide  & All või puudub      &   Programmi kood, pseudokood  \\
-    \end{tblr}
+    \begin{tabular}{|r|c|c|}
+    \hline
+        & \textbf{Pealdise asukoht} & \textbf{Sisu} \\
+    \hline
+    \textbf{Joonis} & All &   Pildid, graafikud, fotod, ekraanitõmmised \\
+    \hline
+    \textbf{Tabel} & \cellcolor{cellhighlight} Kohal & Andmed \\
+    \hline
+    \textbf{Koodinäide} & All või puudub & Programmi kood, pseudokood \\
+    \hline
+    \end{tabular}
 \end{table}
 \end{minted}
 
-See kood on sarnane eelnelnud jooniste koodiga, kuid sisaldab kahte keskkonda. Esiteks on keskond \verb|table|, mille sees on ka tabelile eelnev pealdis. Seejärel tuleb keskkond \verb|tblr|, kus on siis juba tabel ise. Antud juhul on määratud tabeli laiuseks terve lehe laius \verb|1.0\textwidth| ning tabelile kõik jooned \verb|hlines| ja \verb|vlines|. Tabeli tulbad oleme koostanud nii, et kaks esimest on kitsad (\verb|Q|) ning viimasesse pannakse kogu ülejäänud ruum (\verb|X|). Tulbad on joondatud nii, et esimene tulp on paremjoondusega \verb|r| ning teised keskjoondusega \verb|c|. Esimese tulpa ja esimese rea oleme kirjutanud rasvase kirjaga ning tulp indeksiga (3,2) on värvitud helesiniseks.
+See kood on sarnane eelnelnud jooniste koodiga, kuid sisaldab kahte keskkonda. Esiteks on keskond \verb|table|, mille sees on ka tabelile eelnev pealdis. Seejärel tuleb keskkond \verb|tabular|, kus on siis juba tabel ise. Tulbad on joondatud nii, et esimene tulp on paremjoondusega \verb|r| ning teised keskjoondusega \verb|c|. Esimese tulpa ja esimese rea oleme kirjutanud rasvase kirjaga ning üks lahter on värvitud helesiniseks.
 
 \subsubsection{Koodinäited}
 Programmi kood on soovitatav kirjutada püsisammulise (\emph{monospace}) kirjastiiliga. Tuleks valida üks selline kirjastiil ja kasutada sama läbivalt lõputöö vältel. Näited sellistest püsisammulistest kirjastiilidest on Consolas ja \texttt{Courier New}. Käesolevas mallis oleme kasutanud \verb|fontspace| paketti, milles on olemas kirjastiil \texttt{Courier New}\footnote{\link{https://www.overleaf.com/learn/latex/Questions/Which_OTF_or_TTF_fonts_are_supported_via_fontspec\%3F}}.

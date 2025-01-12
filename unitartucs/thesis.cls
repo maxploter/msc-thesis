@@ -68,15 +68,6 @@
 \patchcmd\WF@putfigmaybe{\lower\intextsep}{}{}{\fail}%
 \AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}}
 
-% Tabelid
-%\usepackage{tabularx}
-%\usepackage{makecell}
-\usepackage{tabularray}
-\AtBeginEnvironment{table}{\bigskip\bigskip}
-\AtEndEnvironment{table}{\bigskip}
-
-\definecolor{colorCellHighlight}{rgb}{0.85, 0.91, 0.97}
-
 
 % Koodinäited
 \usepackage{minted}
