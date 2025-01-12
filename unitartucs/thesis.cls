@@ -1,48 +1,55 @@
 \ProvidesClass{unitartucs-thesis}[Tartu Ülikooli arvutiteaduse instituudi bakalaureuse ja magistri õppeastmete lõputööde LaTeX mall]
 
-%% Üldised vormistamise seaded %%
-
-\usepackage[utf8]{inputenc}
-
+% Üldine vormistus
 \LoadClass[12pt]{article}
-\usepackage[a4paper, left=25.4mm, right=25.4mm, top=25.4mm, bottom=25.4mm]{geometry}
-
-\RequirePackage[defaultsups,largesc,trueslanted]{newtxtext} % defaultsups,largesc,trueslanted to match old times more closely
-\RequirePackage{tgcursor} % Courier
-
-\usepackage{parskip}
-\usepackage{titlesec}
-\AddToHook{cmd/section/before}{\clearpage} % Esimese taseme peatükid algavad uuelt lehelt
-
-% Peatükkide pealkirjad
-\titleformat{\section}{\fontsize{16}{16}\rmfamily\selectfont\bfseries}{\thesection.}{6pt}{}
-\titlespacing{\section}{0pt}{0pt}{7.5pt}
-\titleformat{\subsection}{\fontsize{15}{15}\rmfamily\selectfont\bfseries}{\thesubsection}{6pt}{}
-\titlespacing{\subsection}{0pt}{12pt}{4pt}
-\titleformat{\subsubsection}{\fontsize{14}{14}\rmfamily\selectfont\bfseries}{\thesubsubsection}{6pt}{}
-\titleformat{\paragraph}{\fontsize{14}{14}\rmfamily\selectfont\bfseries\itshape}{\theparagraph}{6pt}{}
-\titleformat{\subparagraph}{\fontsize{14}{14}\rmfamily\selectfont\itshape}{\thesubparagraph}{6pt}{}
+\usepackage[a4paper,margin=25.4mm]{geometry}
+\usepackage{parskip} % Taandrea asemel lõiguvahe
 
 \usepackage{xcolor}
-% \definecolor{sixthHeadingGray}{rgb}{0.35, 0.35, 0.35}
-% \titleformat{\subsubsubsubsection}{\rmfamily\selectfont\textit\color{sixthHeadingGray}}{\thesection}{12pt}{}
+
+% Fondid
+\RequirePackage[defaultsups,largesc,trueslanted]{newtxtext} % Times
+\RequirePackage{tgcursor} % Courier
+
+% Peatükkide pealkirjad
+\usepackage{titlesec}
+% Heading 1
+\titleformat{\section}{\fontsize{16}{16}\selectfont\rmfamily\bfseries\upshape}{\thesection.}{6pt}{}
+\titlespacing{\section}{0pt}{0pt}{5pt}
+% Heading 2
+\titleformat{\subsection}{\fontsize{15}{15}\selectfont\rmfamily\bfseries\upshape}{\thesubsection}{6pt}{}
+\titlespacing{\subsection}{0pt}{12pt}{4pt}
+% Heading 3
+\titleformat{\subsubsection}{\fontsize{14}{14}\selectfont\rmfamily\bfseries\upshape}{\thesubsubsection}{6pt}{}
+\titlespacing{\subsubsection}{0pt}{8pt}{3pt}
+% Heading 4 (mitte-standardne)
+\titleclass\subsubsubsection{straight}[\subsubsection]
+\titleformat{\subsubsubsection}{\fontsize{14}{14}\selectfont\rmfamily\bfseries\itshape}{\thesubsubsubsection}{6pt}{}
+\titlespacing{\subsubsubsection}{0pt}{4pt}{2pt}
+\newcounter{subsubsubsection}
+\renewcommand{\thesubsubsubsection}{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand{\theparagraph}{\thesubsubsubsection.\arabic{paragraph}}
+% Heading 5
+\titleformat{\paragraph}{\fontsize{14}{14}\selectfont\rmfamily\mdseries\itshape}{\theparagraph}{6pt}{}
+\titlespacing{\paragraph}{0pt}{0pt}{0pt}
+% Heading 6
+\definecolor{subparagraphgray}{rgb}{0.35, 0.35, 0.35}
+\titleformat{\subparagraph}{\fontsize{14}{14}\selectfont\rmfamily\mdseries\itshape\color{subparagraphgray}}{\thesubparagraph}{6pt}{}
+\titlespacing{\subparagraph}{0pt}{0pt}{0pt}
+
+\setcounter{secnumdepth}{3} % Nummerdatud kuni \subsubsection
+\AddToHook{cmd/section/before}{\clearpage} % Esimese taseme peatükid algavad uuelt lehelt
 
 % Sisukord
 \usepackage{titletoc}
-\titlecontents{section}[0pt]{}
-{\contentsmargin{0pt}\thecontentslabel.\enspace\normalsize}
-{\contentsmargin{0pt}\normalsize}
-{\titlerule*[.3pc]{.}\contentspage}
+\titlecontents{section}[0pt]{}{\thecontentslabel.\enspace\normalsize}{\normalsize}{\titlerule*[.3pc]{.}\contentspage}
+\titlecontents{subsection}[16pt]{}{\thecontentslabel\enspace\normalsize}{\normalsize}{\titlerule*[.3pc]{.}\contentspage}
+\titlecontents{subsubsection}[32pt]{}{\thecontentslabel\enspace\normalsize}{\normalsize}{\titlerule*[.3pc]{.}\contentspage}
+\titlecontents{subsubsubsection}[48pt]{}{\thecontentslabel\enspace\normalsize}{\normalsize}{\titlerule*[.3pc]{.}\contentspage}
+\titlecontents{paragraph}[64pt]{}{\thecontentslabel\enspace\normalsize}{\normalsize}{\titlerule*[.3pc]{.}\contentspage}
+\titlecontents{subparagraph}[80pt]{}{\thecontentslabel\enspace\normalsize}{\normalsize}{\titlerule*[.3pc]{.}\contentspage}
 
-\titlecontents{subsection}[16pt]{}
-{\contentsmargin{0pt}\thecontentslabel.\enspace\normalsize}
-{\contentsmargin{0pt}\normalsize}
-{\titlerule*[.3pc]{.}\contentspage}
-
-\titlecontents{subsubsection}[32pt]{}
-{\contentsmargin{0pt}\thecontentslabel.\enspace\normalsize}
-{\contentsmargin{0pt}\normalsize}
-{\titlerule*[.3pc]{.}\contentspage}
+\setcounter{tocdepth}{3} % Sisukorras kuni \subsubsection
 
 % Joonised
 \usepackage{wrapfig}
