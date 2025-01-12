@@ -5,13 +5,33 @@
 \usepackage[a4paper,margin=25.4mm]{geometry}
 \usepackage{parskip} % Taandrea asemel lõiguvahe
 
+\usepackage{xcolor}
+
+% Keeleline tugi
 \AddToHook{package/inputenc/before}{
     \usepackage{fvextra}
     \usepackage{csquotes}
 }
 \usepackage{babel}
 
-\usepackage{xcolor}
+\newcommand{\supervisorname}{Juhendaja}
+\newcommand{\supervisorsname}{Juhendajad}
+\newcommand{\infoname}{Infoleht}
+\newcommand{\keywordsname}{Võtmesõnad}
+
+\addto\captionsestonian{
+    \renewcommand{\supervisorname}{Juhendaja}
+    \renewcommand{\supervisorsname}{Juhendajad}
+    \renewcommand{\infoname}{Infoleht}
+    \renewcommand{\abstractname}{Lühikokkuvõte}
+    \renewcommand{\keywordsname}{Võtmesõnad}
+    \renewcommand{\refname}{Viited}
+    \renewcommand{\appendixname}{Lisad}
+}
+
+\addto\captionsenglish{
+    \renewcommand{\keywordsname}{Keywords}
+}
 
 % Fondid
 \RequirePackage[defaultsups,largesc,trueslanted]{newtxtext} % Times
@@ -131,25 +151,6 @@
 \newcounter{@supervisori}
 \newcounter{@supervisors}
 
-%% Tõlked %%
-
-
-\newcommand{\supervisorname}{Juhendaja}
-\newcommand{\supervisorsname}{Juhendajad}
-\newcommand{\infoname}{Infoleht}
-\renewcommand{\abstractname}{Lühikokkuvõte}
-\newcommand{\keywordsname}{Võtmesõnad}
-\newcommand{\keywordsnameOtherLanguage}{Keywords}
-\renewcommand{\refname}{Viited}%
-\renewcommand{\appendixname}{Lisad}%
-\newcommand{\appendixtocname}{Lisad}%
-\newcommand{\appendixpagename}{Lisad}%
-
-\addto\captionsestonian{
-  \renewcommand{\contentsname}%
-    {Sisukord}%
-}
-
 
 %% Tiitellehe vormistus %%
 
@@ -233,15 +234,6 @@
 
 \newenvironment{info}{\begin{@info}{\@title}}{\end{@info}}
 \newenvironment{otherinfo}[2]{\begin{otherlanguage}{#1}\begin{@info}{#2}}{\end{@info}\end{otherlanguage}}
-
-\addto\captionsestonian{%
-    \renewcommand{\abstractname}{Lühikokkuvõte}
-    \renewcommand{\keywordsname}{Võtmesõnad}
-}
-\addto\captionsenglish{%
-    \renewcommand{\abstractname}{Abstract}
-    \renewcommand{\keywordsname}{Keywords}
-}
 
 % Lingid ja meta-andmed
 \AtEndPreamble{
