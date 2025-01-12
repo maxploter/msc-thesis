@@ -5,6 +5,12 @@
 \usepackage[a4paper,margin=25.4mm]{geometry}
 \usepackage{parskip} % Taandrea asemel lõiguvahe
 
+\AddToHook{package/inputenc/before}{
+    \usepackage{fvextra}
+    \usepackage{csquotes}
+}
+\usepackage{babel}
+
 \usepackage{xcolor}
 
 % Fondid
@@ -152,7 +158,6 @@
 \newcommand{\appendixtocname}{Lisad}%
 \newcommand{\appendixpagename}{Lisad}%
 
-\usepackage[estonian]{babel}
 \addto\captionsestonian{
   \renewcommand{\contentsname}%
     {Sisukord}%
