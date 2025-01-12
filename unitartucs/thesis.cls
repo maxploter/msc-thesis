@@ -5,6 +5,7 @@
 \usepackage[a4paper,margin=25.4mm]{geometry}
 
 \usepackage{xcolor}
+\definecolor{urlgreen}{rgb}{0.15, 0.33, 0.09}
 
 % Tüpograafia
 \usepackage{parskip} % Taandrea asemel lõiguvahe
@@ -118,19 +119,6 @@
 \usepackage[marginal]{footmisc}
 \setlength{\footnotemargin}{4pt}
 
-% Üldised teksti seadistused
-
-% \usepackage{lua-ul}
-\usepackage{breakurl}
-\definecolor{linkGreen}{rgb}{0.15, 0.33, 0.09}
-\usepackage{soul}
-\usepackage[normalem]{ulem}
-% \setlength{\ULdepth}{0.15ex}
-\renewcommand{\ULthickness}{1pt}
-% \usepackage{href-ul}
-\newcommand\link[1]{\textcolor{linkGreen}{\uline{\burl{#1}}}}
-
-
 % Meta-andmete defineerimine
 \newcommand\supervisor[1]{\renewcommand\@supervisor{#1}}
 \newcommand\@supervisor{\@latex@error{No \noexpand\supervisor given}\@ehc}
@@ -229,7 +217,13 @@
 
 % Lingid ja PDF-i meta-andmed
 \AtEndPreamble{
-    \usepackage[hidelinks]{hyperref} % hyperref-i peab laadima viimasena
+    \usepackage{hyperref} % hyperref-i peab laadima viimasena
+    \hypersetup{
+        colorlinks,
+        allcolors=black,
+        urlcolor=urlgreen, % \url värv
+        breaklinks,
+    }
     \urlstyle{same} % Lingid sama fondiga nagu tekst
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
     \newcommand*{\toclevel@subsubsubsection}{4}
@@ -239,7 +233,7 @@
         pdftitle={\@title},
         pdfsubject={\@title},
         pdfauthor={\@author},
-        pdfkeywords={\@keywords}
+        pdfkeywords={\@keywords},
     }
 
     \usepackage[numbered,open]{bookmark} % PDF-i sisukord
