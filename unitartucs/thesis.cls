@@ -1,4 +1,4 @@
-\ProvidesClass{unitartucs-thesis}[Tartu Ülikooli arvutiteaduse instituudi bakalaureuse ja magistri õppeastmete lõputööde LaTeX mall]
+\ProvidesClass{unitartucs/thesis}[Tartu Ülikooli arvutiteaduse instituudi bakalaureuse ja magistri õppeastmete lõputööde LaTeX mall]
 
 % Üldine vormistus
 \LoadClass[12pt]{article}
