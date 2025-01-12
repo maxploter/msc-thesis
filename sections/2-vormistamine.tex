@@ -8,7 +8,7 @@ Tiitellehele järgneb infoleht (fail \path{0-info.tex}), kus on Teie töö lühi
 
 Võtmesõnad on teie töös olulisi komponente nimetavad mõisted, nimetused või nimed. Võtmesõnade väljamõtlemine vajab, et Te mõtleksite oma tööst ülevaatlikult. Millised olulised mõisted tulevad Teile pähe, kui Te oma tööst tervikuna mõtlete? Inspiratsiooniks on hea vaadata teisi varem sarnasel teemal tehtud lõputöid ning nende võtmesõnu. Joonis~\ref{fig:võtmesõnad} esitab varasemalt Tartu Ülikooli arvutiteaduse instituudis aastatel 2015-2021 kaitstud lõputööde populaarsemate võtmesõnade sõnapilve\footnote{\url{https://cglearn.eu/theses/top}}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{figures/Joonis1-Võtmesõnad.png}
     \caption{Aastatel 2015-2021 arvutiteaduse instituudis kaitstud lõputöödes kasutatud levinumate võtmesõnade sõnapilv.}
@@ -54,7 +54,7 @@ Teie lõputöö väljanägemisele ja arusaamise parandamisele aitavad väga palj
 Joonisteks nimetame kõiksuguseid lõputöösse lisatud pilte, olgu nendeks graafikud, fotod või ekraanitõmmised. Need kõik tuleb nimetada joonisteks, lisada number ja pealdis. Siin Overleaf LaTeX-i mallis käib käib see nii, et tuleb pilt laadida üles \verb|figures| kausta. Seejärel saab pilti kasutada järgneva koodiga:
 
 \begin{minted}[escapeinside=||]{tex}
-\begin{figure}[h]
+\begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/|\textbf{Joonis1-Nimi.png}|}
     \caption{|\textbf{Joonise pealdise tekst.}|}
@@ -86,7 +86,7 @@ Peale jooniste saab lõputöösse lisada ka andmetabeleid. Tabelite lisamisel tu
 
 Tabeli puhul kehtivad samad soovitused nagu jooniste puhul. Ainus erinevus on, et tabeli pealdis käib tabeli kohale (jooniste puhul käib alla). Vaata näiteks tabel~\ref{tabel:elementideErinevused}.
 
-\begin{table}[htb!]
+\begin{table}[htb]
     \centering
     \caption{Jooniste ja tabelite vormistamise erinevused lõputöö dokumendis.}
     \label{tabel:elementideErinevused}
@@ -105,7 +105,7 @@ Tabeli puhul kehtivad samad soovitused nagu jooniste puhul. Ainus erinevus on, e
 
 Ülal olev tabel~\ref{tabel:elementideErinevused} on loodud järgneva koodiga:
 \begin{minted}{tex}
-\begin{table}[htb!]
+\begin{table}[htb]
     \centering
     \caption{Jooniste ja tabelite vormistamise erinevused lõputöö dokumendis.}
     \label{tabel:elementideErinevused}
@@ -179,7 +179,7 @@ Lisaks viitamisele on Teil vajalik saada ka viidatavate allikate bibliograafia k
 
 Overleaf LaTaX-i vormistama tulles saate Zoterost eksportida vajalikud bibliograafiakirjed. Selleks selekteerige Zoteros oma lõputööga seotud viited ning valige kontekstimenüüst \emph{Export Items...} (vt joonis~\ref{fig:zoteroKontekst}). Avanevast menüüst valige ekspordi formaadiks \verb|BibLaTeX|.
 
-\begin{figure}[htb!]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{figures/Joonis3-ZoteroBibliograafiaEksport.png}
     \caption{Valitud allikate kontekstimenüü Zotero programmis.}
@@ -203,7 +203,7 @@ Pärast sektsiooni “Lisad” tuleb Teie lõputöö dokumendi kõige lõppu lis
 \subsection{Meta-andmed}
 Teie lõputöö faili küljes on ka meta-andmed ehk andmed lõputöö faili kohta. Käesolev mall lisab need Teie tööle automaatselt \verb|thesis.tex| failis täidetud andmeväljade pealt. PDF faili meta-andmeid saate näha näiteks tarkvaraga Acrobat Reader, kui valite avatud dokuemndi kontekstimenüüst \emph{Document Properties} (vt joonis~\ref{fig:metaAndmed}). On oluline, et Teie töö meta-andmed vastaksid tegelikkusele.
 
-\begin{figure}[htb!]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/Joonis4-MetaAndmed.png}
     \caption{Malli meta-andmed Acrobat Reader programmis.}
