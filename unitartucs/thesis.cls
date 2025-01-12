@@ -73,7 +73,7 @@
 \titlespacing{\subparagraph}{0pt}{0pt}{0pt}
 
 \setcounter{secnumdepth}{3} % Nummerdatud kuni \subsubsection
-\AddToHook{cmd/section/before}{\clearpage} % Esimese taseme peatükid algavad uuelt lehelt
+\newcommand{\sectionbreak}{\clearpage\phantomsection} % Esimese taseme peatükid algavad uuelt lehelt
 
 % Sisukord
 \usepackage{titletoc}
