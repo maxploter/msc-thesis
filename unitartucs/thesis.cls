@@ -3,9 +3,17 @@
 % Üldine vormistus
 \LoadClass[12pt]{article}
 \usepackage[a4paper,margin=25.4mm]{geometry}
-\usepackage{parskip} % Taandrea asemel lõiguvahe
 
 \usepackage{xcolor}
+
+% Tüpograafia
+\usepackage{parskip} % Taandrea asemel lõiguvahe
+\widowpenalty=10000
+\clubpenalty=10000
+\hyphenpenalty=10000
+\hbadness=10000
+\sloppy
+\usepackage{microtype}
 
 % Keeleline tugi
 \AddToHook{package/inputenc/before}{
@@ -78,6 +86,9 @@
 \setcounter{tocdepth}{3} % Sisukorras kuni \subsubsection
 
 % Joonised
+\RequirePackage[labelsep=period]{caption} % Punkt pealdiste sildi lõpus
+\captionsetup{justification=centering} % Mitmerealise sildi viimane rida keskel mitte vasakul.
+
 \usepackage{wrapfig}
 \usepackage[export]{adjustbox}
 
@@ -97,12 +108,15 @@
     fontsize=\footnotesize,
 }
 
-% Jalus
+% Joonealused märkused
+\addtolength{\skip\footins}{40pt plus 5pt}
 \renewcommand{\footnoterule}{%
   \kern 0pt
   \hrule width 145pt height 0.01pt
   \kern 12pt
 }
+\usepackage[marginal]{footmisc}
+\setlength{\footnotemargin}{4pt}
 
 % Üldised teksti seadistused
 
@@ -117,22 +131,7 @@
 \newcommand\link[1]{\textcolor{linkGreen}{\uline{\burl{#1}}}}
 
 
-\usepackage[marginal]{footmisc}
-\setlength{\footnotemargin}{4pt}
-
-\RequirePackage[labelsep=period]{caption} %Punkt pealdiste sildi lõpus
-\captionsetup{justification=centering} % Mitmerealise sildi viimane rida keskel mitte vasakul.
-
-\widowpenalty=10000
-\clubpenalty=10000
-\hyphenpenalty=10000
-\hbadness=10000
-\sloppy
-\usepackage{microtype}
-
-\addtolength{\skip\footins}{40pt plus 5pt}
-
-% Tekstimuutujatega seotud seadistused
+% Meta-andmete defineerimine
 \newcommand\supervisor[1]{\renewcommand\@supervisor{#1}}
 \newcommand\@supervisor{\@latex@error{No \noexpand\supervisor given}\@ehc}
 
@@ -142,17 +141,12 @@
 \newcommand\thesis[1]{\renewcommand\@thesis{#1}}
 \newcommand\@thesis{\@latex@error{No \noexpand\thesis given}\@ehc}
 
-\newcommand\titleOtherLanguage[1]{\renewcommand\@titleOtherLanguage{#1}}
-\newcommand\@titleOtherLanguage{\@latex@error{No \noexpand\titleOtherLanguage given}\@ehc}
-
 \newcommand\keywords[1]{\renewcommand\@keywords{#1}}
 \newcommand\@keywords{\@latex@error{No \noexpand\keywords given}\@ehc}
 
+% Tiitelleht
 \newcounter{@supervisori}
 \newcounter{@supervisors}
-
-
-%% Tiitellehe vormistus %%
 
 \renewcommand*{\maketitle}{
     \setbox0=\vbox{\setcounter{@supervisors}{1}\newcommand*{\degree}[1]{}\renewcommand*{\and}{\stepcounter{@supervisors}}\@supervisor}%
@@ -206,9 +200,7 @@
     \centerline{\large Tartu {\@date}}
 }
 
-
-%% Infolehe vormistus %%
-
+% Infoleht
 \newenvironment{@info}[1]{
     \noindent\textbf{\large #1}
     \vspace*{1ex} % TODO: why 3ex only in one language in old template?
@@ -235,9 +227,9 @@
 \newenvironment{info}{\begin{@info}{\@title}}{\end{@info}}
 \newenvironment{otherinfo}[2]{\begin{otherlanguage}{#1}\begin{@info}{#2}}{\end{@info}\end{otherlanguage}}
 
-% Lingid ja meta-andmed
+% Lingid ja PDF-i meta-andmed
 \AtEndPreamble{
-    \usepackage[hidelinks,pdfusetitle]{hyperref} % hyperref-i peab laadima viimasena
+    \usepackage[hidelinks]{hyperref} % hyperref-i peab laadima viimasena
     \urlstyle{same} % Lingid sama fondiga nagu tekst
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
     \newcommand*{\toclevel@subsubsubsection}{4}
