@@ -230,4 +230,5 @@
     \usepackage[numbered,open]{bookmark} % PDF-i sisukord
 
     \DeclareLanguageMapping{estonian}{unitartucs/estonian}
+    \DeclareLanguageMapping{english}{unitartucs/english}
 }
