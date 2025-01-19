@@ -20,7 +20,7 @@ Te peate ka LaTeXi eraldi oma arvutisse paigaldama.
 
 #### Windowsil
 
-Tõmmake alla [https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe](Tex Live) tarkvara. Paigaldamisel te võite valida *Advanced* seadistused ja muuta *full scheme* (8 GB) valiku *basic scheme* (~400 MB) valiku peale. Olenemata valikust peate te käsitsi paigaldama ka `latexmk` ja `latexmk.windows` paketid.
+Tõmmake alla [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe) tarkvara. Paigaldamisel te võite valida *Advanced* seadistused ja muuta *full scheme* (8 GB) valiku *basic scheme* (~400 MB) valiku peale. Olenemata valikust peate te käsitsi paigaldama ka `latexmk` ja `latexmk.windows` paketid.
 
 Kui te valisite *basic scheme* valiku, siis peate te paigaldama ka järgnevad paketid: 
 ```
@@ -29,7 +29,7 @@ xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, 
 
 Kui VS Code töökeskond ütleb, et ta ei leia üles konkreetset paketti, siis kasutage Tex Live tarkvara, et see paigaldada.
 
-Siin on ka üks põhjalik õpetus: [https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/]
+Siin on ka üks põhjalik õpetus: (https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/)
 
 
 ---
@@ -54,7 +54,7 @@ Visual Studio (VS) Code is a lightweight IDE with very powerful extensions. To w
 You also need to separately install LaTeX itself on your computer.
 
 #### For Windows
-Download the [https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe](Tex Live) software. When installing, you can select *Advaned* and change *full scheme* (8 GB) to *basic scheme* (~400 MB). Regardless of your choice, you have to install the packages `latexmk` and `latexmk.windows` manually.
+Download the [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe) software. When installing, you can select *Advaned* and change *full scheme* (8 GB) to *basic scheme* (~400 MB). Regardless of your choice, you have to install the packages `latexmk` and `latexmk.windows` manually.
 
 If you chose the *basic scheme*, you need to also install the following packages: 
 ```
@@ -62,7 +62,7 @@ xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, 
 ```
 If at any time VS Code tells you that it cannot find a specific package, use the Tex Live software to install it.
 
-There is a comprehensive tutorial also here: [https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/]
+There is a comprehensive tutorial also here: [https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/](https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/)
 
 #### For Linux
 
