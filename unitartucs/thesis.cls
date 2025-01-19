@@ -5,7 +5,10 @@
 \usepackage[a4paper,margin=25.4mm]{geometry}
 
 \usepackage{xcolor}
-\definecolor{urlgreen}{rgb}{0.15, 0.33, 0.09}
+\definecolor{colorURL}{rgb}{0.15, 0.33, 0.09}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 
 % Tüpograafia
 \usepackage{parskip} % Taandrea asemel lõiguvahe
@@ -100,7 +103,7 @@
 \patchcmd\WF@putfigmaybe{\lower\intextsep}{}{}{\fail}%
 \AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}}
 
-% Joonealused viited
+% Joonealused märkused
 \addtolength{\skip\footins}{40pt plus 5pt}
 \renewcommand{\footnoterule}{%
   \kern 0pt
@@ -109,6 +112,23 @@
 }
 \usepackage[marginal]{footmisc}
 \setlength{\footnotemargin}{4pt}
+
+% Joonised
+\usepackage{graphicx}
+
+% Tabelid
+\usepackage{colortbl}
+
+% Koodinäited
+\usepackage{minted}
+\setminted{
+    frame=single,
+    framesep=10pt,
+    fontsize=\footnotesize,
+}
+
+% Matemaatilised valemid
+\usepackage{amsmath}
 
 % Meta-andmete defineerimine
 \newcommand\supervisor[1]{\renewcommand\@supervisor{#1}}
@@ -206,16 +226,23 @@
 \newenvironment{info}{\begin{@info}{\@title}}{\end{@info}}
 \newenvironment{otherinfo}[2]{\begin{otherlanguage}{#1}\begin{@info}{#2}}{\end{@info}\end{otherlanguage}}
 
+
 % Lingid ja PDF-i meta-andmed
 \AtEndPreamble{
-    \usepackage{hyperref} % hyperref-i peab laadima viimasena
+
+    \usepackage[normalem]{ulem}
+    \setlength{\ULdepth}{1.2pt}
+    \newcommand{\link}[1]{ \uline{\url{#1}}} % TODO: Pikk link jookseb lehelt välja
+    
+    \usepackage[breaklinks]{hyperref}
     \hypersetup{
         colorlinks,
         allcolors=black,
-        urlcolor=urlgreen, % \url värv
-        breaklinks,
+        urlcolor=colorURL, % \url värv
+        breaklinks
     }
     \urlstyle{same} % Lingid sama fondiga nagu tekst
+    
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
     \newcommand*{\toclevel@subsubsubsection}{4}
     \renewcommand*{\toclevel@paragraph}{5}
