@@ -10,7 +10,7 @@ TODO
 
 ### Visual Studio Code
 
-Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond ([https://code.visualstudio.com/](https://code.visualstudio.com/)).
+Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond: https://code.visualstudio.com/
 
 Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeXiga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
 * **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeXiga tööd teha.
@@ -45,7 +45,7 @@ TODO
 
 ### Visual Studio Code
 
-To use this template with **Visual Studio Code**, first download and install the IDE ([https://code.visualstudio.com/]).
+To use this template with **Visual Studio Code**, first download and install the IDE: https://code.visualstudio.com/
 
 Visual Studio (VS) Code is a lightweight IDE with very powerful extensions. To work with LaTeX in VS Code, install the following extensions from within the IDE:
 * **LaTeX Workshop** – The main extension that allows working with LaTeX.
@@ -62,7 +62,7 @@ xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, 
 ```
 If at any time VS Code tells you that it cannot find a specific package, use the Tex Live software to install it.
 
-There is a comprehensive tutorial also here: [https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/](https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/)
+There is a comprehensive tutorial also here: https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/
 
 #### For Linux
 
