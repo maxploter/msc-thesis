@@ -307,4 +307,6 @@ TSWLatexianTemp*
 
 # latexmk
 build/
+
+# The output
 thesis.pdf
