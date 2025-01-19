@@ -31,6 +31,13 @@ Kui VS Code töökeskond ütleb, et ta ei leia üles konkreetset paketti, siis k
 
 Siin on ka üks põhjalik õpetus: https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/
 
+#### Linuxil
+
+TODO
+
+#### Macil
+
+TODO
 
 ---
 # The LaTeX Thesis Template for the Bachelor's and Master's Theses at the Institute of Computer Science
@@ -53,7 +60,7 @@ Visual Studio (VS) Code is a lightweight IDE with very powerful extensions. To w
 
 You also need to separately install LaTeX itself on your computer.
 
-#### For Windows
+#### On Windows
 Download the [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe) software. When installing, you can select *Advaned* and change *full scheme* (8 GB) to *basic scheme* (~400 MB). Regardless of your choice, you have to install the packages `latexmk` and `latexmk.windows` manually.
 
 If you chose the *basic scheme*, you need to also install the following packages: 
@@ -64,12 +71,12 @@ If at any time VS Code tells you that it cannot find a specific package, use the
 
 There is a comprehensive tutorial also here: https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/
 
-#### For Linux
+#### On Linux
 
 TODO
 
 
-#### For Mac
+#### On Mac
 
 TODO
 
