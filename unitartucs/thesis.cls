@@ -7,9 +7,6 @@
 \usepackage{xcolor}
 \definecolor{colorURL}{rgb}{0.15, 0.33, 0.09}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-
 % Tüpograafia
 \usepackage{parskip} % Taandrea asemel lõiguvahe
 \widowpenalty=10000
@@ -46,8 +43,10 @@
 }
 
 % Fondid
-\RequirePackage[defaultsups,largesc,trueslanted]{newtxtext} % Times
-\RequirePackage{tgcursor} % Courier
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
 
 % Peatükkide pealkirjad
 \usepackage{titlesec}
@@ -118,6 +117,7 @@
 
 % Tabelid
 \usepackage{colortbl}
+\usepackage{tabularray}
 
 % Koodinäited
 \usepackage{minted}
@@ -229,11 +229,7 @@
 
 % Lingid ja PDF-i meta-andmed
 \AtEndPreamble{
-
-    \usepackage[normalem]{ulem}
-    \setlength{\ULdepth}{1.2pt}
-    \newcommand{\link}[1]{ \uline{\url{#1}}} % TODO: Pikk link jookseb lehelt välja
-    
+   
     \usepackage[breaklinks]{hyperref}
     \hypersetup{
         colorlinks,
@@ -242,6 +238,12 @@
         breaklinks
     }
     \urlstyle{same} % Lingid sama fondiga nagu tekst
+
+    \usepackage{lua-ul}
+    \DeclareUrlCommand{\url}{%
+        \def\UrlFont{\color{colorURL}\normalfont}% Color with our URL color
+        \def\UrlLeft##1\UrlRight{\underLine[height=1pt, top=-0.25ex]{##1}}% Close underline like in Word
+    }
     
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
     \newcommand*{\toclevel@subsubsubsection}{4}
@@ -258,4 +260,6 @@
 
     \DeclareLanguageMapping{estonian}{unitartucs/estonian}
     \DeclareLanguageMapping{english}{unitartucs/english}
+
+    \usepackage{csquotes}
 }

@@ -1,6 +1,8 @@
 # Add --shell-escape flag needed for minted
 $latex = 'latex  %O  --shell-escape %S';
-$pdflatex = 'pdflatex  %O  --shell-escape %S';
+#$pdflatex = 'pdflatex  %O  --shell-escape %S';
+$pdflatex = 'lualatex -file-line-error %O %S';
+$pdf_mode = 1;
 
 
 
