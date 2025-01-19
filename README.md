@@ -10,7 +10,7 @@ TODO
 
 ### Visual Studio Code
 
-Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond ([https://code.visualstudio.com/]).
+Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond ([https://code.visualstudio.com/](https://code.visualstudio.com/)).
 
 Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeXiga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
 * **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeXiga tööd teha.
@@ -20,10 +20,11 @@ Te peate ka LaTeXi eraldi oma arvutisse paigaldama.
 
 #### Windowsil
 
-Tõmmake alla [https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe.](Tex Live) tarkvara. Paigaldamisel te võite valida *Advanced* seadistused ja muuta *full scheme* (8 GB) valiku *basic scheme* (~400 MB) valiku peale. Olenemata valikust peate te käsitsi paigaldama ka `latexmk` ja `latexmk.windows` paketid.
+Tõmmake alla [https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe](Tex Live) tarkvara. Paigaldamisel te võite valida *Advanced* seadistused ja muuta *full scheme* (8 GB) valiku *basic scheme* (~400 MB) valiku peale. Olenemata valikust peate te käsitsi paigaldama ka `latexmk` ja `latexmk.windows` paketid.
 
 Kui te valisite *basic scheme* valiku, siis peate te paigaldama ka järgnevad paketid: 
-```xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
+```
+xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
 ```
 
 Kui VS Code töökeskond ütleb, et ta ei leia üles konkreetset paketti, siis kasutage Tex Live tarkvara, et see paigaldada.
@@ -53,10 +54,11 @@ Visual Studio (VS) Code is a lightweight IDE with very powerful extensions. To w
 You also need to separately install LaTeX itself on your computer.
 
 #### For Windows
-Download the [https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe.](Tex Live) software. When installing, you can select *Advaned* and change *full scheme* (8 GB) to *basic scheme* (~400 MB). Regardless of your choice, you have to install the packages `latexmk` and `latexmk.windows` manually.
+Download the [https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe](Tex Live) software. When installing, you can select *Advaned* and change *full scheme* (8 GB) to *basic scheme* (~400 MB). Regardless of your choice, you have to install the packages `latexmk` and `latexmk.windows` manually.
 
 If you chose the *basic scheme*, you need to also install the following packages: 
-```xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
+```
+xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
 ```
 If at any time VS Code tells you that it cannot find a specific package, use the Tex Live software to install it.
 
