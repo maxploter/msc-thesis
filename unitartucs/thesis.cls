@@ -100,7 +100,7 @@
 \patchcmd\WF@putfigmaybe{\lower\intextsep}{}{}{\fail}%
 \AddToHook{env/wrapfigure/begin}{\setlength{\intextsep}{0pt}}
 
-% Joonealused märkused
+% Joonealused viited
 \addtolength{\skip\footins}{40pt plus 5pt}
 \renewcommand{\footnoterule}{%
   \kern 0pt
