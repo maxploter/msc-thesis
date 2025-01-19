@@ -39,6 +39,10 @@ TODO
 
 TODO
 
+## Mured ja kontaktinfo
+
+Probleemide või küsimuste korral võtke ühendust (mailto:ati.study@ut.ee)[ati.study@ut.ee]
+
 ---
 # The LaTeX Thesis Template for the Bachelor's and Master's Theses at the Institute of Computer Science
 
@@ -80,3 +84,6 @@ TODO
 
 TODO
 
+## Issues and Contact
+
+In case of problems or questions, contact (mailto:ati.study@ut.ee)[ati.study@ut.ee]
