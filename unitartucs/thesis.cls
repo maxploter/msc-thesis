@@ -27,6 +27,8 @@
 \newcommand{\supervisorsname}{Juhendajad}
 \newcommand{\infoname}{Infoleht}
 \newcommand{\keywordsname}{Võtmesõnad}
+\newcommand{\infoUT}{Tartu Ülikool}
+\newcommand{\infoICS}{Arvutiteaduse instituut}
 
 \addto\captionsestonian{
     \renewcommand{\supervisorname}{Juhendaja}
@@ -36,10 +38,16 @@
     \renewcommand{\keywordsname}{Võtmesõnad}
     \renewcommand{\refname}{Viited}
     \renewcommand{\appendixname}{Lisad}
+    \renewcommand{\infoUT}{Tartu Ülikool}
+    \renewcommand{\infoICS}{Arvutiteaduse instituut}
 }
 
 \addto\captionsenglish{
+    \renewcommand{\supervisorname}{Supervisor}
+    \renewcommand{\supervisorsname}{Supervisors}
     \renewcommand{\keywordsname}{Keywords}
+    \renewcommand{\infoUT}{University of Tartu}
+    \renewcommand{\infoICS}{Institute of Computer Science}
 }
 
 % Fondid
@@ -157,9 +165,9 @@
 
         % Päis
         {
-            \fontsize{15}{15}\selectfont \textsc{Tartu Ülikool} \\
+            \fontsize{15}{15}\selectfont \textsc{\infoUT} \\
             \fontsize{14}{16}\selectfont
-            Arvutiteaduse instituut\\
+            \infoICS\\
             \@curriculum\\
         }
 
@@ -224,7 +232,7 @@
 }{\filbreak\vspace{4ex}}
 
 \newenvironment{info}{\begin{@info}{\@title}}{\end{@info}}
-\newenvironment{otherinfo}[2]{\begin{otherlanguage}{#1}\begin{@info}{#2}}{\end{@info}\end{otherlanguage}}
+\newenvironment{otherInfo}[2]{\begin{otherlanguage}{#1}\begin{@info}{#2}}{\end{@info}\end{otherlanguage}}
 
 
 % Lingid ja PDF-i meta-andmed
