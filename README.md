@@ -29,7 +29,7 @@ xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, 
 
 Kui VS Code töökeskond ütleb, et ta ei leia üles konkreetset paketti, siis kasutage Tex Live tarkvara, et see paigaldada.
 
-Siin on ka üks põhjalik õpetus: (https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/)
+Siin on ka üks põhjalik õpetus: https://blog.jakelee.co.uk/getting-latex-working-in-vscode-on-windows/
 
 
 ---
