@@ -6,17 +6,17 @@ Siin asub arvutiteaduse instituudi bakalaureuse- ja magistriõppe lõputööde L
 
 ### Overleaf
 
-Laadige käesolev repositooriumi kood alla ZIP-failina (*Code* → *zip*). Seejärel, Overleaf keskkonnas, looge uus project ning valige *Upload Project*. Laadige eelnevalt allalaetud ZIP-fail üles. Seejärel valige juurkaustas olev `thesis.tex` fail ja kompilleerige projekt sealt.
+Laadige käesolev repositooriumi kood alla ZIP‑failina (*Code* → *zip*). Seejärel, Overleaf keskkonnas, looge uus project ning valige *Upload Project*. Laadige eelnevalt allalaetud ZIP‑fail üles. Seejärel valige juurkaustas olev `thesis.tex` fail ja kompilleerige projekt sealt.
 
 ### Visual Studio Code
 
 Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond: https://code.visualstudio.com/
 
-Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeX-iga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
-* **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeX-iga tööd teha.
-* **Hide Gitignored** – See laiendus peidab ära töökeskkonna failivaaturi paneelist suurearvulised LaTeX-i tööfailid.
+Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeX‑iga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
+* **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeX‑iga tööd teha.
+* **Hide Gitignored** – See laiendus peidab ära töökeskkonna failivaaturi paneelist suurearvulised LaTeX‑i tööfailid.
 
-Te peate ka LaTeX-i eraldi oma arvutisse paigaldama.
+Te peate ka LaTeX‑i eraldi oma arvutisse paigaldama.
 
 #### Windowsil
 
@@ -69,7 +69,7 @@ To use this template with **Visual Studio Code**, first download and install the
 
 Visual Studio (VS) Code is a lightweight IDE with very powerful extensions. To work with LaTeX in VS Code, install the following extensions from within the IDE:
 * **LaTeX Workshop** – The main extension that allows working with LaTeX.
-* **Hide Gitignored** – This will hide all the many working files of LaTeX from your IDE-s Expolorer panel.
+* **Hide Gitignored** – This will hide all the many working files of LaTeX from your IDE‑s Expolorer panel.
 
 You also need to separately install LaTeX itself on your computer.
 
