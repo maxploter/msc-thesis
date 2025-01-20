@@ -6,7 +6,7 @@ Siin asub arvutiteaduse instituudi bakalaureuse- ja magistriõppe lõputööde L
 
 ### Overleaf
 
-TODO
+Laadige käesolev repositooriumi kood alla ZIP-failina (*Code* → *zip*). Seejärel, Overleaf keskkonnas, looge uus project ning valige *Upload Project*. Laadige eelnevalt allalaetud ZIP-fail üles. Seejärel valige juurkaustas olev `thesis.tex` fail ja kompilleerige projekt sealt.
 
 ### Visual Studio Code
 
@@ -61,7 +61,7 @@ Here are the LaTeX thesis templates for to help with writing your bachelor's or 
 
 ### Overleaf
 
-TODO
+Download the contents of this repository as a ZIP file (*Code* → *zip*). Then, in Overleaf, create a new project and choose *Upload Project*. Upload the downloaded ZIP file. Then choose the `thesis.tex` file in the root folder and compile from there.
 
 ### Visual Studio Code
 
