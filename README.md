@@ -8,6 +8,8 @@ Siin asub arvutiteaduse instituudi bakalaureuse- ja magistriõppe lõputööde L
 
 Laadige käesolev repositooriumi kood alla ZIP‑failina (*Code* → *zip*). Seejärel, Overleaf keskkonnas, looge uus project ning valige *Upload Project*. Laadige eelnevalt allalaetud ZIP‑fail üles. Seejärel valige juurkaustas olev `thesis.tex` fail ja kompilleerige projekt sealt.
 
+Ärge unustage, et Tartu Ülikooli üliõpilasena on Teil võimalik tasuta kasutada Overleafi preemium-paketti: https://www.overleaf.com/edu/unitartu
+
 ### Visual Studio Code
 
 Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond: https://code.visualstudio.com/
@@ -62,6 +64,8 @@ Here are the LaTeX thesis templates for to help with writing your bachelor's or 
 ### Overleaf
 
 Download the contents of this repository as a ZIP file (*Code* → *zip*). Then, in Overleaf, create a new project and choose *Upload Project*. Upload the downloaded ZIP file. Then choose the `thesis.tex` file in the root folder and compile from there.
+
+Keep in mind that as a student of the University of Tartu, you have free access to Overleaf Premium : https://www.overleaf.com/edu/unitartu
 
 ### Visual Studio Code
 
