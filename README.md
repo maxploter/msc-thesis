@@ -2,7 +2,7 @@
 
 Siin asub arvutiteaduse instituudi bakalaureuse- ja magistriõppe lõputööde LaTeX mall. See mall on mõeldud abistava juhendina, kuidas Teie võite oma lõputööd vormistada. Konkreetsete reeglite jaoks tuleks vaadata [Tartu Ülikooli arvutiteaduse instituudis kaitsvate lõputööde nõuete ja hindamise](https://cs.ut.ee/en/content/thesis-deadlines-and-guidelines) dokumenti.
 
-## Juhised
+## Ülesseadmine
 
 ### Overleaf
 
@@ -12,11 +12,11 @@ TODO
 
 Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond: https://code.visualstudio.com/
 
-Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeXiga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
-* **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeXiga tööd teha.
-* **Hide Gitignored** – See laiendus peidab ära töökeskkonna failivaaturi paneelist suurearvulised LaTeXi tööfailid.
+Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeX-iga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
+* **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeX-iga tööd teha.
+* **Hide Gitignored** – See laiendus peidab ära töökeskkonna failivaaturi paneelist suurearvulised LaTeX-i tööfailid.
 
-Te peate ka LaTeXi eraldi oma arvutisse paigaldama.
+Te peate ka LaTeX-i eraldi oma arvutisse paigaldama.
 
 #### Windowsil
 
@@ -39,6 +39,15 @@ TODO
 
 TODO
 
+## Kasutamine
+
+1. Avage juurkaustas olev `thesis.tex` ja kommenteerige sisse see rida, mis keeles Te oma lõputööd teete.
+2. Minge, vastavalt oma keelevalikule, `estonian` või `english` kausta. Sealt leiate faili `lõputöö.tex` või `thesis.tex`. Selles failis täidke ära oma lõputööga seonduv info. Seal defineeritakse ka lõputöö dokumendis sisalduvi sektsioone.
+3. Kaustas `sektsioonid` või `sections` on Teie lõputöö sektsioonide failid.
+4. Kaustas `joonised` või `figures` on Teie lõputöö joonised.
+5. Failis `seadistus.tex` või `config.tex` saate seadistada oma lõputöö seadeid. Näiteks valida, millist viitamisstiili kasutada soovite.
+6. Failis `viited.bib` või `references.bib` on Teie lõputöö bibliograafiakirjed (soovitatav Zoterost eksportida).
+
 ## Mured ja kontaktinfo
 
 Probleemide või küsimuste korral võtke ühendust ati.study@ut.ee
@@ -48,7 +57,7 @@ Probleemide või küsimuste korral võtke ühendust ati.study@ut.ee
 
 Here are the LaTeX thesis templates for to help with writing your bachelor's or master's thesis at the Institute of Computer Science. The template is for guidance on how Your thesis could be formatted. For specific rules, refer to the [Guidelines for preparing and grading of graduation theses at the Institute of Computer Science of the University of Tartu](https://cs.ut.ee/en/content/thesis-deadlines-and-guidelines) document
 
-## Instructions
+## Setup
 
 ### Overleaf
 
@@ -83,6 +92,15 @@ TODO
 #### On Mac
 
 TODO
+
+## Usage
+
+1. Open the `thesis.tex` from the root folder and comment in Your chosen thesis language. In subsequent instructions, let's assume You chose English.
+2. Open the folder `english` and find the file `thesis.tex`. In that file, fill in the information about Your thesis. That file also defines what sections will be included in your document.
+3. The folder `sections` stores the files for Your sections.
+4. The folder `figures` stores Your figure files.
+5. The `config.tex` file allows You to specify some settings for Your thesis. For example, which reference style You want to use.
+6. The `references.bib` file stores Your bibliography entries (ones you can export from Zotero)
 
 ## Issues and Contact
 
