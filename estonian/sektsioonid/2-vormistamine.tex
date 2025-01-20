@@ -51,7 +51,7 @@ Lõike kirjutades võite jälgida, ega Teie lõigu lõppu ei jää viimasele rea
 Teie lõputöö väljanägemisele ja arusaamise parandamisele aitavad väga palju kaasa erinevad elemendid nagu joonised, tabelid ja koodinäited.
 
 \subsubsection{Joonised}
-Joonisteks nimetame kõiksuguseid lõputöösse lisatud pilte, olgu nendeks graafikud, fotod või ekraanitõmmised. Need kõik tuleb nimetada joonisteks, lisada number ja pealdis. Siin LaTeX-i mallis käib käib see nii, et tuleb pilt kopeerida või laadida üles \verb|joonised| kausta. Seejärel saab pilti kasutada järgneva koodiga:
+Joonisteks nimetame kõiksuguseid lõputöösse lisatud pilte, olgu nendeks graafikud, fotod või ekraanitõmmised. Need kõik tuleb nimetada joonisteks, lisada number ja pealdis. Siin LaTeX-i mallis käib käib see nii, et tuleb pilt kopeerida või laadida üles \verb|joonised| kausta (vt joonis~\ref{fig:kaustad}). Seejärel saab pilti kasutada järgneva koodiga:
 
 \begin{minted}[escapeinside=||]{tex}
 \begin{figure}
@@ -70,7 +70,7 @@ Pealdise tekstist peaks olema selge, mida on joonisel kujutatud. Pealdis tekib j
     \centering
     \includegraphics[width=0.33\textwidth]{joonised/Joonis2-joonisedKaust.png}
     \caption{Malli kaustad.}
-    \label{fig:folders}
+    \label{fig:kaustad}
 \end{wrapfigure}
 
 Te võite jooniseid paigutada oma töös nii lehe keskele kui ka mähkida näiteks teksti kõrvale. Tekstiga mähitud joonise loomiseks tuleb eelnenud joonise koodinäites \verb|figure| asemel kasutada \verb|wrapfigure|. Joonise laiuse võib panna näiteks \verb|width=0.33\textwidth|.
@@ -140,18 +140,18 @@ function add(a, b) {
 Matemaatiliste valemite vormistamine LaTeX-is on suhteliselt lihtne. Lühikese valemi kirjutamiseks teksti sisse tuleb see ümbritseda \verb|$|-märkidega. Näiteks liitmist kirjeldab valem $a+b=c$. Suurema ja viidatava valemi jaoks tuleb valem lisada \verb|equation| keskkonna sisse.
 \begin{equation}
     \frac{a + b}{c} = d
-    \label{eq:abcd}
+    \label{eq:abcdValem}
 \end{equation}
 
 Ülalolev näide on tehtud koodiga:
 \begin{minted}{tex}
 \begin{equation}
     \frac{a + b}{c} = d
-    \label{eq:abcd}
+    \label{eq:abcdValem}
 \end{equation}
 \end{minted}
 
-Nagu näha, siis valemile saab lisada ka lühinime (\emph{label}), talle tekib automaatselt number ning seda lühinime saab kasutada, et valemit numbri järgi viidata. Näiteks ülalolev näide siin mallis on numbriga~\ref{eq:abcd}.
+Nagu näha, siis valemile saab lisada ka lühinime (\emph{label}), talle tekib automaatselt number ning seda lühinime saab kasutada, et valemit numbri järgi viidata. Näiteks ülalolev näide siin mallis on numbriga~\ref{eq:abcdValem}.
 
 \subsection{Viited}
 Õigesti viitamine on Teie töös väga oluline. Ebaõnnestunud viitamise korral võib Teie töö sisaldada akadeemilist petturlust ning selle eest võib Teie töö saada ülevaatamisel negatiivse hinnangu. Käesolevas mallis on eelnevalt kasutatud kolme tüüpi viiteid. Nendeks on töö enda erinevate elementide ja osade vahel olevad ristviited, niinimetatud nõrkade välisviidete jaoks kasutatud joonealused viited ning kasutatud allikate põhiviited ehk tugevad viited.
