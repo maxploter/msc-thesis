@@ -38,7 +38,10 @@
     \renewcommand{\keywordsname}{Võtmesõnad}
     \renewcommand{\refname}{Viited}
     \renewcommand{\appendixname}{Lisad}
-    \renewcommand{\infoUT}{Tartu Ülikool}
+    \renewcommand{\infoUT}{
+        {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}
+        {\fontsize{15}{15}\selectfont Ü\fontsize{12}{12}\selectfont LIKOOL}
+    }
     \renewcommand{\infoICS}{Arvutiteaduse instituut}
 }
 
@@ -46,7 +49,11 @@
     \renewcommand{\supervisorname}{Supervisor}
     \renewcommand{\supervisorsname}{Supervisors}
     \renewcommand{\keywordsname}{Keywords}
-    \renewcommand{\infoUT}{University of Tartu}
+    \renewcommand{\infoUT}{
+        {\fontsize{15}{15}\selectfont U\fontsize{12}{12}\selectfont NIVERSITY}
+        {\fontsize{12}{12}\selectfont OF}
+        {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}    
+    }
     \renewcommand{\infoICS}{Institute of Computer Science}
 }
 
@@ -165,7 +172,7 @@
 
         % Päis
         {
-            \fontsize{15}{15}\selectfont \textsc{\infoUT} \\
+            \Large{\infoUT} \\ % Some environments do not support small-caps for Times New Roman
             \fontsize{14}{16}\selectfont
             \infoICS\\
             \@curriculum\\
