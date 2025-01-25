@@ -6,7 +6,7 @@ Siin asub arvutiteaduse instituudi bakalaureuse- ja magistriõppe lõputööde L
 
 ### Overleaf
 
-Laadige käesolev repositooriumi kood alla ZIP‑failina (*Code* → *zip*). Seejärel, Overleaf keskkonnas, looge uus project ning valige *Upload Project*. Laadige eelnevalt allalaetud ZIP‑fail üles. Seejärel valige juurkaustas olev `thesis.tex` fail ja kompilleerige projekt sealt.
+Laadige käesolev repositooriumi kood alla ZIP-failina (*Code* → *zip*). Seejärel, Overleaf keskkonnas, looge uus project ning valige *Upload Project*. Laadige eelnevalt allalaetud ZIP-fail üles. Seejärel valige juurkaustas olev `thesis.tex` fail ja kompilleerige projekt sealt.
 
 Ärge unustage, et Tartu Ülikooli üliõpilasena on Teil võimalik tasuta kasutada Overleafi preemium-paketti: https://www.overleaf.com/edu/unitartu
 
@@ -14,17 +14,17 @@ Laadige käesolev repositooriumi kood alla ZIP‑failina (*Code* → *zip*). See
 
 Selleks, et kasutada seda malli **Visual Studio Code** töökeskkonnas, kõigepealt tõmmake ja paigaldage see töökeskkond: https://code.visualstudio.com/
 
-Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeX‑iga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
-* **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeX‑iga tööd teha.
-* **Hide Gitignored** – See laiendus peidab ära töökeskkonna failivaaturi paneelist suurearvulised LaTeX‑i tööfailid.
+Visual Studio (VS) Code on paljude võimsate laiendustega kergeloomuline töökeskkond. Selleks, et VS Code keskkonnas LaTeX-iga tööd teha, tuleks paigaldada järgnevad töökeskkonna laiendused:
+* **LaTeX Workshop** – Põhiline laiendus, mis võimaldab LaTeX-iga tööd teha.
+* **Hide Gitignored** – See laiendus peidab ära töökeskkonna failivaaturi paneelist suurearvulised LaTeX-i tööfailid.
 
-Te peate ka LaTeX‑i eraldi oma arvutisse paigaldama.
+Te peate ka LaTeX-i eraldi oma arvutisse paigaldama.
 
 #### Windowsil
 
 Tõmmake alla [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe) tarkvara. Paigaldamisel te võite valida *Advanced* seadistused ja muuta *full scheme* (8 GB) valiku *basic scheme* (~400 MB) valiku peale. Olenemata valikust peate te käsitsi paigaldama ka `latexmk` ja `latexmk.windows` paketid.
 
-Kui te valisite *basic scheme* valiku, siis peate te paigaldama ka järgnevad paketid: 
+Kui te valisite *basic scheme* valiku, siis peate te paigaldama ka järgnevad paketid:
 ```
 xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
 ```
@@ -73,14 +73,14 @@ To use this template with **Visual Studio Code**, first download and install the
 
 Visual Studio (VS) Code is a lightweight IDE with very powerful extensions. To work with LaTeX in VS Code, install the following extensions from within the IDE:
 * **LaTeX Workshop** – The main extension that allows working with LaTeX.
-* **Hide Gitignored** – This will hide all the many working files of LaTeX from your IDE‑s Expolorer panel.
+* **Hide Gitignored** – This will hide all the many working files of LaTeX from your IDE-s Expolorer panel.
 
 You also need to separately install LaTeX itself on your computer.
 
 #### On Windows
 Download the [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=install%2Dtl%2Dwindows.exe) software. When installing, you can select *Advaned* and change *full scheme* (8 GB) to *basic scheme* (~400 MB). Regardless of your choice, you have to install the packages `latexmk` and `latexmk.windows` manually.
 
-If you chose the *basic scheme*, you need to also install the following packages: 
+If you chose the *basic scheme*, you need to also install the following packages:
 ```
 xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
 ```
