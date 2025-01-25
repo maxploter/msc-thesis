@@ -52,7 +52,7 @@
     \renewcommand{\infoUT}{
         {\fontsize{15}{15}\selectfont U\fontsize{12}{12}\selectfont NIVERSITY}
         {\fontsize{12}{12}\selectfont OF}
-        {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}    
+        {\fontsize{15}{15}\selectfont T\fontsize{12}{12}\selectfont ARTU}
     }
     \renewcommand{\infoICS}{Institute of Computer Science}
 }
@@ -244,7 +244,7 @@
 
 % Lingid ja PDF-i meta-andmed
 \AtEndPreamble{
-   
+
     \usepackage[breaklinks]{hyperref}
     \hypersetup{
         colorlinks,
@@ -259,7 +259,7 @@
         \def\UrlFont{\color{colorURL}\normalfont}% Color with our URL color
         \def\UrlLeft##1\UrlRight{\underLine[height=1pt, top=-0.25ex]{##1}}% Close underline like in Word
     }
-    
+
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
     \newcommand*{\toclevel@subsubsubsection}{4}
     \renewcommand*{\toclevel@paragraph}{5}
