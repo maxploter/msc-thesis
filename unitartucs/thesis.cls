@@ -254,10 +254,17 @@
     }
     \urlstyle{same} % Lingid sama fondiga nagu tekst
 
-    \usepackage{lua-ul}[2022-05-31] % lua-ul 0.2.0: Add keyval for \underLine
+    \usepackage[minimal]{lua-ul}
+    \usepackage{calc}
+    \newlength{\underLineDepth}
+    \setlength{\underLineDepth}{1pt+0.25ex}
+    \newunderlinetype\@underLine{%
+        \leaders\vrule height -0.25ex depth \underLineDepth % Close underline like in Word
+    }
+    \NewDocumentCommand\underLine{+m}{{\@underLine#1}}
     \DeclareUrlCommand{\url}{%
         \def\UrlFont{\color{colorURL}\normalfont}% Color with our URL color
-        \def\UrlLeft##1\UrlRight{\underLine[height=1pt, top=-0.25ex]{##1}}% Close underline like in Word
+        \def\UrlLeft##1\UrlRight{\underLine{##1}}
     }
 
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
