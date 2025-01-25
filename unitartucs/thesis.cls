@@ -263,7 +263,7 @@
     }
     \NewDocumentCommand\underLine{+m}{{\@underLine#1}}
     \DeclareUrlCommand{\Hurl}{% https://tex.stackexchange.com/a/169734
-        \def\UrlLeft##1\UrlRight{\underLine{##1}}
+        \def\UrlLeft##1\UrlRight{\@underLine##1} % Use \@underLine directly to allow line breaks in urls
     }
 
     % hyperref-i adapteerimine lisatud subsubsubsection-i jaoks
