@@ -254,7 +254,7 @@
     }
     \urlstyle{same} % Lingid sama fondiga nagu tekst
 
-    \usepackage{lua-ul}
+    \usepackage{lua-ul}[2022-05-31] % lua-ul 0.2.0: Add keyval for \underLine
     \DeclareUrlCommand{\url}{%
         \def\UrlFont{\color{colorURL}\normalfont}% Color with our URL color
         \def\UrlLeft##1\UrlRight{\underLine[height=1pt, top=-0.25ex]{##1}}% Close underline like in Word
