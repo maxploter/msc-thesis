@@ -262,8 +262,7 @@
         \leaders\vrule height -0.25ex depth \underLineDepth % Close underline like in Word
     }
     \NewDocumentCommand\underLine{+m}{{\@underLine#1}}
-    \DeclareUrlCommand{\url}{%
-        \def\UrlFont{\color{colorURL}\normalfont}% Color with our URL color
+    \DeclareUrlCommand{\Hurl}{% https://tex.stackexchange.com/a/169734
         \def\UrlLeft##1\UrlRight{\underLine{##1}}
     }
 
