@@ -35,7 +35,7 @@ Siin on ka üks põhjalik õpetus: https://blog.jakelee.co.uk/getting-latex-work
 
 #### Linuxil
 
-Ubuntus on vaja paigaldada vajalikud paketid järgmise käsuga:
+Ubuntu Linuxis on vaja paigaldada vajalikud paketid järgmise käsuga:
 ```
 sudo apt install --no-install-recommends --no-install-suggests texlive-plain-generic texlive-latex-extra texlive-lang-european latexmk texlive-luatex ttf-mscorefonts-installer texlive-bibtex-extra biber python3-pygments
 ```
@@ -93,8 +93,10 @@ There is a comprehensive tutorial also here: https://blog.jakelee.co.uk/getting-
 
 #### On Linux
 
-TODO
-
+On Ubuntu Linus, you need to install the necessary packages with the following command:
+```
+sudo apt install --no-install-recommends --no-install-suggests texlive-plain-generic texlive-latex-extra texlive-lang-european latexmk texlive-luatex ttf-mscorefonts-installer texlive-bibtex-extra biber python3-pygments
+```
 
 #### On Mac
 
