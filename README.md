@@ -35,7 +35,10 @@ Siin on ka üks põhjalik õpetus: https://blog.jakelee.co.uk/getting-latex-work
 
 #### Linuxil
 
-TODO
+Ubuntus on vaja paigaldada vajalikud paketid järgmise käsuga:
+```
+sudo apt install --no-install-recommends --no-install-suggests texlive-plain-generic texlive-latex-extra texlive-lang-european latexmk texlive-luatex ttf-mscorefonts-installer texlive-bibtex-extra biber python3-pygments
+```
 
 #### Macil
 
