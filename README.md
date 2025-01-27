@@ -26,7 +26,7 @@ Tõmmake alla [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=instal
 
 Kui te valisite *basic scheme* valiku, siis peate te paigaldama ka järgnevad paketid:
 ```
-xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
+xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors, xurl
 ```
 
 Kui VS Code töökeskond ütleb, et ta ei leia üles konkreetset paketti, siis kasutage Tex Live tarkvara, et see paigaldada.
@@ -81,7 +81,7 @@ Download the [Tex Live](https://www.tug.org/texlive/windows.html#:~:text=install
 
 If you chose the *basic scheme*, you need to also install the following packages:
 ```
-xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors
+xcolor, parskip, etoolbox, microtype, kastrup, newtx, xpatch, xkeyval, xstring, fontaxes, tex-gyre, titlesec, caption, wrapfig, collectbox, adjustbox, footmisc, fancyvrb, fvextra, upquote, lineno, csquotes, cachefile, float, fp, latex2pydata, minted.windows, newfloat, pgf, pgfopts, minted, logreq, biblatex, biber.windows, biber, babel-estonian, hyphen-Estonian, euenc, tipa, xunicode, fontspec, lua-ul, tabularray, ninecolors, xurl
 ```
 If at any time VS Code tells you that it cannot find a specific package, use the Tex Live software to install it.
 
