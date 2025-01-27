@@ -43,7 +43,7 @@ sudo apt install --no-install-recommends --no-install-suggests texlive-plain-gen
 ## Kasutamine
 
 1. Avage juurkaustas olev `thesis.tex` ja kommenteerige sisse see rida, mis keeles Te oma lõputööd teete.
-2. Minge, vastavalt oma keelevalikule, `estonian` või `english` kausta. Sealt leiate faili `lõputöö.tex` või `thesis.tex`. Selles failis täidke ära oma lõputööga seonduv info. Seal defineeritakse ka lõputöö dokumendis sisalduvi sektsioone.
+2. Minge, vastavalt oma keelevalikule, `estonian` või `english` kausta. Sealt leiate faili `põhi.tex` või `main.tex`. Selles failis täidke ära oma lõputööga seonduv info. Seal defineeritakse ka lõputöö dokumendis sisalduvi sektsioone.
 3. Kaustas `sektsioonid` või `sections` on Teie lõputöö sektsioonide failid.
 4. Kaustas `joonised` või `figures` on Teie lõputöö joonised.
 5. Failis `seadistus.tex` või `config.tex` saate seadistada oma lõputöö seadeid. Näiteks valida, millist viitamisstiili kasutada soovite.
@@ -97,7 +97,7 @@ sudo apt install --no-install-recommends --no-install-suggests texlive-plain-gen
 ## Usage
 
 1. Open the `thesis.tex` from the root folder and comment in Your chosen thesis language. In subsequent instructions, let's assume You chose English.
-2. Open the folder `english` and find the file `thesis.tex`. In that file, fill in the information about Your thesis. That file also defines what sections will be included in your document.
+2. Open the folder `english` and find the file `main.tex`. In that file, fill in the information about Your thesis. That file also defines what sections will be included in your document.
 3. The folder `sections` stores the files for Your sections.
 4. The folder `figures` stores Your figure files.
 5. The `config.tex` file allows You to specify some settings for Your thesis. For example, which reference style You want to use.
