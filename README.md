@@ -40,10 +40,6 @@ Ubuntu Linuxis on vaja paigaldada vajalikud paketid järgmise käsuga:
 sudo apt install --no-install-recommends --no-install-suggests texlive-plain-generic texlive-latex-extra texlive-lang-european latexmk texlive-luatex ttf-mscorefonts-installer texlive-bibtex-extra biber python3-pygments
 ```
 
-#### Macil
-
-TODO
-
 ## Kasutamine
 
 1. Avage juurkaustas olev `thesis.tex` ja kommenteerige sisse see rida, mis keeles Te oma lõputööd teete.
@@ -97,10 +93,6 @@ On Ubuntu Linux, you need to install the necessary packages with the following c
 ```
 sudo apt install --no-install-recommends --no-install-suggests texlive-plain-generic texlive-latex-extra texlive-lang-european latexmk texlive-luatex ttf-mscorefonts-installer texlive-bibtex-extra biber python3-pygments
 ```
-
-#### On Mac
-
-TODO
 
 ## Usage
 
