@@ -1,0 +1,80 @@
+\section{Experiments}  \label{Experiments}
+
+We conduct two experiments on one for frame dropout and sensor drop out. First we analyze model performance in scenario when single sensor input is degraded by dropping its frames. Second, we analyze model performance multi-sensor scenario when some of the sensors experience failure.
+
+\subsection{Frame Dropout}
+
+We ran a "default" evaluation where none of the frames were dropped. We evaluated the performance separately for each different number of digits per video sequence. Table~\ref{tab:results_frame_dropout_default} shows the inference results. Both models show relatively similar results.
+
+\begin{table}[htb!]
+    \centering
+    \caption{Results for the "default" evaluation where none of the frames were dropped. An asterisk (*) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \label{tab:results_frame_dropout_default}
+    \begin{tblr}{width=1\textwidth, hlines, vlines,
+                    colspec = { l c c c c c c c c c c },
+                    row{1} = {font=\bfseries},
+                    row{2} = {font=\bfseries},
+                }
+        \SetCell[r=2]{l} Model & \SetCell[c=2]{c}1 digit & & \SetCell[c=2]{c}2 digits & & \SetCell[c=2]{c}4 digits & & \SetCell[c=2]{c}8 digits & & \SetCell[c=2]{c}10 digits & \\
+        & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE \\
+        Perceiver              & \textbf{0.717} & \textbf{0.725} & \textbf{0.794} & \textbf{0.793} & \textbf{0.958} & \textbf{0.934} & \textbf{1.520} & \textbf{1.382} & \textbf{3.273} & \textbf{2.611} \\
+        Perceiver*             & 0.745 & 0.793 & 0.838 & 0.882 & 1.034 & 1.065 & 1.656 & 1.583 & 3.626 & 3.12 \\
+    \end{tblr}
+\end{table}
+
+We conducted a "blind" evaluation where the second half of the sequence was dropped. Table~\ref{tab:results_frame_dropout_blind} shows the results. We observed an increase in error metrics for the model trained without frame drops. Conversely, the model trained with frame drops maintains low errors.
+
+\begin{table}[htb!]
+    \centering
+    \caption{Results for the "blind" evaluation where the second half of the sequences is dropped. An asterisk (*) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \label{tab:results_frame_dropout_blind}
+    \begin{tblr}{width=1\textwidth, hlines, vlines,
+                    colspec = { l c c c c c c c c c c },
+                    row{1} = {font=\bfseries},
+                    row{2} = {font=\bfseries},
+                    colsep=3pt, % Reduced column separation
+                }
+        \SetCell[r=2]{l} Model & \SetCell[c=2]{c}1 digit & & \SetCell[c=2]{c}2 digits & & \SetCell[c=2]{c}4 digits & & \SetCell[c=2]{c}8 digits & & \SetCell[c=2]{c}10 digits & \\
+        & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE \\
+        Perceiver              & 42.210 & 34.754 & 36.087 & 28.83014 & 32.146 & 24.397 & 31.32972 & 23.730 & 33.334 & 25.935 \\
+        Perceiver*             & \textbf{1.541} & \textbf{1.101} & \textbf{1.907} & \textbf{1.364} & \textbf{2.658} & \textbf{1.905} & \textbf{5.084} & \textbf{3.679} & \textbf{8.198} & \textbf{6.627} \\
+    \end{tblr}
+\end{table}
+
+
+\subsection{Sensor Dropout}
+
+\begin{table}[htb!]
+    \centering
+    \caption{Results for the "default" and "blind" experiments. An asterisk (*) next to the model name indicates a training procedure with sensor output drops. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \label{tab:results_sensor_dropout}
+    \begin{tblr}{
+        hlines, vlines,
+        colspec={l c c c c},
+        row{1}={font=\bfseries},
+        row{2}={font=\bfseries},
+    }
+        \SetCell[r=2]{l}Model & \SetCell[c=2]{c}Default & & \SetCell[c=2]{c}Blind &  \\
+        & ADE & FDE & ADE & FDE \\
+        Perceiver & 0.727 & 0.725 & 28.406 & 40.873 \\
+        Perceiver* & 1.005 & 1.013 & 2.117 & 3.202 \\
+    \end{tblr}
+\end{table}
+
+
+\begin{table}[htb!]
+    \centering
+    \caption{Results for the "default" and "blind" experiments with sensor output shuffle. An asterisk (*) next to the model name indicates a training procedure with sensor output drops. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \label{tab:results_sensor_dropout_shuffle}
+    \begin{tblr}{
+        hlines, vlines,
+        colspec={l c c c c},
+        row{1}={font=\bfseries},
+        row{2}={font=\bfseries},
+    }
+        \SetCell[r=2]{l}Model & \SetCell[c=2]{c}Default & & \SetCell[c=2]{c}Blind &  \\
+        & ADE & FDE & ADE & FDE \\
+        Perceiver & 19.400 & 19.985 & 36.488 & 44.520 \\
+        Perceiver* & 2.731 & 2.527 & 4.595 & 6.638 \\
+    \end{tblr}
+\end{table}
