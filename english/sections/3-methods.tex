@@ -75,3 +75,8 @@ The second variation of the model includes an additional frame view dimension.
 
 In our experiment, we consider input dropout, where some information is missing during inference. This could be missing frame(s) or sensor failure. Even if input is missing, we still run an inference, so we expect the model to leverage a hidden state to make a prediction.
 To achieve this behavior, we train the model with input drops. We keep the first half of the sequence without any drops, so the model can accumulate features in the hidden state. The second half of the sequence is a potential subject for frame dropout. During training, we gradually increase the probability of information drop from 10\% to approximately 90\%, depending on the experiment.
+
+
+TASK DEFINITION
+
+METRICS
