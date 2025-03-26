@@ -311,3 +311,5 @@ build/
 
 # The output
 thesis.pdf
+
+.idea/
