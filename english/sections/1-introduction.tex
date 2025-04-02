@@ -1,5 +1,19 @@
 \section{Introduction} \label{Introduction}
 
+Autonomous driving systems promise to revolutionize transportation by enhancing road safety, improving traffic efficiency, and reducing emissions.
+
+
+These systems rely on multi-sensor perception, integrating data from various sources such as LiDAR, cameras, and radar to create a comprehensive understanding of the environment. However, the complexity of multi-sensor data presents significant challenges, including high data volume, synchronization issues, and fusion requirements.
+
+Video object detection task has a vast amount of applications for example self-driving cars.
+
+% review of state of the art solutions
+
+In this paper, our goal is to extend the Perceiver model into the video object detection domain. Our contributions are threefold.
+Firstly, we introduce a recurrent Perceiver architecture ....
+Secondly, we propose a benchmark and evaluation metric for ablation study of the model.
+Thirdly, we propose a new training schema which involves sensor degradation scenarios.
+
 What is self-driving car. The task of the self-driving card is spatiotemporal predctions.
 
 \begin{itemize}
@@ -32,7 +46,7 @@ What is self-driving car. The task of the self-driving card is spatiotemporal pr
     \begin{itemize}
         \item Definition of spatiotemporal prediction and its relevance to the self-driving domain (e.g., predicting object trajectories).
         \item Review of existing spatiotemporal models (e.g., ConvLSTM) and their limitations in handling the challenges of degraded sensor inputs and variable input order.
-        \item Explain the importance of model to be robust to degraded sensor inputs.
+        \item Explain the importance of model to be robust to degraded sensor inputs.d
         \item Explain the importance of model to be robust to variable input order.
     \end{itemize}
     \item \textbf{5. Contributions and Research Gap:}
