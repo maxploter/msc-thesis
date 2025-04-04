@@ -1,92 +1,83 @@
-# Introduction: Eyes Wide Shut: Analyzing Object Detection Performance under Degraded Sensor Input Scenarios
-
-# A Generic Thesis Skeleton
+# Title: Eyes Wide Shut: Analyzing Object Detection Performance under Degraded Sensor Input Scenarios
 
 ## Introduction
 
-This is a general introduction to what the thesis is all about. 
+[//]: # (Briefly summarize the question &#40;you will be stating the question in detail later&#41;, some of the reasons why it is a worthwhile question, and perhaps give an overview of your main results. )
 
-Briefly summarize the question (you will be stating the question in detail later), some of the reasons why it is a worthwhile question, and perhaps give an overview of your main results. 
+[//]: # (This is a birds-eye view of the answers to the main questions answered in the thesis &#40;see above&#41;.)
 
-This is a birds-eye view of the answers to the main questions answered in the thesis (see above).
+[//]: # (Justification for the choice of topic)
+[//]: # (actuality)
 
-### Justification for the choice of topic (its actuality and novelty);
-    
-* Topic: Robustness of Computer Vision Systems in Adverse Sensor Conditions
-* Increasing reliance on multi-sensor systems in autonomous systems.
-* Critical need for robust object detection under real-world sensor degradation (weather, failures).
-* Novelty: Analyzing impact of *variable input order* and specific degradation patterns in spatiotemporal prediction.
-* Research gap: Limited analysis of model behavior under variable sensor input conditions, posing reliability risks.
+* Show how autonomous driving industry is growing in numbers (how many self-driving cars out there, what is the expected growth). Explain potential benefits it can bring to the society (time allocation, carbon footprint etc.).
+* Explain the complexity of modern self-driving systems (). Give examples how sensor mistakes can cause an issue.
 
-### Purpose of the Thesis (overall aim and objective of the research, "why" of the research—why are you conducting this study?)
+[//]: # (novelty)
+
+* Explain that ADS rely on deep learning in many tasks, including object detection.
+* Gap: ...
+
+[//]: # (Overview Theoretical Background -- background information to contextualize the problem)
+
+* In deep learning latest not all of the solutions are end-to-end trainable.
+* 
+
+[//]: # (Problem statement -- if necessary, it should include the posed hypothesis/hypotheses, research questions, and subject of research)
+
+* 
+
+[//]: # (Purpose of the Thesis -- overall aim and objective of the research, "why" of the research—why are you conducting this study?)
 * 
 * Analyze and quantify object detection performance degradation under simulated degraded sensor inputs and variable input order. (describes the overall goal of the research)
 * Evaluate the robustness of a proposed Recurrent Perceiver architecture.
 * Propose mitigation strategies for robust perception systems. (highlights the expected outcomes or contributions of the research.)
 
-### Overview (Theoretical Background):** (background information to contextualize the problem)
 
-The overview (of the theoretical background) that includes references to previously published research (a longer theoretical overview can form a separate chapter following the introduction);
+* Contributions:
+    * Recurrent Perceiver Architecture.
+    * Novel Object Detection Task and Benchmarks.
 
-* Brief overview of:
-* Object detection methodologies.
-* Multi-sensor fusion.
-* Recurrent neural networks (RNNs) and Perceiver architectures.
-* Spatiotemporal prediction.
-* Previous research on sensor degradation and object detection.
-* (Detailed overview in a separate chapter).
 
-### Problem statement (if necessary, it should include the posed hypothesis/hypotheses, research question(s), and subject of research);
-Problem Statement:** ("what" of the research—what is the problem that needs solving?,  highlights the discrepancies between the current state and the desired state)
-    * Problem: How does object detection degrade with partial sensor compromise and variable input order?
-    * Research Questions:
-        * Accuracy loss with omitted inputs?
-        * Effect of variable input order?
-        * Failure thresholds for degradation?
-    * Subject: Recurrent Perceiver architecture and "detection-moving-mnist-easy" benchmarks.
-    * Hypothesis: Training with omitted inputs improves robustness.
-    * Introduce "detection-moving-mnist-easy" benchmark and its role in spatiotemporal prediction evaluation.
-    * Briefly introduce the four main contributions:
-        * Recurrent Perceiver Architecture.
-        * Novel Object Detection Task and Benchmarks.
-        * Evaluation of Degraded Sensor Inputs.
-        * Evaluation of variable input order.
+[//]: # (The description of the structure of the thesis by chapter)
 
-### The description of the structure of the thesis by chapter;
-### a short overview of appendices (including the content of attached materials).
+[//]: # (a short overview of appendices including the content of attached materials)
 
 ## Background Information (optional)
 
-A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra."
+[//]: # (A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra.")
+
+* Definition of autonomous driving system. Brief background on the arhitecture of ADS.
+* 
 
 ## Review of the State of the Art
 
-Here you review the state of the art relevant to your thesis. Again, a different title is probably appropriate; e.g., "State of the Art in Zylon Algorithms." The idea is to present (critical analysis comes a little bit later) the major ideas in the state of the art right up to, but not including, your own personal brilliant ideas.
+[//]: # (Here you review the state of the art relevant to your thesis. Again, a different title is probably appropriate; e.g., "State of the Art in Zylon Algorithms." The idea is to present &#40;critical analysis comes a little bit later&#41; the major ideas in the state of the art right up to, but not including, your own personal brilliant ideas.)
 
-You organize this section by idea, and not by author or by publication. For example if there have been three important main approaches to Zylon Algorithms to date, you might organize subsections around these three approaches, if necessary:
+### Video Object Detection
 
-3.1 Iterative Approximation of Zylons
-3.2 Statistical Weighting of Zylons
-3.3 Graph-Theoretic Approaches to Zylon Manipulation
+* Object detection definition. Deep learning pushed performance of single image object detection.
+* Present challenges with video object detection.
+* State-of-the-Art
 
-* Explain video object detection task and its importance in autonomous systems.
-* 
+* Present state-of-the-art video object detection approaches with pros and cons. Make present it linearly by showing how one approach leads to the next one and solves the problems of the previous one.
+
+
 
 ## Research Question or Problem Statement
 
-Engineering theses tend to refer to a "problem" to be solved where other disciplines talk in terms of a "question" to be answered. In either case, this section has three main parts:
+[//]: # (Engineering theses tend to refer to a "problem" to be solved where other disciplines talk in terms of a "question" to be answered. In either case, this section has three main parts:)
 
-1. a concise statement of the question that your thesis tackles
-2. justification, by direct reference to section 3, that your question is previously unanswered
-3. discussion of why it is worthwhile to answer this question.
+[//]: # (1. a concise statement of the question that your thesis tackles)
+[//]: # (2. justification, by direct reference to section 3, that your question is previously unanswered)
+[//]: # (3. discussion of why it is worthwhile to answer this question.)
 
-Item 2 above is where you analyze the information which you presented in Section 3. For example, maybe your problem is to "develop a Zylon algorithm capable of handling very large scale problems in reasonable time" (you would further describe what you mean by "large scale" and "reasonable time" in the problem statement). Now in your analysis of the state of the art you would show how each class of current approaches fails (i.e. can handle only small problems, or takes too much time). In the last part of this section you would explain why having a large-scale fast Zylon algorithm is useful; e.g., by describing applications where it can be used.
+[//]: # (Item 2 above is where you analyze the information which you presented in Section 3. For example, maybe your problem is to "develop a Zylon algorithm capable of handling very large scale problems in reasonable time" &#40;you would further describe what you mean by "large scale" and "reasonable time" in the problem statement&#41;. Now in your analysis of the state of the art you would show how each class of current approaches fails &#40;i.e. can handle only small problems, or takes too much time&#41;. In the last part of this section you would explain why having a large-scale fast Zylon algorithm is useful; e.g., by describing applications where it can be used.)
 
-Since this is one of the sections that the readers are definitely looking for, highlight it by using the word "problem" or "question" in the title: e.g. "Research Question" or "Problem Statement", or maybe something more specific such as "The Large-Scale Zylon Algorithm Problem."
+[//]: # (Since this is one of the sections that the readers are definitely looking for, highlight it by using the word "problem" or "question" in the title: e.g. "Research Question" or "Problem Statement", or maybe something more specific such as "The Large-Scale Zylon Algorithm Problem.")
 
 ## Describing How You Solved the Problem or Answered the Question
 
-This part of the thesis is much more free-form. It may have one or several sections and subsections. But it all has only one purpose: to convince the examiners that you answered the question or solved the problem that you set for yourself in Section 4. So show what you did that is relevant to answering the question or solving the problem: if there were blind alleys and dead ends, do not include these, unless specifically relevant to the demonstration that you answered the thesis question.
+[//]: # (This part of the thesis is much more free-form. It may have one or several sections and subsections. But it all has only one purpose: to convince the examiners that you answered the question or solved the problem that you set for yourself in Section 4. So show what you did that is relevant to answering the question or solving the problem: if there were blind alleys and dead ends, do not include these, unless specifically relevant to the demonstration that you answered the thesis question.)
 
 ## Conclusions
 

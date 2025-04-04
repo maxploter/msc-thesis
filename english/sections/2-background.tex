@@ -1,11 +1,29 @@
 \section{Background}  \label{Background}
 
+\subsection{Autonomous Driving Systems} \label{Background:ADS}
+
+% goal: explain relevance between ADS and video object detection task
+
+Definition of autonomous driving systems. Explain architecture.
+
+Type of sensors in ADS.
+
+\subsection{Sensors} \label{Background:Sensors}
+
+% goal: explain relevance between sensors and video object detection task
 
 
-Video object detection is a computer vision task which involves detecting objects in a video in comparison conventional object detection task.
+\subsection{Video Object Detection} \label{Background:VideoObjectDetection}
 
-Advancement in deep learning field pushed offered a boost for video object detection performance \cite{TODO}.
-The easiest approach researchers to treat each set of video frames as independent images and use a state of the art object detection model \cite{TODO}. However video posses more temporal information and spacial information than images.
+% Object detection definition. Deep learning pushed performance of single image object detection.
+
+Object detection is a foundational challenge in computer vision and has been a subject of research for several decades \cite{fischlerRepresentationMatchingPictorial1973}. The goal of the object detection task is to find object(s) of given description in images and videos. Advancements in deep learning techniques to learn feature representations  \cite{hintonReducingDimensionalityData2006, lecunDeepLearning2015} have pushed the performance of single-image object detection \cite{girshickRichFeatureHierarchies2014a}.
+
+% Present challenges with video object detection.
+
+Video object detection presents unique challenges compared to single image detection due to the inherent temporal and spatial information within video sequences. Specifically, motion blur, occlusion, and object overlap can hinder accurate detection. Leveraging temporal information is crucial for disambiguating similar objects, tracking objects across frames, and enhancing detection accuracy by providing contextual understanding.
+
+% State-of-the-Art
 
 In order to utilise temporal information researchers proposed an idea to use prostprocessing to improve detection results \cite{TODO}. The approach is quite simple they take high confidence detections in adjecent frames and use them to improve results. The main difference between those methods are the mapping strategy. Howerver, postprocessing apraoch for videso detection has a few limitations like error from detection model is propogated to the postprocessing which has no way to recover the error \cite{}, not temporal consistency \cite{} and finally temporal information was not fully utilised.
 
