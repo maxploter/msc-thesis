@@ -17,18 +17,29 @@ Type of sensors in ADS.
 
 % Object detection definition. Deep learning pushed performance of single image object detection.
 
-Object detection is a foundational challenge in computer vision and has been a subject of research for several decades \cite{fischlerRepresentationMatchingPictorial1973}. The goal of the object detection task is to find object(s) of given description in images and videos. Advancements in deep learning techniques to learn feature representations  \cite{hintonReducingDimensionalityData2006, lecunDeepLearning2015} have pushed the performance of single-image object detection \cite{girshickRichFeatureHierarchies2014a}.
-
-% Present challenges with video object detection.
-
-Video object detection presents unique challenges compared to single image detection due to the inherent temporal and spatial information within video sequences. Specifically, motion blur, occlusion, and object overlap can hinder accurate detection. Leveraging temporal information is crucial for disambiguating similar objects, tracking objects across frames, and enhancing detection accuracy by providing contextual understanding.
+Object detection is a foundational challenge in computer vision and has been a subject of research for several decades \cite{fischlerRepresentationMatchingPictorial1973}. The goal of the object detection task is to find object(s) of given description in images and videos. Advancements in deep learning techniques to learn feature representations \cite{hintonReducingDimensionalityData2006, lecunDeepLearning2015} have made it possible to achive remarkable progress in single-image object detectors \cite{girshickRichFeatureHierarchies2014a}.
 
 % State-of-the-Art
+% Still-image detector
 
-In order to utilise temporal information researchers proposed an idea to use prostprocessing to improve detection results \cite{TODO}. The approach is quite simple they take high confidence detections in adjecent frames and use them to improve results. The main difference between those methods are the mapping strategy. Howerver, postprocessing apraoch for videso detection has a few limitations like error from detection model is propogated to the postprocessing which has no way to recover the error \cite{}, not temporal consistency \cite{} and finally temporal information was not fully utilised.
+Due to similarity beetwen object detection on image and video, the simplest approach to tackle a video object detection is to use a single-image object detector, so treat each video frame as an independent image. However, this approach is naive because it completely ignores temporal and contextual information of the video. A still image detector is not able to consistently predict objects acrsso all video frames due to numerouse artefactos and biases in the video (e.g., motion blur, occlusion, unusual position).
 
-% not clear what does it mean motion information?
-Next researches suggested to introduce motion and time information during training to form an end-to-end solution. Additional models can be divided by methods they use sucha as optical flow, context, or trajectory.a
+% Postprocessing (not e2e)
+
+%One intuition to improve temporal consistency is to propagate detection results to neighbor frames to reduce sudden changes of detection results.
+
+%In this work we propose a simple extension of single image object detection to help overcome these difficulties.
+
+Another simple approach which improves temporal consistency of video object detections involves a postprocessing step after still image detector \cite{hanSeqNMSVideoObject2016, kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016}. Detections from adjecent frames are used to improve results of the current frame. At postprocessing step researches apply technich like non-maximum suppression (NMS) \cite{hanSeqNMSVideoObject2016} or optical flow \cite{kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016}. Although these methods show improvement over a stil image detector aproach, exploiting temporal information as postprocessing is sub-optimal since temporal and motion information are ignored during detector training.
+
+% TODO: paper Multi-Class Multi-Object Tracking using  Changing Point Detection
+
+% VIDEO DETECTION WITH ADDITIONAL MODELS
+
+Another approach suggests to introduce motion and temporal information during training to form an end-to-end solution. In \cite{Lu_2017_ICCV} proposed to use a LSTM \cite{6795963} to refine the detection results together with association features which representation of the detected objects. This model is end-to-end and can be trained jointly with the object detector.
+
+
+Additional models can be divided by methods they use sucha as optical flow, context, or trajectory.a
 Optical flow rely on key frames which supplement the current frame. Optical flow is an old task proposed in 1981 \cite{TODO}. However, optical flow has dow.
 
 Context method rely on recurrent models to capture object associations for a longer timeframe than optical flow.
