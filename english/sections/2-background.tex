@@ -4,6 +4,8 @@
 
 % goal: explain relevance between ADS and video object detection task
 
+Autonomous vehicle are complex on multi-sensor perception, integrating data from various sources such as LiDAR, cameras, and radar to create a comprehensive understanding of the environment.
+
 Definition of autonomous driving systems. Explain architecture.
 
 Type of sensors in ADS.
@@ -36,18 +38,11 @@ Another simple approach which improves temporal consistency of video object dete
 
 % VIDEO DETECTION WITH ADDITIONAL MODELS
 
-Another approach suggests to introduce motion and temporal information during training to form an end-to-end solution. In \cite{Lu_2017_ICCV} proposed to use a LSTM \cite{6795963} to refine the detection results together with association features which representation of the detected objects. This model is end-to-end and can be trained jointly with the object detector.
+Another approach suggests to introduce motion and temporal information during training to form an end-to-end solution. In \cite{Lu_2017_ICCV} proposed to use a LSTM \cite{6795963} to refine the detection results together with association features which representation of the detected objects. This model is end-to-end and can be trained jointly with the object detector. This algorithm rely on objects association between adjacent frames therefore it is limited to short-term motion information and cannot handle long occlusions or unusual appearance of for a long time which is the same problem with algorithms based on postprocessing. Another work proposes a recurrent computation unit called spatial-temporal memory module (STMM) \cite{xiaoVideoObjectDetection2018} which uses a ConvGRU \cite{ballasDelvingDeeperConvolutional2016} to preserve a spacio temporal structure and show suggests the effectiveness of our memory: the longer the sequence, the more longer-range useful information is stored in the memory, which leads to better detection performance.
 
+% Transformers
 
-Additional models can be divided by methods they use sucha as optical flow, context, or trajectory.a
-Optical flow rely on key frames which supplement the current frame. Optical flow is an old task proposed in 1981 \cite{TODO}. However, optical flow has dow.
+Transformers [32], [33], [34], [35], [36] have shown promising potential in computer vision. Especially, DETR [33], [34] simplifies the detection pipeline by modeling the object queries and achieving comparative performance with highly optimized CNN-based detectors.
 
-Context method rely on recurrent models to capture object associations for a longer timeframe than optical flow.
-
-
-Video object detection algorithms can be classified into four categories \ref{FIGURE} \cite{TODO}.
-
-First, the easiers approach is to postporcess image object detection results.
-
-Second, use axilary network to extract motion information.a
+Thus, it is in desperate need to build a simple yet effective VOD framework in a fully end-to-end manner.
 

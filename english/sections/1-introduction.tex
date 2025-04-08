@@ -1,131 +1,28 @@
 \section{Introduction} \label{Introduction}
 
+% Justification for the choice of topic
+Autonomous driving systems promise to revolutionize transportation by increasing road safety, improving traffic efficiency, and reducing emissions \cite{litmanAutonomousVehicleImplementationb}.
+% actuality
+Autonomous driving systems are complex systems equipped with multi-sensor perception, integrating data from various sources. Autonomous driving systems should be capable of operating in various environments under diverse weather conditions. Autonomous vehicles are not yet ready, and mistakes or technical failures can cause accidents and undermine public trust.
 
+% novelty
+Autonomous driving systems heavily rely on deep learning for multiple perception tasks. Object detection is foundational among these tasks. In spite of the significant progress in this area, there is still a need for an effective and efficient general model architecture that is capable of understanding input from multiple sensors and is robust.
 
-Autonomous driving systems promise to revolutionize transportation by enhancing road safety, improving traffic efficiency, and reducing emissions.
-
-
-These systems rely on multi-sensor perception, integrating data from various sources such as LiDAR, cameras, and radar to create a comprehensive understanding of the environment. However, the complexity of multi-sensor data presents significant challenges, including high data volume, synchronization issues, and fusion requirements.
-
-Video object detection task has a vast amount of applications for example self-driving cars.
-
+% Overview Theoretical Background -- background information to contextualize the problem
 % review of state of the art solutions
 
-In this paper, our goal is to extend the Perceiver model into the video object detection domain. Our contributions are threefold.
-Firstly, we introduce a recurrent Perceiver architecture ....
-Secondly, we propose a benchmark and evaluation metric for ablation study of the model.
-Thirdly, we propose a new training schema which involves sensor degradation scenarios.
+Simple still-image detectors \cite{} cannot be applied to video data, because it contains challanges such as motion blur, occlusion etc.. Another approaches \cite{hanSeqNMSVideoObject2016, kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016} integrate a postprocessing after object detection improve results but those solutions are not end-to-end solutoins.
 
-What is self-driving car. The task of the self-driving card is spatiotemporal predctions.
-
-\begin{itemize}
-    \item \textbf{1. General Introduction to Self-Driving and its Potential Transformative Impact:}
-    \begin{itemize}
-        \item Definition of self-driving cars and their potential impact on transportation.
-        \item Societal and economic relevance: improved road safety, traffic efficiency, reduced emissions, and potential for new business models.
-        \item Overview of the advancements driving the development of self-driving technology.
-    \end{itemize}
-    \item \textbf{2. Self-Driving Multi-Sensor Perception and Challenges:}
-    \begin{itemize}
-        \item Reliance on multi-sensor systems (LiDAR, cameras, radar) for robust perception.
-        \item Explanation of the diverse sensor modalities and the role of each in perception.
-        \item Emphasis on the complexity of multi-sensor data: high volume, synchronization, and fusion requirements.
-        \item Technical difficulties: sensor fusion inconsistencies, environmental noise (e.g., glare, fog), and computational limitations.
-        \item Vulnerabilities:
-        \begin{itemize}
-            \item Cyberattacks (e.g., spoofing, adversarial sensor data).
-            \item Hardware failures (e.g., calibration drift, component wear).
-            \item Weather-induced degradation (e.g., snow occlusion, rain interference).
-        \end{itemize}
-    \end{itemize}
-    \item \textbf{3. Self-Driving Software and the Challenge of Different Input Order:}
-    \begin{itemize}
-        \item Explanation of the self-driving software pipeline, emphasizing the processing of inputs from various sensors.
-        \item Highlight the challenge of handling different orders of sensor input within the software pipeline.
-        \item Problem statement: ”These issues risk catastrophic safety failures, yet detection performance under sensor degradation and variable input order remains understudied.”
-    \end{itemize}
-    \item \textbf{4. Spatiotemporal Prediction and the Need for Robust Architectures:}
-    \begin{itemize}
-        \item Definition of spatiotemporal prediction and its relevance to the self-driving domain (e.g., predicting object trajectories).
-        \item Review of existing spatiotemporal models (e.g., ConvLSTM) and their limitations in handling the challenges of degraded sensor inputs and variable input order.
-        \item Explain the importance of model to be robust to degraded sensor inputs.d
-        \item Explain the importance of model to be robust to variable input order.
-    \end{itemize}
-    \item \textbf{5. Contributions and Research Gap:}
-    \begin{itemize}
-        \item \textbf{Addressing the Gap:} "This study evaluates detection performance under degraded sensor inputs and variable input order to quantify reliability risks in spatiotemporal prediction."
-        \item \textbf{Contribution 1: Recurrent Perceiver Architecture:}
-        \begin{itemize}
-            \item Introduce the proposed Recurrent Perceiver architecture, highlighting its ability to handle multiple sensory inputs and its interpretation as an RNN when unrolled in time.
-        \end{itemize}
-        \item \textbf{Contribution 2: Novel Object Detection Task and Benchmarks:}
-        \begin{itemize}
-            \item Introduce the "detection-moving-mnist-easy" benchmarks for evaluating object center point prediction, a crucial task for spatiotemporal understanding.
-        \end{itemize}
-        \item \textbf{Contribution 3: Evaluation of Degraded Sensor Inputs:}
-        \begin{itemize}
-            \item Describe the experimental design for simulating degraded sensor inputs (single and multi-sensor).
-            \item Present the finding that training with omitted inputs improves performance compared to standard training, demonstrating robustness.
-        \end{itemize}
-        \item \textbf{Contribution 4: Evaluation of variable input order:}
-        \begin{itemize}
-            \item Describe the experiment design for shuffling input to the model.
-            \item Present the results of the experiment, and how it effects performance of the model.
-        \end{itemize}
-    \end{itemize}
-\end{itemize}
+Another line of approaches \cite{Lu_2017_ICCV, xiaoVideoObjectDetection2018} leverages a second model to integrate motion and temporal information during training. 
 
 
-\begin{itemize}
-    \item \textbf{Introduction to Self-Driving Cars}
-    \begin{itemize}
-        \item Definition of self-driving cars and their reliance on multi-sensor systems (LiDAR, cameras, radar).
-        \item Emphasis on sensor complexity: high data volume, synchronization challenges, and fusion requirements.
-        \item Societal/economic relevance: improved road safety, traffic efficiency, and reduced emissions.
-    \end{itemize}
-    
-    \item \textbf{Sensor Challenges}
-    \begin{itemize}
-        \item Technical difficulties: sensor fusion inconsistencies, environmental noise (e.g., glare, fog), and computational limitations.
-        \item Vulnerabilities: 
-        \begin{itemize}
-            \item Cyberattacks (e.g., spoofing, adversarial sensor data).
-            \item Hardware failures (e.g., calibration drift, component wear).
-            \item Weather-induced degradation (e.g., snow occlusion, rain interference).
-        \end{itemize}
-        \item Problem statement: \textit{"These issues risk catastrophic safety failures, yet detection performance under sensor degradation remains understudied."}
-    \end{itemize}
-    
-    \item \textbf{Purpose \& Research Gap}
-    \begin{itemize}
-        \item Address the gap: \textit{"This study evaluates detection performance under degraded sensor inputs to quantify reliability risks."}
-        \item Objectives:
-        \begin{enumerate}
-            \item Measure accuracy loss in object detection when LiDAR/camera inputs are partially compromised.
-            \item Identify failure thresholds for critical sensor degradation levels.
-            \item Propose mitigation strategies for robust perception systems.
-        \end{enumerate}
-    \end{itemize}
-    
-    \item \textbf{Contributions}
-    \begin{itemize}
-        \item \textit{A novel framework for simulating sensor degradation} in autonomous vehicle pipelines.
-        \item \textit{Empirical benchmarks} comparing detection algorithms (YOLO, PointPillars) under diverse failure scenarios.
-        \item \textit{Practical guidelines} for fail-safe sensor fusion architectures (supports ISO 21448 SOTIF compliance).
-    \end{itemize}
-    
-    \item \textbf{Thesis Structure}
-    \begin{itemize}
-        \item Chapter \ref{chap:literature}: Reviews sensor architectures, failure modes, and existing mitigation approaches.
-        \item Chapter \ref{chap:methodology}: Details the degradation simulation framework and evaluation metrics.
-        \item Chapter \ref{chap:results}: Presents quantitative analysis of detection performance under degradation.
-        \item Chapter \ref{chap:discussion}: Discusses implications for autonomous system safety and design.
-        \item Chapter \ref{chap:conclusion}: Summarizes key findings and future research directions.
-    \end{itemize}
-\end{itemize}
+% Problem statement -- if necessary, it should include the posed hypothesis/hypotheses, research questions, and subject of research
 
-This thesis analyzes the performance of the Autoregressive Perceiver model under limited input scenarios.
+All of those detection pipelines for video object detection are over sophisticated, requiring many hand-crafted components, not capable of handling other modalities than images.
 
+% Purpose of the Thesis -- overall aim and objective of the research, "why" of the research—why are you conducting this study?
+
+In this thesis, our goal is to present a noval recurrent architecute we call Recurrent Perceiver inspired by Perceiver arhitecture. We present a training framework to asses robastness of the model.
 Our main contributions are as follows:
 
 \begin{itemize}
@@ -134,12 +31,18 @@ Our main contributions are as follows:
 \item We designed an experiment to simulate degraded input scenarios for single or multi-sensor (camera) setups. We evaluate the proposed Recurrent Perceiver, demonstrating that our training procedure with omitted input consistently achieves improved performance compared to training without dropout.
 \end{itemize}
 
+% [//]: # (The description of the structure of the thesis by chapter)
 
-% In Section~\ref{Background} overviews existing road or lane network extraction methods
-% and the transformer architecture. The models used for training are described in Section 3.
-% Section 4 gives an overview of the training datasets and their creation process. Section 5
-% presents the quantitative and qualitative results of the trained models. Section 6 discusses
-% the overall results, limitations of aerial images, and post-processing steps required to
-% make the model’s output suitable for HD maps.
+% A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra.
+
+Section~\ref{Background} gives background information about autonomous driving system architecture and overviews relevant video object detection approaches, and introduces original Perceiver model achitecture. Section~\ref{Methods} presents a noval Recurrent Perceiver architecture, presents benchmark used for training and testing, and explains training procedure. Section~\ref{Experiments} explains experiments and presents results.
+
+
+
+
+% a short overview of appendices including the content of attached materials
+% TODO
+
+% TODO: Question where should i put it?
 % This thesis was written using the Overleaf1 text editor. The text was checked with the
 % Grammarly2 writing assistant to catch typos and other grammatical errors.
