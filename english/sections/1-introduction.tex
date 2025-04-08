@@ -6,39 +6,35 @@ Autonomous driving systems promise to revolutionize transportation by increasing
 Autonomous driving systems are complex systems equipped with multi-sensor perception, integrating data from various sources. Autonomous driving systems should be capable of operating in various environments under diverse weather conditions. Autonomous vehicles are not yet ready, and mistakes or technical failures can cause accidents and undermine public trust.
 
 % novelty
-Autonomous driving systems heavily rely on deep learning for multiple perception tasks. Object detection is foundational among these tasks. In spite of the significant progress in this area, there is still a need for an effective and efficient general model architecture that is capable of understanding input from multiple sensors and is robust.
+Autonomous driving systems heavily rely on deep learning for multiple perception tasks. Object detection is foundational among these tasks. Despite the significant progress in this area, there is still a need for an effective and efficient general model architecture that is capable of understanding input from multiple sensors and is robust.
 
 % Overview Theoretical Background -- background information to contextualize the problem
 % review of state of the art solutions
 
-Simple still-image detectors \cite{} cannot be applied to video data, because it contains challanges such as motion blur, occlusion etc.. Another approaches \cite{hanSeqNMSVideoObject2016, kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016} integrate a postprocessing after object detection improve results but those solutions are not end-to-end solutoins.
+Simple still-image detectors \cite{} cannot be applied directly to video data because it presents challenges such as motion blur, occlusion, etc. \cite{}. Other approaches \cite{hanSeqNMSVideoObject2016, kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016} integrate post-processing after object detection to improve results, but these solutions are not end-to-end solutions.
 
-Another line of approaches \cite{Lu_2017_ICCV, xiaoVideoObjectDetection2018} leverages a second model to integrate motion and temporal information during training. 
-
+Another line of approaches \cite{Lu_2017_ICCV, xiaoVideoObjectDetection2018} leverages a second model to integrate motion and temporal information during training.
 
 % Problem statement -- if necessary, it should include the posed hypothesis/hypotheses, research questions, and subject of research
 
-All of those detection pipelines for video object detection are over sophisticated, requiring many hand-crafted components, not capable of handling other modalities than images.
+All of these detection pipelines for video object detection are overly sophisticated, require many hand-crafted components, and are not capable of handling modalities other than images.
 
 % Purpose of the Thesis -- overall aim and objective of the research, "why" of the research—why are you conducting this study?
 
-In this thesis, our goal is to present a noval recurrent architecute we call Recurrent Perceiver inspired by Perceiver arhitecture. We present a training framework to asses robastness of the model.
+In this thesis, our goal is to present a novel recurrent architecture, which we call Recurrent Perceiver, inspired by the Perceiver architecture. We present a training framework to assess the robustness of the model.
 Our main contributions are as follows:
 
 \begin{itemize}
-\item We propose a Recurrent Perceiver architecture. By unrolling it in time, the model can be interpreted as a recurrent neural network (RNN). Furthermore, the model supports multiple sensory inputs.
+\item We propose a Recurrent Perceiver architecture that, when unrolled in time, can be interpreted as a recurrent neural network (RNN). Furthermore, the model supports multiple sensory inputs.
 \item We propose a task to predict object center points and introduce custom-created benchmarks, which we call "detection-moving-mnist-easy," for evaluating this task.
-\item We designed an experiment to simulate degraded input scenarios for single or multi-sensor (camera) setups. We evaluate the proposed Recurrent Perceiver, demonstrating that our training procedure with omitted input consistently achieves improved performance compared to training without dropout.
+\item We designed an experiment to simulate degraded input scenarios for single-sensor or multi-sensor (camera) setups. We evaluate the proposed Recurrent Perceiver, demonstrating that our training procedure involving omitted input consistently achieves improved performance compared to training without dropout.
 \end{itemize}
 
 % [//]: # (The description of the structure of the thesis by chapter)
 
 % A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra.
 
-Section~\ref{Background} gives background information about autonomous driving system architecture and overviews relevant video object detection approaches, and introduces original Perceiver model achitecture. Section~\ref{Methods} presents a noval Recurrent Perceiver architecture, presents benchmark used for training and testing, and explains training procedure. Section~\ref{Experiments} explains experiments and presents results.
-
-
-
+Section~\ref{Background} provides background information on autonomous driving system architecture, overviews relevant video object detection approaches, and introduces the original Perceiver model architecture. Section~\ref{Methods} presents the novel Recurrent Perceiver architecture, introduces the benchmark used for training and testing, and explains the training procedure. Section~\ref{Experiments} explains the experiments and presents the results.
 
 % a short overview of appendices including the content of attached materials
 % TODO
