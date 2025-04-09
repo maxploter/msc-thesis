@@ -1,6 +1,27 @@
 \section{Methods}  \label{Methods}
 
-We propose a novel RNN architecture called the Recurrent Perceiver to model an object's changing appearance and motion over time for video object detection.
+In this section We propose a novel RNN architecture called the Recurrent Perceiver to model an object's changing appearance and motion over time for video object detection.
+
+\subsection{Model}
+
+In the experiment, we augmented the Perceiver architecture \cite{jaeglePerceiverGeneralPerception2021} to support an autoregressive setup. We unroll the model in the time dimension, so the hidden state from the previous frame is propagated to the next frame.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver.png}
+    \caption{The autoregressive Perceiver uses a conventional CNN backbone to learn a 2D representation of an input frame. The model flattens it and supplements it with a positional encoding before passing it to the autoregressive Perceiver model. Additionally, the autoregressive Perceiver takes a hidden state from the previous frame. We pass each output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points.}
+    \label{fig:figure_methods_model_ar_perceiver}
+\end{figure}
+
+The second variation of the model includes an additional frame view dimension.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver_views.png}
+    \caption{Autoregressive Perceiver with view dimension. The backbone output is supplemented with a learned view-specific positional encoding before passing it to the autoregressive Perceiver model. The autoregressive Perceiver takes a hidden state from the previous frame's last view and iterates through the current frame's views. After the last view, we pass the output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points on the global frame raster.}
+    \label{fig:figure_methods_model_ar_perceiver_views}
+\end{figure}
+
 
 \subsection{Dataset}
 
@@ -28,7 +49,7 @@ We hosted the dataset on Hugging Face \footnote{\url{https://huggingface.co/data
 We do not restrict digit overlap in subsequent frames. It is even possible to have some degree of overlap in the first frame if the greedy algorithm is unable to randomly place digits in such a way on the first frame.
 We do not bounce digits against image boundaries, so each digit can leave the frame. You can see in the figure that later frames have fewer digits (see Figure~\ref{fig:figure_method_dataset_train_digits_per_frame}).
 
-TODO DOUBLE CHECK number this plot
+% TODO DOUBLE CHECK number this plot
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/figure_method_dataset_train_digits_per_frame.png}
@@ -51,34 +72,20 @@ For the purpose of some of the experiment we additionally divide the frame into 
 \end{figure}
 
 
-\subsection{Model}
+\subsection{Training Procedures} \label{TrainingProcedures}
 
-In the experiment, we augmented the Perceiver architecture \cite{jaeglePerceiverGeneralPerception2021} to support an autoregressive setup. We unroll the model in the time dimension, so the hidden state from the previous frame is propagated to the next frame.
+We implemented two training procedures: \texttt{shuffle} and \texttt{dropout}. Additionally, we implemented a combination of the two. A model trained without applying these training procedures is considered the baseline.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver.png}
-    \caption{The autoregressive Perceiver uses a conventional CNN backbone to learn a 2D representation of an input frame. The model flattens it and supplements it with a positional encoding before passing it to the autoregressive Perceiver model. Additionally, the autoregressive Perceiver takes a hidden state from the previous frame. We pass each output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points.}
-    \label{fig:figure_methods_model_ar_perceiver}
-\end{figure}
+\begin{description}
+    \item[\texttt{shuffle}] In this procedure, the sensor inputs are randomly permuted within each time step. Consequently, the model receives inputs from the sensors in a random order for that specific time step. This shuffling only occurs for sensor inputs within the same time step. This training procedure is only applicable to a multi-view setup.
 
-The second variation of the model includes an additional frame view dimension.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver_views.png}
-    \caption{Autoregressive Perceiver with view dimension. The backbone output is supplemented with a learned view-specific positional encoding before passing it to the autoregressive Perceiver model. The autoregressive Perceiver takes a hidden state from the previous frame's last view and iterates through the current frame's views. After the last view, we pass the output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points on the global frame raster.}
-    \label{fig:figure_methods_model_ar_perceiver_views}
-\end{figure}
+    \item[\texttt{dropout}] This procedure simulates scenarios where sensor information is missing. To achieve this, we train the model by intermittently dropping sensor inputs (input dropout). We keep the first half of the input sequence intact (no dropout), allowing the model to accumulate features in its hidden state. The second half of the sequence may undergo frame dropout. During training, we gradually increase the probability of an information drop from 10\% to approximately 90\%, with the final value depending on the specific experiment.
+\end{description}
 
 
 
-\subsection{Input dropout}
+% TODO add schema of shuffle and dropout
 
-In our experiment, we consider input dropout, where some information is missing during inference. This could be missing frame(s) or sensor failure. Even if input is missing, we still run an inference, so we expect the model to leverage a hidden state to make a prediction.
-To achieve this behavior, we train the model with input drops. We keep the first half of the sequence without any drops, so the model can accumulate features in the hidden state. The second half of the sequence is a potential subject for frame dropout. During training, we gradually increase the probability of information drop from 10\% to approximately 90\%, depending on the experiment.
+% TASK DEFINITION
 
-
-TASK DEFINITION
-
-METRICS
+% METRICS

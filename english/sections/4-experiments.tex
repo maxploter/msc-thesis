@@ -1,15 +1,30 @@
 \section{Experiments}  \label{Experiments}
 
-We conduct two experiments on one for frame dropout and sensor drop out. First we analyze model performance in scenario when single sensor input is degraded by dropping its frames. Second, we analyze model performance multi-sensor scenario when some of the sensors experience failure.
+In this section, we present an ablation study analyzing the effects of different training procedures on the robustness of the model to sensor failure scenarios.
 
-\subsection{Frame Dropout}
+% \subsection{Ablation Study}
 
-We ran a "default" evaluation where none of the frames were dropped. We evaluated the performance separately for each different number of digits per video sequence. Table~\ref{tab:results_frame_dropout_default} shows the inference results. Both models show relatively similar results.
+We experimented with two setup configurations: \texttt{single-view} and \texttt{multi-view}. First, the single-view configuration used a single camera sensor, representing the most basic object detection task for video input. Second, we used a multi-view camera setting where the model processed information from different cameras to perform object detection within a unified spatial representation generated from these inputs.
 
+% TODO Read about formatting 
+
+We considered three distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, we evaluated a combination of the last two.
+
+\begin{description}
+    \item[\texttt{default}] This procedure represents the normal operational regime where all sensors function as expected.
+
+    \item[\texttt{shuffle}] In this procedure, the sensor inputs are randomly permuted within each time step. Consequently, the model receives inputs from the sensors in a random order for that specific time step. Shuffling only occurs for the sensors inputs within the same time step. This procedure is only applicable to a multi-view setup.
+
+    \item[\texttt{blind}] This procedure simulates a sensor failure mode where the input from one or more camera sensors is unavailable. The \texttt{blind} evaluation procedure is implemented by dropping the input stream from the affected sensor(s) after a midpoint time step $t_{half}$. Therefore, information from sensor(s) for the second half of the sequence becomes unavailable to the model. 
+\end{description}
+
+Table~\ref{tab:results_single_view_default} shows the inference results for single-view setup under default evaluation procedure. We compare models under two training procedures. 
+
+We ran a "default" evaluation where none of the frames were dropped. We evaluated the performance separately for each different number of digits per video sequence. 
 \begin{table}[htb!]
     \centering
-    \caption{Results for the "default" evaluation where none of the frames were dropped. An asterisk (*) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
-    \label{tab:results_frame_dropout_default}
+    \caption{Results for single-view the "default" evaluation where none of the frames were dropped. An asterisk (*) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \label{tab:results_single_view_default}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                     colspec = { l c c c c c c c c c c },
                     row{1} = {font=\bfseries},
@@ -18,7 +33,7 @@ We ran a "default" evaluation where none of the frames were dropped. We evaluate
         \SetCell[r=2]{l} Model & \SetCell[c=2]{c}1 digit & & \SetCell[c=2]{c}2 digits & & \SetCell[c=2]{c}4 digits & & \SetCell[c=2]{c}8 digits & & \SetCell[c=2]{c}10 digits & \\
         & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE \\
         Perceiver              & \textbf{0.717} & \textbf{0.725} & \textbf{0.794} & \textbf{0.793} & \textbf{0.958} & \textbf{0.934} & \textbf{1.520} & \textbf{1.382} & \textbf{3.273} & \textbf{2.611} \\
-        Perceiver*             & 0.745 & 0.793 & 0.838 & 0.882 & 1.034 & 1.065 & 1.656 & 1.583 & 3.626 & 3.12 \\
+        Perceiver (d) & 0.745 & 0.793 & 0.838 & 0.882 & 1.034 & 1.065 & 1.656 & 1.583 & 3.626 & 3.12 \\
     \end{tblr}
 \end{table}
 
@@ -41,42 +56,26 @@ We conducted a "blind" evaluation where the second half of the sequence was drop
     \end{tblr}
 \end{table}
 
+Table~\ref{tab:results_multi_view} shows the inference results for multi-view setup we breakdown reasults by evaluation procedure. We train models under training schemas. 
 
-\subsection{Sensor Dropout}
-
-% https://docs.google.com/spreadsheets/d/1shITm2iWIKzAAlWpRwED-g1H6YurMJoJgxagRU2x6Gg/edit?gid=290835343#gid=290835343
-
-\begin{table}[htb!]
-    \centering
-    \caption{Results for the "default" and "blind" experiments. An asterisk (*) next to the model name indicates a training procedure with sensor output drops. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
-    \label{tab:results_sensor_dropout}
-    \begin{tblr}{
-        hlines, vlines,
-        colspec={l c c c c},
-        row{1}={font=\bfseries},
-        row{2}={font=\bfseries},
-    }
-        \SetCell[r=2]{l}Model & \SetCell[c=2]{c}Default & & \SetCell[c=2]{c}Blind &  \\
-        & ADE & FDE & ADE & FDE \\
-        Perceiver & 0.727 & 0.725 & 28.406 & 40.873 \\
-        Perceiver* & 1.005 & 1.013 & 2.117 & 3.202 \\
-    \end{tblr}
-\end{table}
-
+% Results: https://docs.google.com/spreadsheets/d/1shITm2iWIKzAAlWpRwED-g1H6YurMJoJgxagRU2x6Gg/edit?gid=290835343#gid=290835343
+% TODO Consider to reduce width of the table
 
 \begin{table}[htb!]
     \centering
     \caption{Results for the "default" and "blind" experiments with sensor output shuffle. An asterisk (*) next to the model name indicates a training procedure with sensor output drops. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
-    \label{tab:results_sensor_dropout_shuffle}
+    \label{tab:results_multi_view}
     \begin{tblr}{
         hlines, vlines,
-        colspec={l c c c c},
+        colspec={l c c c c c c c c c},
         row{1}={font=\bfseries},
         row{2}={font=\bfseries},
     }
-        \SetCell[r=2]{l}Model & \SetCell[c=2]{c}Default & & \SetCell[c=2]{c}Blind &  \\
-        & ADE & FDE & ADE & FDE \\
-        Perceiver & 19.400 & 19.985 & 36.488 & 44.520 \\
-        Perceiver* & 2.731 & 2.527 & 4.595 & 6.638 \\
+        \SetCell[r=2]{l}Model & \SetCell[c=2]{c}Default & & \SetCell[c=2]{c}Shuffle & & \SetCell[c=2]{c}Blind & & \SetCell[c=2]{c}Blind, Shuffle & & \SetCell[r=2]{l}{Params \\ (M)} \\
+        & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE &\\
+        Perceiver & 0.760 & 0.753 & 23.701 & 23.759 & 17.952 & 25.568 & 25.559 & 24.696 & 1.2 \\
+        Perceiver (s) & 0.823 & 0.814 & 0.812 & 0.799 & 13.644 & 20.124 & 13.670 & 20.080 & 1.2 \\
+        Perceiver (d) & 0.881 & 0.937 & 4.043 & 4.345 & 1.471 & 2.093 & 5.648 & 7.341 & 1.2 \\
+        Perceiver (d, s) & 1.073 & 1.152 & 0.956 & 1.022 & 1.729 & 2.345 & 1.632 & 2.287 & 1.2 \\
     \end{tblr}
 \end{table}
