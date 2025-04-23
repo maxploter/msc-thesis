@@ -1,8 +1,25 @@
 \section{Experiments}  \label{Experiments}
 
-In this section, we present an ablation study analyzing the effects of different training procedures on the robustness of the model to sensor failure scenarios.
+In this section, we first present a comparative analysis of the proposed model on the video object detection task. Second, we present an ablation study analyzing the effects of different training procedures on the robustness of the model to sensor failure scenarios.
 
-% \subsection{Ablation Study}
+\subsection{Comparison Analysis} \label{ComparisonAnalysis}
+
+\begin{table}[htb!]
+    \centering
+    \caption{Model Comparison: mAP, Parameters, and FLOPS. Metrics evaluated on the test dataset. 'X' denotes the postprocessing method applied.}
+    \label{tab:model_comparison_map_params}
+    \begin{tblr}{width=1\textwidth, hlines, vlines,
+                  colspec = { l c c c c c }, % l=left, c=center. 6 columns
+                  row{1} = {font=\bfseries}, % Make header row bold
+                 }
+        Model & Postprocess & mAP50 & mAP50-95 & Params (M)   & FLOPS \\ % Header Row
+        YOLOv8n & X & \textbf{97.1} & \textbf{93.9}    & 3 & 8.1G  \\
+        RPerceiver & X & 93.7 & 73.0    & \textbf{0.5}   & N/A   \\ 
+    \end{tblr}
+\end{table}
+
+\subsection{Ablation Study} \label{AblationStudy}
+% Content for ablation study goes here
 
 We experimented with two setup configurations: \texttt{single-view} and \texttt{multi-view}. First, the single-view configuration used a single camera sensor, representing the most basic object detection task for video input. Second, we used a multi-view camera setting where the model processed information from different cameras to perform object detection within a unified spatial representation generated from these inputs.
 

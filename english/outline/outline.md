@@ -46,7 +46,8 @@
 
 [//]: # (A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra.")
 
-* Definition of autonomous driving system. Brief background on the arhitecture of ADS.
+* Definition of autonomous driving system.
+* Brief background on the arhitecture of ADS.
 * 
 
 ## Review of the State of the Art
