@@ -46,9 +46,39 @@
 
 [//]: # (A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra.")
 
-* Definition of autonomous driving system.
-* Brief background on the arhitecture of ADS.
-* 
+Thesis: Autonomous Driving Systems have high safety requirements.
+
+Arguments:
+
+* FAILURE MITIGATION & SAFE STATES
+* MULTI-MODALITY
+* DATA FUSION
+* SOFTWARE RANDOMNESS
+
+Argument FAILURE MITIGATION & SAFE STATES:
+
+* P1: ADS are complex integrations of hardware, software, and sensors, components of which are inevitably subject to SYSTEM FAILURE.
+* P2: To meet high safety requirements, ADS must maintain safety during such occurrences. This necessitates predefined strategies for Dynamic Driving Task (DDT) fallback, which may include requesting intervention from a fallback-ready user or, if that's not possible or successful, achieving a Minimal Risk Condition (MRC) – a stable, stopped state (e.g., pulled over safely).
+* P3: In scenarios involving user intervention requests, the ADS must typically continue to perform the DDT safely for at least several seconds to allow the user time to resume control.
+* C1: Consequently, ADS must possess robust failure detection capabilities and implement comprehensive mitigation strategies to reliably transition to an appropriate safe state (e.g., fallback-user control, MRC) upon system malfunction or performance degradation.
+
+Argument MULTI-MODALITY:
+P1: It should be able to complete an OBJECT AND EVENT DETECTION AND RESPONSE subtask.
+P2: The perception task requires multiple sensors (LiDAR, camera, radar).
+C1: ADS should be capable of multimodality.
+
+Argument DATA FUSION:
+P1: Multiple hardware components have a higher risk of failure.
+P2: Sensors are prone to different risks of failure (winter, fog, rain, vibration, etc.).
+P3: There is no solution to fully prevent failure.
+P4: ADS should be able to operate for some time under limited input data.
+C1: ADS should fuse data from multiple sensors under failure scenarios.
+
+Argument SOFTWARE RANDOMNESS:
+P1: Robot operating systems are event-driven.
+P2: Event-driven systems are not deterministic.
+C1: The model should operate under randomness.
+
 
 ## Review of the State of the Art
 
@@ -65,6 +95,8 @@
 ### Perceiver
 
 * Architecture
+* Multi-modality
+* Fusion?
 
 
 ## Research Question or Problem Statement

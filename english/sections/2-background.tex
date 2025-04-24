@@ -1,8 +1,61 @@
 \section{Background}  \label{Background}
 
+
+
 \subsection{Autonomous Driving Systems} \label{Background:ADS}
 
-The Society of Automotive Engineers (SAE) defines Autonomous Driving Systems (ADS) as the hardware and software that are collectively capable of performing the entire dynamic driving task (DDT) on a sustained basis, regardless of whether it is limited to a specific operational design domain (ODD) \cite{sae:j3016:2021apr}. ADS term is used to describe the last three and the most advanced levels of ADS automation Level 3, 4, and 5.
+% thesis: Autonomous Driving Systems have high safety requirements.
+
+The Society of Automotive Engineers (SAE) defines Autonomous Driving Systems (ADS) as the hardware and software that are collectively capable of performing the entire dynamic driving task (DDT) on a sustained basis, regardless of whether it is limited to a specific operational design domain (ODD). The DDT encompasses all real-time operational and tactical functions required for driving, including lateral and longitudinal motion control, and Object and Event Detection and Response (OEDR).
+
+\cite{sae:j3016:2021apr}
+
+
+
+ADS term is used to describe the last three and the most advanced SAE Levels 3 (Conditional), 4 (High), and 5 (Full) driving automation. ADS operate under high safety requirements, therefore crash mitigation and avoidance capability is part of ADS functionality.
+
+An Automated Driving System (ADS) refers to the hardware and software
+collectively capable of performing the entire Dynamic Driving Task (DDT)
+on a sustained basis, applicable to SAE Levels 3 (Conditional), 4
+(High), and 5 (Full) driving automation{ \textsuperscript{} }.
+
+Unlike
+lower levels of automation which merely assist a human driver, an ADS
+takes full responsibility for operating the vehicle within its specified
+Operational Design Domain (ODD), if applicable{ \textsuperscript{} }.
+
+This transfer of complete, real-time operational and tactical control {
+\textsuperscript{} } inherently necessitates that Autonomous Driving
+Systems operate under high safety requirements. The complexity involved
+in perceiving the environment, making safety-critical decisions, and
+executing maneuvers without human oversight demands rigorous design,
+validation, and operational safeguards, particularly concerning the
+system\textquotesingle s ability to manage unforeseen events and
+internal malfunctions safely{ \textsuperscript{} }. { ~ }
+
+A critical aspect supporting the high safety requirements for ADS
+revolves around \textbf{Failure Mitigation and Safe States}. ADS are
+complex integrations of hardware, software, and sensors, components of
+which are inevitably subject to DDT performance-relevant system failures
+-- malfunctions preventing the reliable performance of the driving task
+{ \textsuperscript{} } (P1). To uphold safety during such occurrences,
+ADS must incorporate predefined strategies for DDT fallback{
+\textsuperscript{} }. This involves the system responding appropriately
+to a failure or ODD exit, which for Level 4 and 5 systems means the ADS
+must automatically achieve a Minimal Risk Condition (MRC) -- a stable,
+stopped state designed to reduce crash risk{ \textsuperscript{} }. For
+Level 3 systems, fallback may involve issuing a timely request to
+intervene to a fallback-ready user, expecting them to resume the DDT or
+achieve an MRC { \textsuperscript{} } (P2). During such a transition in
+Level 3, the ADS is expected to continue performing the DDT safely for a
+period to allow the user time to respond appropriately {
+\textsuperscript{} } (P3). Consequently, robust failure detection
+capabilities coupled with comprehensive mitigation strategies are
+essential for ADS to reliably transition the vehicle to an appropriate
+safe state -- whether that is under user control following a fallback
+request or an automatically achieved MRC -- upon system malfunction or
+performance degradation { \textsuperscript{} } (C1). { }
+
 
 There's an expectation of 
 
