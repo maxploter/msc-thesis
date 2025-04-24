@@ -62,6 +62,9 @@
 
 * Present state-of-the-art video object detection approaches with pros and cons. Make present it linearly by showing how one approach leads to the next one and solves the problems of the previous one.
 
+### Perceiver
+
+* Architecture
 
 
 ## Research Question or Problem Statement
@@ -76,9 +79,26 @@
 
 [//]: # (Since this is one of the sections that the readers are definitely looking for, highlight it by using the word "problem" or "question" in the title: e.g. "Research Question" or "Problem Statement", or maybe something more specific such as "The Large-Scale Zylon Algorithm Problem.")
 
+
 ## Describing How You Solved the Problem or Answered the Question
 
 [//]: # (This part of the thesis is much more free-form. It may have one or several sections and subsections. But it all has only one purpose: to convince the examiners that you answered the question or solved the problem that you set for yourself in Section 4. So show what you did that is relevant to answering the question or solving the problem: if there were blind alleys and dead ends, do not include these, unless specifically relevant to the demonstration that you answered the thesis question.)
+
+
+### Methods
+
+### Model
+
+### Dataset
+
+### Training
+
+* Loss
+* Augmentation
+
+### Training Procedures
+
+### Experiments
 
 ## Conclusions
 

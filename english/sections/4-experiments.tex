@@ -4,19 +4,22 @@ In this section, we first present a comparative analysis of the proposed model o
 
 \subsection{Comparison Analysis} \label{ComparisonAnalysis}
 
+
 \begin{table}[htb!]
     \centering
-    \caption{Model Comparison: mAP, Parameters, and FLOPS. Metrics evaluated on the test dataset. 'X' denotes the postprocessing method applied.}
-    \label{tab:model_comparison_map_params}
+    \caption{Comparison with baseline still image detector model YOLOv8n on detection-moving-mnist-easy dataset. Post stands for postprocessing heuristics after detection. RPerceiver model achieves comparable results mAP50 with a smaller size and compute.}
+    \label{tab:model_comparison}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                   colspec = { l c c c c c }, % l=left, c=center. 6 columns
                   row{1} = {font=\bfseries}, % Make header row bold
                  }
-        Model & Postprocess & mAP50 & mAP50-95 & Params (M)   & FLOPS \\ % Header Row
-        YOLOv8n & X & \textbf{97.1} & \textbf{93.9}    & 3 & 8.1G  \\
-        RPerceiver & X & 93.7 & 73.0    & \textbf{0.5}   & N/A   \\ 
+        Model      & Post & mAP_{50}         & mAP_{50-95}       & Params (M)   & GFLOPS         \\ % Updated Header Row
+        YOLOv8n    & X           & \textbf{97.1}  & \textbf{93.9}  & 3            & 8.1            \\ % Updated YOLOv8n data
+        RPerceiver & X           & 93.7           & 73.0           & \textbf{0.5} & \textbf{0.6}   \\ % Updated RPerceiver data
     \end{tblr}
 \end{table}
+
+
 
 \subsection{Ablation Study} \label{AblationStudy}
 % Content for ablation study goes here
