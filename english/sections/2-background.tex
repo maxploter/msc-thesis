@@ -6,9 +6,25 @@
 
 % thesis: Autonomous Driving Systems have high safety requirements.
 
-The Society of Automotive Engineers (SAE) defines Autonomous Driving Systems (ADS) as the hardware and software that are collectively capable of performing the entire dynamic driving task (DDT) on a sustained basis, regardless of whether it is limited to a specific operational design domain (ODD). The DDT encompasses all real-time operational and tactical functions required for driving, including lateral and longitudinal motion control, and Object and Event Detection and Response (OEDR).
+Autonomous Driving Systems (ADS), defined by the Society of Automotive Engineers (SAE) as the hardware and software that are collectively capable of performing the entire dynamic driving task (DDT) on a sustained basis, should have a high safety requirements.
+This term is used to describe the three most advanced Levels 3 (Conditional), 4 (High), and 5 (Full) driving automation system.
 
-\cite{sae:j3016:2021apr}
+Additionally, ADS must be capable of operating under diverse operational conditions, defined as the operational design domain (ODD). The ODD includes, but is not limited to, environmental, geographical, and time-of-day conditions.
+While operating under these diverse conditions, ADS can experience DDT performance-relevant system failures that prevent it from reliably performing the DDT on a sustained basis.
+In such cases, the ADS must issue a request to intervene, either for the user to perform the DDT or for the system to achieve a minimal risk condition.
+
+At Level 3, a DDT fallback-ready user is expected to take over the DDT when a DDT performance-relevant system failure occurs or when the ADS is about to leave its operational design domain (ODD). This user must be receptive and able to resume DDT performance when alerted to do so.
+For example, a Level 3 ADS experiences a DDT performance-relevant system failure in one of its radar sensors, which prevents it from reliably detecting objects in the vehicle's pathway. The ADS responds by issuing a request to intervene to the DDT fallback-ready user. The ADS continues to perform the DDT, while reducing vehicle speed, for several seconds to allow time for the DDT fallback-ready user to resume operation of the vehicle in an orderly manner. It is important to highlight that a key expectation for Level 3 ADS is the capability of continuing to perform the DDT for at least several seconds after issuing the fallback-ready user with a request to intervene.
+
+For Levels 4 and 5 ADS, if a driving automation system can perform the entire DDT and DDT fallback either within a prescribed ODD (Level 4) or in all driver-manageable on-road operating situations (Level 5), then any users present in the vehicle while the ADS is engaged are passengers. For example, if a Level 4 ADS experiences a DDT performance-relevant system failure in one of its computing modules, it transitions to DDT fallback by engaging a redundant computing module(s) to achieve a minimal risk condition.
+
+The high safety requirements defined by SAE imply significant robustness expectations for ADS. This means that an ADS must be capable of, first, performing the DDT for a few seconds following a performance-relevant system failure (as described for Level 3), and second, in the case of Levels 4 and 5, it must be able to reach a minimal risk condition (MRC) despite such a system failure.
+
+The high safety requirements defined by SAE imply significant robustness expectations for ADS. This means that an ADS should be capable of, first, performing the DDT for a few seconds following a performance-relevant system failure until DDT fallback, and second, in the case of Levels 4 and 5, it must be able to reach a minimal risk condition despite such a system failure\cite{sae:j3016:2021apr}.
+
+
+The DDT encompasses all real-time operational and tactical functions required for driving, including lateral and longitudinal motion control, and Object and Event Detection and Response (OEDR).
+
 
 
 
