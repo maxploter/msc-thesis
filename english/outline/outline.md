@@ -50,17 +50,16 @@ Thesis: Autonomous Driving Systems have high safety requirements.
 
 Arguments:
 
-* FAILURE MITIGATION & SAFE STATES
+* ROBUSTNESS
 * MULTI-MODALITY
 * DATA FUSION
 * SOFTWARE RANDOMNESS
 
-Argument FAILURE MITIGATION & SAFE STATES:
-
-* P1: ADS are complex integrations of hardware, software, and sensors, components of which are inevitably subject to SYSTEM FAILURE.
-* P2: To meet high safety requirements, ADS must maintain safety during such occurrences. This necessitates predefined strategies for Dynamic Driving Task (DDT) fallback, which may include requesting intervention from a fallback-ready user or, if that's not possible or successful, achieving a Minimal Risk Condition (MRC) – a stable, stopped state (e.g., pulled over safely).
-* P3: In scenarios involving user intervention requests, the ADS must typically continue to perform the DDT safely for at least several seconds to allow the user time to resume control.
-* C1: Consequently, ADS must possess robust failure detection capabilities and implement comprehensive mitigation strategies to reliably transition to an appropriate safe state (e.g., fallback-user control, MRC) upon system malfunction or performance degradation.
+Argument ROBUSTNESS:
+* P1: diverse operational driving domain (weather, environment, traffic, etc.).
+* P2: Perform dynamic driving task (DDT) under performance system failure.
+* P3: Reach minimal risk condition under of system failure.
+* C1: ADS should be robust to system failure.
 
 Argument MULTI-MODALITY:
 P1: It should be able to complete an OBJECT AND EVENT DETECTION AND RESPONSE subtask.
