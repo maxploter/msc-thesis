@@ -93,9 +93,21 @@ C1: The model should operate under randomness.
 
 ### Perceiver
 
-* Architecture
-* Multi-modality
-* Fusion?
+Thesis: Present the Perceiver architecture and its advantages.
+
+Arguments:
+
+* ADS CANDIDATE
+* ARCHITECTURE
+
+Argument ADS CANDIDATE:
+
+* P1: Model AI architectures are not generalists.
+* P2: Perceiver architecture is a generalist model.
+* P3: ADS should process multimodal input.
+* C1: Perceiver architecture is a good candidate for ADS.
+
+
 
 
 ## Research Question or Problem Statement
