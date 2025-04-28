@@ -2,9 +2,13 @@
 
 In this section We propose a novel RNN architecture called the Recurrent Perceiver to model an object's changing appearance and motion over time for video object detection.
 
-\subsection{Model}
+\subsection{Model} \label{Methods:Model}
 
-In the experiment, we augmented the Perceiver architecture \cite{jaeglePerceiverGeneralPerception2021} to support an autoregressive setup. We unroll the model in the time dimension, so the hidden state from the previous frame is propagated to the next frame.
+We build our model architecture based on the Perceiver architecture \cite{jaeglePerceiverGeneralPerception2021}. As discussed in \ref{Background:Perceiver} perceiver has capability of processing high dimantional input which is important for ADS. However, has a limitation of producing only one output per input, which makes it not approapriate for video object detection tasks. To overcome this limitation, we decided to rethink the Perceiver architecture and think of it as a recurrent neural network (RNN) that is capable to process a high dimentional input potentially from different modalities. Hence we have designed a Recurrent Perceiver or RPerciever for short. We have unrolled preceiver in time or in other words we have added a time dinemtion. If previously, the Perceiver was unrolled in depth, we closed the loop and unrolled it in time by propagating the latent array between time steps. For the initial timestamp we still use learnable latent array, the same way it is done in the Perceiver \ref{Background:Perceiver}. The architecture of the perceiver is Figure \ref{fig:figure_methods_model_ar_perceiver}.
+
+% TODO add information about dimentions
+
+% TODO edit fiture and name
 
 \begin{figure}
     \centering
@@ -13,7 +17,9 @@ In the experiment, we augmented the Perceiver architecture \cite{jaeglePerceiver
     \label{fig:figure_methods_model_ar_perceiver}
 \end{figure}
 
-The second variation of the model includes an additional frame view dimension.
+We designed a variation of the RPerceiver to process multi-modal input. We call this arcitecture as Recurrent Perceiver Multi-Modal or RPerceiverMM for short. Modern ADS process information from multiple sensors. In the scope of the thesis, we consider a multi-view camera setup. \cite{jaeglePerceiverGeneralPerception2021} consider a multi-modality input where modality specific by concatenating a learned, modality-specific encoding to each input. In our work we followed a different approach for multi-modality. ADS is equiped with multiple cameras that are placed in different locations. There's exists a problem of calibrating. Therefore we decided to intorduce a camera specific cross-attention module to the RPerceiverMM. The architecture of the RPerceiverMM is shown on Figure~\ref{fig:figure_methods_model_ar_perceiver_views}.
+
+% TODO edit fiture and name
 
 \begin{figure}
     \centering
@@ -22,10 +28,21 @@ The second variation of the model includes an additional frame view dimension.
     \label{fig:figure_methods_model_ar_perceiver_views}
 \end{figure}
 
+Additionally, to the Recurrent Perceiver (including Multi-modal variant), we used a CNN backbone to learn a 2D representation of the input frames, we did not use a pre-trained backbone see Appendix \ref{Appendix:Backbone}. We used a detection heads similar as in DETR model \cite{} with linear layer to project class logits and 3 layer of multi-layer perceptron (MLP) to predict the object coordinates. As for objects coordinates we considered two variants: (i) bounding boxes (ii) center point. Therefore the dimention of output $Lx4$ and $Lx2$ respectively. For bounding boxes we used a sigmoid activateion function to predict coordinates of bounding box center and width and hight. For center points we used a tanh activation function because we placed the center of the coordnate system into the center in order to mimic a berd-eye view, similar as ADS in center with all views around it. The whole and complete architecture is show \ref{fig:figure_methods_model_r_perceiver_complte}.
 
-\subsection{Dataset}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver_views.png}
+    \caption{Full architecture of our model. The backbone output is supplemented with a learned view-specific positional encoding before passing it to the autoregressive Perceiver model. The autoregressive Perceiver takes a hidden state from the previous frame's last view and iterates through the current frame's views. After the last view, we pass the output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points on the global frame raster.}
+    \label{fig:figure_methods_model_r_perceiver_complte}
+\end{figure}
 
-For our experiment, we generated our own dataset, which we call "detection-moving-mnist-easy". We took inspiration from the MovingMNIST dataset \cite{srivastava2016unsupervisedlearningvideorepresentations}, which is used for TODO use cases. In our case, we are interested in object detection and tracking tasks.
+
+\subsection{Dataset} \label{Methods:Dataset}
+
+For our experiment, we generated our own dataset, which we call "detection-moving-mnist-easy". We took inspiration from the MovingMNIST dataset \cite{srivastava2016unsupervisedlearningvideorepresentations}, which is used for TODO use cases. In our case, we are interested in video object detection and a simplified variation of keypoints, where we predict a center point of the object it is similar to keypoints task because the center of object is not the same as center of the bounding box. We hosted the dataset on Hugging Face \footnote{\url{https://huggingface.co/datasets/Max-Ploter/detection-moving-mnist-easy}}.
+
+ For the first frame, we pick a number of digits from 1 to 10 with uniform probability (see Figure~\ref{fig:figure_method_dataset_train_digit_classes}). Depending on the number of digits per first frame, we draw, without replacement, from the well-known MNIST dataset \cite{} (from the train and test splits corresponding to the dataset split). Each digit is placed on the first frame of the canvas image of size 128x128. There's a greedy algorithm that places digits on the first frame randomly and tries to avoid overlaps, so it's easier for the model to detect all objects in the beginning. To each digit, we assign an affine translation from -5 to 5 randomly with uniform probability. Then, we apply corresponding affine transformations to move the digits through 20 frames on the canvas image of size 128x128. As a result, we receive a tensor of size 20x1x128x128, which represents a video (see Figure~\ref{fig:figure_methods_dataset_detection_mmnist_sequence}).
 
 \begin{figure}
     \centering
@@ -33,8 +50,6 @@ For our experiment, we generated our own dataset, which we call "detection-movin
     \caption{Distribution of classes in the "detection-moving-mnist-easy" dataset.}
     \label{fig:figure_method_dataset_train_digit_classes}
 \end{figure}
-
-We hosted the dataset on Hugging Face \footnote{\url{https://huggingface.co/datasets/Max-Ploter/detection-moving-mnist-easy}}. For the first frame, we pick a number of digits from 1 to 10 with uniform probability (see Figure~\ref{fig:figure_method_dataset_train_digit_classes}). Depending on the number of digits per first frame, we draw, without replacement, from the well-known MNIST dataset (from the train and test splits corresponding to the dataset split). To each digit, we assign an affine translation from -5 to 5 randomly with uniform probability. Also, there is an additional greedy algorithm that places digits on the first frame randomly and tries to avoid overlaps. Then, we apply corresponding affine transformations to move the digits through 20 frames on the canvas image of size 128x128. As a result, we receive a tensor of size 20x1x128x128, which represents a video (see Figure~\ref{fig:figure_methods_dataset_detection_mmnist_sequence}).
 
 
 \begin{figure}
@@ -45,9 +60,7 @@ We hosted the dataset on Hugging Face \footnote{\url{https://huggingface.co/data
 \end{figure}
 
 
-
-We do not restrict digit overlap in subsequent frames. It is even possible to have some degree of overlap in the first frame if the greedy algorithm is unable to randomly place digits in such a way on the first frame.
-We do not bounce digits against image boundaries, so each digit can leave the frame. You can see in the figure that later frames have fewer digits (see Figure~\ref{fig:figure_method_dataset_train_digits_per_frame}).
+In order for dataset to be more challanging we do not restrict digit overlap in subsequent frames. It is even possible to have some degree of overlap in the first frame if the greedy algorithm is unable to randomly place digits in such a way on the first frame. We do not bounce digits against image boundaries, so each digit can leave the frame. You can see in the figure that later frames have fewer digits (see Figure~\ref{fig:figure_method_dataset_train_digits_per_frame}).
 
 % TODO DOUBLE CHECK number this plot
 \begin{figure}
@@ -57,20 +70,9 @@ We do not bounce digits against image boundaries, so each digit can leave the fr
     \label{fig:figure_method_dataset_train_digits_per_frame}
 \end{figure}
 
+We generated the dataset with 60K and 10K train and test splits, respectively. Annotations, automatically generated during sequence creation, include digit classes and digit center point coordinates (keypoint), bounding box coordinates and digit's identity ID.
 
-We generated the dataset with 60K and 10K train and test splits, respectively.
-
-Annotations, automatically generated during sequence creation, include digit classes and digit center point coordinates, with the coordinate system in the center of the image.
-
-For the purpose of some of the experiment we additionally divide the frame into grid views. In this way we mimic a Bird Eye View (BEV) (see Figure~\ref{fig:figure_methods_dataset_image_view_bev}).
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.33\textwidth]{figures/figure_methods_dataset_image_view_bev.png}
-    \caption{Bird Eye View (BEV) of the frame raster divided into grid.}
-    \label{fig:figure_methods_dataset_image_view_bev}
-\end{figure}
-
+\subsection{Metrics} \label{Methods:Metrics}
 
 \subsection{Training Procedures} \label{TrainingProcedures}
 
