@@ -74,8 +74,6 @@ We generated the dataset with 60K and 10K train and test splits, respectively. A
 
 \subsection{Metrics} \label{Methods:Metrics}
 
-We used mean Average Precision (mAP) as the primary metric to evaluate the model's performance. A widely used metric in object detection, mAP measures the average precision across various Intersection over Union (IoU) thresholds \cite{}. Specifically, we report the mAP at an IoU threshold of 0.5, a common choice in object detection benchmarks \cite{}, and the mAP at 0.5-0.95, which represents the mean of the average precision calculated at IoU thresholds ranging from 0.5 to 0.95 with a step of 0.05 \cite{}.
-
 We used mean Average Precision (mAP) as the primary metric to evaluate the model's performance. A widely used metric in object detection, mAP measures the average precision across various Intersection over Union (IoU) thresholds, adapted from information retrieval evaluation methods and popularized in challenges like PASCAL VOC \cite{everinghamPascalVisualObject2010}. Specifically, we report the mAP at an IoU threshold of 0.5, a common choice established in early object detection benchmarks such as PASCAL VOC \cite{everinghamPascalVisualObject2010}, and the mAP at 0.5-0.95, which represents the mean of the average precision calculated at IoU thresholds ranging from 0.5 to 0.95 with a step of 0.05, as introduced by the COCO challenge \cite{linMicrosoftCOCOCommon2015a}.
 
 We used the Average Displacement Error (ADE) and Final Displacement Error (FDE) metrics to evaluate the model's performance. The ADE measures the average distance between the predicted and ground truth center points over the sequence of frames \ref{eq:ade}.
