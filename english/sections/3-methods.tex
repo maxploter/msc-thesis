@@ -91,12 +91,16 @@ The FDE measures the distance between the predicted and ground truth center poin
     \text{FDE} = \frac{1}{N} \sum_{i=1}^{N} || \hat{y}_{i,T} - y_{i,T} ||_2
     \label{eq:fde}
 \end{equation}
-
 \subsection{Loss Function} \label{Methods:LossFunction}
 
 The model predicts a fixed-size set of $N$ potential object detections, $ \hat{y} = \{\hat{y}_j\}_{j=1}^N $, in a single pass, where $N$ is chosen to be larger than the maximal number of actual objects in the frame. A core challenge lies in comparing this fixed-size prediction set $ \hat{y} $ to the variable-size ground truth set of objects, $ y = \{y_i\}_{i=1}^M $. The loss function addresses this by first finding an optimal bipartite matching between predictions and ground truth objects, and then calculating a loss that penalizes both incorrect matches and unmatched predictions assigned to a background class.
 
-To establish the best possible one-to-one correspondence between predictions and actual ground truth objects, we employ the Hungarian algorithm. The algorithm finds an assignment that minimizes the total cost over matched pairs. It operates on a cost matrix where each element $ C_{j,i} $ represents the cost $ \mathcal{L}_{match}(\hat{y}_j, y_i) $ of matching prediction $ j $ with ground truth object $ i $. Let $ P $ denote the set of index pairs $ (j, i) $ representing the optimal assignment found by the algorithm, where each prediction index $ j $ and ground truth index $ i $ appears at most once in $ P $. Predictions $ \hat{y}_j $ whose index $ j $ does not appear in any pair in $ P $ are considered unmatched (i.e., assigned to background or "no object").
+To establish the best possible one-to-one correspondence between the $N$ predictions and the $M$ ground truth objects ($M \le N$), we formulate a bipartite matching problem. We seek a permutation $ \hat{\sigma} $ of the prediction indices $ \{1, ..., N\} $ that minimizes the total matching cost between the first $M$ permuted predictions and the $M$ ground truth objects:
+\begin{equation}
+    \hat{\sigma} = \underset{\sigma \in \mathcal{S}_N}{\arg\min} \sum_{i=1}^M \mathcal{L}_{match}(\hat{y}_{\sigma(i)}, y_i)
+    \label{eq:matching_argmin}
+\end{equation}
+where $ \mathcal{L}_{match}(\hat{y}_{\sigma(i)}, y_i) $ is the cost of matching prediction $ \hat{y}_{\sigma(i)} $ with ground truth object $ y_i $, and $ \mathcal{S}_N $ is the set of all permutations of $ \{1, ..., N\} $. This optimal assignment $ \hat{\sigma} $ is found efficiently using the Hungarian algorithm. Predictions $ \hat{y}_{\sigma(i)} $ for $ i > M $ (if any) and those predictions $ \hat{y}_{\sigma(i)} $ for $ i \le M $ that are not part of the optimal one-to-one matching found by the algorithm (due to the cost minimization potentially leaving some ground truth objects unmatched if all potential prediction matches are too costly) are considered unmatched and assigned to the background class.
 
 Each ground truth object $ y_i $ is represented as $ (c_i, b_i) $, where $ c_i $ is the target class label and $ b_i \in [0, 1]^4 $ is a vector defining the normalized ground truth box center coordinates, height, and width. For a prediction $ \hat{y}_j $, we have the predicted class logits leading to probabilities $ \hat{p}_j(c) $ for all classes $ c $, and the predicted bounding box $ \hat{b}_j $.
 
@@ -116,8 +120,7 @@ The terms $ \lambda_{class}, \lambda_{bbox}, \lambda_{giou} $ correspond to the 
     \item $ \mathcal{C}_{giou}(b_i, \hat{b}_j) $ is the Generalized IoU (GIoU) cost, calculated as $ 1 - \text{GIoU}(b_i, \hat{b}_j) $.
 \end{itemize}
 
-\paragraph{Loss Calculation}
-After determining the optimal assignment $ P $ via the Hungarian algorithm, the total loss $ \mathcal{L}_{total} $ is calculated by summing loss contributions over all $N$ predictions. The loss for each prediction depends on whether it was matched to a ground truth object.
+After determining the optimal assignment $ \hat{\sigma} $ using the Hungarian algorithm, the total loss $ \mathcal{L}_{total} $ is calculated by summing loss contributions over all $N$ predictions. Let $ P $ denote the set of index pairs $ (j, i) $ such that prediction $ j = \hat{\sigma}(i) $ is matched to ground truth $ i $ in the optimal assignment. The loss for each prediction depends on whether it was matched.
 \begin{equation}
     \mathcal{L}_{total}(y, \hat{y}) = \sum_{j=1}^N \mathcal{L}_j
     \label{eq:total_loss_revised}
@@ -168,6 +171,7 @@ The specific loss components, weighted according to the `weight_dict` parameter,
         Both $ \mathcal{L}_{L1} $ and $ \mathcal{L}_{giou} $ components are normalized by the total number of actual ground truth boxes ($M$) across the batch (`num_boxes`).
 \end{itemize}
 This combined loss function guides the end-to-end training, encouraging the model to assign high confidence and accurate boxes to predictions matched with ground truth objects, while assigning low confidence (predicting the background class) to unmatched predictions.
+
 
 
 
