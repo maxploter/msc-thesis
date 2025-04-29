@@ -91,7 +91,6 @@ The FDE measures the distance between the predicted and ground truth center poin
     \text{FDE} = \frac{1}{N} \sum_{i=1}^{N} || \hat{y}_{i,T} - y_{i,T} ||_2
     \label{eq:fde}
 \end{equation}
-
 \subsection{Loss Function} \label{Methods:LossFunction}
 
 The model predicts a fixed-size set of $N$ potential object detections, $ \hat{y} = \{\hat{y}_j\}_{j=1}^N $, in a single pass, where $N$ is chosen to be larger than the maximal number of actual objects in the frame. A core challenge lies in comparing this fixed-size prediction set $ \hat{y} $ to the variable-size ground truth set of objects, $ y = \{y_i\}_{i=1}^M $. The loss function addresses this by first finding an optimal bipartite matching between predictions and ground truth objects, and then calculating a loss that penalizes both incorrect matches and unmatched predictions assigned to a background class.
@@ -172,6 +171,7 @@ The specific loss components, weighted according to the `weight_dict` parameter,
         Both $ \mathcal{L}_{L1} $ and $ \mathcal{L}_{giou} $ components are normalized by the total number of actual ground truth boxes ($M$) across the batch (`num_boxes`).
 \end{itemize}
 This combined loss function guides the end-to-end training, encouraging the model to assign high confidence and accurate boxes to predictions matched with ground truth objects, while assigning low confidence (predicting the background class) to unmatched predictions.
+
 
 
 
