@@ -76,6 +76,8 @@ We generated the dataset with 60K and 10K train and test splits, respectively. A
 
 \subsection{Metrics} \label{Methods:Metrics}
 
+% TODO: mention mAP 75
+
 We used mean Average Precision (mAP) as the primary metric to evaluate the model's performance. A widely used metric in object detection, mAP measures the average precision across various Intersection over Union (IoU) thresholds, adapted from information retrieval evaluation methods and popularized in challenges like PASCAL VOC \cite{everinghamPascalVisualObject2010}. Specifically, we report the mAP at an IoU threshold of 0.5, a common choice established in early object detection benchmarks such as PASCAL VOC \cite{everinghamPascalVisualObject2010}, and the mAP at 0.5-0.95, which represents the mean of the average precision calculated at IoU thresholds ranging from 0.5 to 0.95 with a step of 0.05, as introduced by the COCO challenge \cite{linMicrosoftCOCOCommon2015a}.
 
 We used the Average Displacement Error (ADE) and Final Displacement Error (FDE) metrics to evaluate the model's performance. The ADE measures the average distance between the predicted and ground truth center points over the sequence of frames \ref{eq:ade}.
@@ -181,17 +183,6 @@ RPerceiver models infer a fixed-size set of $N$ predictions, in a single pass fo
 The training objective was optimized using a composite loss function tailored to the specific task (object detection or center point prediction).
 
 This criterion first employed a Hungarian matching algorithm (matcher) to assign predictions to ground truth targets based on a cost function considering class probabilities and spatial proximity (bounding box L1 distance, GIoU distance, or center point distance). Following the matching, specific loss components were calculated. For classification, either standard cross-entropy or Focal Loss (focal_loss=True) was used to address class imbalance, particularly weighting the 'no-object' class (eos_coef) and configured with α (focal_alpha) and γ (focal_gamma) parameters. For regression, depending on the task, losses included L1 loss for bounding box coordinates (loss_bbox, bbox_loss_coef), Generalized Intersection over Union (GIoU) loss (loss_giou, giou_loss_coef), or L1 loss for center point prediction (loss_center_point, weight_loss_center_point). The relative contribution of each loss component was controlled by specific weight coefficients (e.g., weight_dict).
-
-Input data was prepared using dataset-specific transformations. For the Moving MNIST dataset variants, transformations included normalization based on pre-calculated statistics. Input frames are resized to a fixed dimension $320x320$ could be applied \cite{}. Model parameters were updated using the AdamW optimizer \cite{}. A base learning rate (learning_rate) was set for most parameters, while a potentially different, often lower, learning rate (learning_rate_backbone) could be applied to pretrained backbone components identified by specific name keywords (learning_rate_backbone_names).
-
-\paragraph{Learning Rate Scheduling}
-A learning rate scheduler (torch.optim.lr_scheduler.StepLR) was employed to adjust the learning rate during training. The learning rate for all parameter groups in the optimizer was decreased by a multiplicative factor (gamma=0.1) every specified number of epochs (scheduler_step_size).
-
-\paragraph{Training Procedure}
-Models were typically trained for a set number of epochs (epochs). Training involved iterating through the training dataset, calculating the loss, and updating model parameters via backpropagation. Model performance was evaluated on a separate test set (evaluate) at regular intervals (eval_interval). An early stopping mechanism was implemented based on the validation loss, halting training if no improvement was observed for a specified number of evaluation intervals (patience). Checkpoints containing the model state, optimizer state, scheduler state, and current epoch were saved periodically, particularly when validation performance improved.
-
-The specific values for all hyperparameters mentioned above (e.g., learning rates, weight decay, loss coefficients, batch size, epochs, scheduler settings, augmentation details) varied depending on the specific model architecture and experiment. A comprehensive list of these hyperparameters for each reported experiment is provided in Appendix \ref{appendix:hyperparameters}. Variations in the standard training procedure, such as using a different number of total epochs or adjusting the learning rate scheduler drop epoch for specific experimental setups, are also detailed in the Appendix. Other training hyperparameters can be found in section apendix \ref{Appendix:TrainingHyperparameters}.
-
 
 \subsection{Dropout and Shuffle} \label{Methods:Training:DropoutAndShuffle}
 

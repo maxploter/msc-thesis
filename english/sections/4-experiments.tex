@@ -2,21 +2,64 @@
 
 In this section, we first present a comparative analysis of the proposed model on the video object detection task. Second, we present an ablation study analyzing the effects of different training procedures on the robustness of the model to sensor failure scenarios.
 
+\subsection{Training details} \label{Experiments:ComparisonAnalysis}
+
+Input data was prepared using dataset-specific transformations. For the Moving MNIST dataset variants, transformations included normalization based on pre-calculated statistics. Input frames are resized to a fixed dimension $320x320$ could be applied \cite{}. Model parameters were updated using the AdamW optimizer \cite{}. A base learning rate (learning_rate) was set for most parameters, while a potentially different, often lower, learning rate (learning_rate_backbone) could be applied to pretrained backbone components identified by specific name keywords (learning_rate_backbone_names).
+
+A learning rate scheduler (torch.optim.lr_scheduler.StepLR) was employed to adjust the learning rate during training. The learning rate for all parameter groups in the optimizer was decreased by a multiplicative factor (gamma=0.1) every specified number of epochs (scheduler_step_size).
+
+Models were typically trained for a set number of epochs (epochs). Training involved iterating through the training dataset, calculating the loss, and updating model parameters via backpropagation. Model performance was evaluated on a separate test set (evaluate) at regular intervals (eval_interval). An early stopping mechanism was implemented based on the validation loss, halting training if no improvement was observed for a specified number of evaluation intervals (patience). Checkpoints containing the model state, optimizer state, scheduler state, and current epoch were saved periodically, particularly when validation performance improved.
+
+The specific values for all hyperparameters mentioned above (e.g., learning rates, weight decay, loss coefficients, batch size, epochs, scheduler settings, augmentation details) varied depending on the specific model architecture and experiment. A comprehensive list of these hyperparameters for each reported experiment is provided in Appendix \ref{appendix:hyperparameters}. Variations in the standard training procedure, such as using a different number of total epochs or adjusting the learning rate scheduler drop epoch for specific experimental setups, are also detailed in the Appendix. Other training hyperparameters can be found in section apendix \ref{Appendix:TrainingHyperparameters}.
+
 \subsection{Comparison Analysis} \label{Experiments:ComparisonAnalysis}
 
+First, we compare RPerceiver with still image detection model.
+
+% YOLO: Raw mAP Results (Evaluator): {'map': tensor(0.9231), 'map_50': tensor(0.9621), 'map_75': tensor(0.9410), 'map_small': tensor(0.9231), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7471), 'mar_10': tensor(0.9393), 'mar_100': tensor(0.9393), 'mar_small': tensor(0.9393), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% RPerceiver: Raw mAP Results (Evaluator): {'map': tensor(0.9025), 'map_50': tensor(0.9688), 'map_75': tensor(0.9442), 'map_small': tensor(0.9025), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7367), 'mar_10': tensor(0.9240), 'mar_100': tensor(0.9240), 'mar_small': tensor(0.9240), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% TODO: recompute GFLOPS
 
 \begin{table}[htb!]
     \centering
-    \caption{Comparison with baseline still image detector model YOLOv8n on detection-moving-mnist-easy dataset. Post stands for postprocessing heuristics after detection. RPerceiver model achieves comparable results mAP50 with a smaller size and compute.}
+    \caption{Comparison with baseline still image detector model YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on detection-moving-mnist-easy dataset test split. Post stands for postprocessing heuristics after detection.}
     \label{tab:model_comparison}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                   colspec = { l c c c c c },
                   row{1} = {font=\bfseries},
                  }
-        \SetCell[r=2]{l}Model & \SetCell[r=2]{l}Post & \SetCell[c=3]{c}Total & & & \SetCell[c=3]{c}Overlap & & & \SetCell[c=3]{c}Border & & & \SetCell[r=2]{l}Params (M)   & \SetCell[r=2]{l}GFLOPS \\
-        &  & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95} & &  \\
-        YOLOv8n    & X & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & 3            & 8.1            \\
-        RPerceiver & X & 93.7 & 73.0 & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & \textbf{0.5} & \textbf{0.6}    \\
+        Model      & Post & mAP_{50} & mAP_{75} & mAP_{50-95} & Params (M)   & GFLOPS         \\
+        YOLOv8n    & X & 96.2  & 94.1 & \textbf{92.3}  & 3            & 8.1            \\
+        RPerceiver & X & \textbf{96.9} & \textbf{94.4} & 90.3 &\textbf{1} & \textbf{1.2}   \\
+    \end{tblr}
+\end{table}
+
+% YOLO:
+% Raw Overlap mAP Results (Evaluator): {'map': tensor(0.8266), 'map_50': tensor(0.9133), 'map_75': tensor(0.8788), 'map_small': tensor(0.8266), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7744), 'mar_10': tensor(0.8536), 'mar_100': tensor(0.8536), 'mar_small': tensor(0.8536), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% Raw Boundary mAP Results (Evaluator): {'map': tensor(0.6989), 'map_50': tensor(0.7667), 'map_75': tensor(0.7365), 'map_small': tensor(0.6989), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7119), 'mar_10': tensor(0.7280), 'mar_100': tensor(0.7280), 'mar_small': tensor(0.7280), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% RPerceiver
+% Raw Overlap mAP Results (Evaluator): {'map': tensor(0.6940), 'map_50': tensor(0.8853), 'map_75': tensor(0.7777), 'map_small': tensor(0.6940), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.6686), 'mar_10': tensor(0.7389), 'mar_100': tensor(0.7389), 'mar_small': tensor(0.7389), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% Raw Boundary mAP Results (Evaluator): {'map': tensor(0.8470), 'map_50': tensor(0.9552), 'map_75': tensor(0.9101), 'map_small': tensor(0.8470), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.8512), 'mar_10': tensor(0.8739), 'mar_100': tensor(0.8739), 'mar_small': tensor(0.8739), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% TODO: complete table
+
+\begin{table}[htb!]
+    \centering
+    \caption{Comparison with baseline still image detector model YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on subset of detection-moving-mnist-easy dataset test split. Post stands for postprocessing heuristics after detection.}
+    \label{tab:model_comparison_detailed}
+    \begin{tblr}{width=1\textwidth, hlines, vlines,
+                  colspec = { l c c c c c },
+                  row{1} = {font=\bfseries},
+                 }
+        \SetCell[r=2]{l}Model & \SetCell[r=2]{l}Post & \SetCell[c=3]{c}Overlap & & & \SetCell[c=3]{c}Border & & \\
+                   &   & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95}  \\
+        YOLOv8n    & X & 91.3  & \textbf{87.9} & \textbf{82.7} & 76.7  & \textbf{93.9} & \textbf{93.9} \\
+        RPerceiver & X & 93.7 & 73.0 & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & \textbf{97.1}\\
     \end{tblr}
 \end{table}
 
