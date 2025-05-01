@@ -14,7 +14,7 @@ We build our model architecture based on the Perceiver architecture \cite{jaegle
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/figure_methods_recurrent_perceiver.svg}
+    \includegraphics[width=\textwidth]{figures/figure_methods_recurrent_perceiver.png}
     \caption{The Recurrent Perceiver uses a conventional CNN backbone to learn a 2D representation of an input frame. The model flattens it and supplements it with a positional encoding before passing it to the autoregressive Perceiver model. Additionally, the autoregressive Perceiver takes a hidden state from the previous frame. We pass each output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points.}
     \label{fig:figure_methods_recurrent_perceiver}
 \end{figure}
