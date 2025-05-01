@@ -4,9 +4,9 @@ In this section, we first present a comparative analysis of the proposed model o
 
 \subsection{Training details} \label{Experiments:ComparisonAnalysis}
 
-Input data was prepared using dataset-specific transformations. For the Moving MNIST dataset variants, transformations included normalization based on pre-calculated statistics. Input frames are resized to a fixed dimension $320x320$ could be applied \cite{}. Model parameters were updated using the AdamW optimizer \cite{}. A base learning rate (learning_rate) was set for most parameters, while a potentially different, often lower, learning rate (learning_rate_backbone) could be applied to pretrained backbone components identified by specific name keywords (learning_rate_backbone_names).
+Input data was prepared using dataset-specific transformations. For the Moving MNIST dataset variants, transformations included normalization based on pre-calculated statistics. Input frames are resized to a fixed dimension $320x320$ could be applied \cite{}. Model parameters were updated using the AdamW optimizer \cite{}. A base learning rate (learning_rate) was set for most parameters, while a potentially different, often lower, learning rate (learning_rate_backbone) could be applied to pretrained backbone components identified by specific name keywords (learning\_rate\_backbone\_names).
 
-A learning rate scheduler (torch.optim.lr_scheduler.StepLR) was employed to adjust the learning rate during training. The learning rate for all parameter groups in the optimizer was decreased by a multiplicative factor (gamma=0.1) every specified number of epochs (scheduler_step_size).
+A learning rate scheduler (torch.optim.lr\_scheduler.StepLR) was employed to adjust the learning rate during training. The learning rate for all parameter groups in the optimizer was decreased by a multiplicative factor (gamma=0.1) every specified number of epochs (scheduler\_step\_size).
 
 Models were typically trained for a set number of epochs (epochs). Training involved iterating through the training dataset, calculating the loss, and updating model parameters via backpropagation. Model performance was evaluated on a separate test set (evaluate) at regular intervals (eval_interval). An early stopping mechanism was implemented based on the validation loss, halting training if no improvement was observed for a specified number of evaluation intervals (patience). Checkpoints containing the model state, optimizer state, scheduler state, and current epoch were saved periodically, particularly when validation performance improved.
 
@@ -58,8 +58,8 @@ First, we compare RPerceiver with still image detection model.
                  }
         \SetCell[r=2]{l}Model & \SetCell[r=2]{l}Post & \SetCell[c=3]{c}Overlap & & & \SetCell[c=3]{c}Border & & \\
                    &   & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95}  \\
-        YOLOv8n    & X & 91.3  & \textbf{87.9} & \textbf{82.7} & 76.7  & \textbf{93.9} & \textbf{93.9} \\
-        RPerceiver & X & 93.7 & 73.0 & \textbf{97.1}  & \textbf{93.9} & \textbf{93.9} & \textbf{97.1}\\
+        YOLOv8n    & X & \textbf{91.3}  & \textbf{87.9} & \textbf{82.7} & 76.7  & 73.7 & 69.9 \\
+        RPerceiver & X & 88.5 & 77.8 & 69.4  & \textbf{95.5} & \textbf{91.0} & \textbf{84.7}\\
     \end{tblr}
 \end{table}
 
