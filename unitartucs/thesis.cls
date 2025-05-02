@@ -144,6 +144,7 @@
 
 % Matemaatilised valemid
 \usepackage{amsmath}
+\usepackage{amsfonts} % render set of real numbers
 
 % Meta-andmete defineerimine
 \newcommand\supervisor[1]{\renewcommand\@supervisor{#1}}

@@ -96,94 +96,65 @@ The FDE measures the distance between the predicted and ground truth center poin
 
 \subsection{Loss Function} \label{Methods:LossFunction}
 
-The model predicts \ref{Methods:Model} a fixed-size set of $N$ potential object detections, $ \hat{y} = \{\hat{y}_j\}_{j=1}^N $, in a single pass, where $N$ is chosen to be larger than the maximal number of actual objects in the frame. A core challenge lies in comparing this fixed-size prediction set $ \hat{y} $ to the variable-size ground truth set of objects, $ y = \{y_i\}_{i=1}^M $. The loss function addresses this by first finding an optimal bipartite matching between predictions and ground truth objects, and then calculating a loss that penalizes both incorrect matches and unmatched predictions assigned to a background class.
+We adopted the loss calculation approach from DETR \cite{carionEndtoEndObjectDetection2020} and \cite{stewartEndtoendPeopleDetection2015}. The model (\ref{Methods:Model}) predicts a fixed-size set of $N$ potential objects per timestep. The parameter $N$ is a dimension of the latent array and is chosen to be greater than the cardinality of the largest set of ground-truth objects per frame. The model uses an attention mechanism that allows it to attend to all other elements in the attention map. Therefore, there is no predefined structure, like a grid in one-stage image detectors \cite{}, associating predictions with ground-truth objects. This presents the core challenge of how to score the fixed-size prediction set against the variable-size ground-truth set of objects. The loss function calculation consists of two steps: first, finding an optimal bipartite matching between the elements of the predicted and ground-truth sets, and second, calculating a loss.
 
-To establish the best possible one-to-one correspondence between the $N$ predictions and the $M$ ground truth objects ($M \le N$), we formulate a bipartite matching problem. We seek a permutation $ \hat{\sigma} $ of the prediction indices $ \{1, ..., N\} $ that minimizes the total matching cost between the first $M$ permuted predictions and the $M$ ground truth objects:
-\begin{equation}
-    \hat{\sigma} = \underset{\sigma \in \mathcal{S}_N}{\arg\min} \sum_{i=1}^M \mathcal{L}_{match}(\hat{y}_{\sigma(i)}, y_i)
-    \label{eq:matching_argmin}
-\end{equation}
-where $ \mathcal{L}_{match}(\hat{y}_{\sigma(i)}, y_i) $ is the cost of matching prediction $ \hat{y}_{\sigma(i)} $ with ground truth object $ y_i $, and $ \mathcal{S}_N $ is the set of all permutations of $ \{1, ..., N\} $. This optimal assignment $ \hat{\sigma} $ is found efficiently using the Hungarian algorithm. Predictions $ \hat{y}_{\sigma(i)} $ for $ i > M $ (if any) and those predictions $ \hat{y}_{\sigma(i)} $ for $ i \le M $ that are not part of the optimal one-to-one matching found by the algorithm (due to the cost minimization potentially leaving some ground truth objects unmatched if all potential prediction matches are too costly) are considered unmatched and assigned to the background class.
-
-Each ground truth object $ y_i $ is represented as $ (c_i, b_i) $, where $ c_i $ is the target class label and $ b_i \in [0, 1]^4 $ is a vector defining the normalized ground truth box center coordinates, height, and width. For a prediction $ \hat{y}_j $, we have the predicted class logits leading to probabilities $ \hat{p}_j(c) $ for all classes $ c $, and the predicted bounding box $ \hat{b}_j $.
-
-Based on the provided code (`BoxHungarianMatcher`), the matching cost $ \mathcal{L}_{match}(\hat{y}_j, y_i) $ between prediction $ j $ and ground truth $ i $ is a weighted sum of costs considering class prediction and box similarity:
-\begin{equation}
-    \mathcal{L}_{match}(\hat{y}_j, y_i) = \lambda_{class} \mathcal{C}_{class}(c_i, \hat{p}_j) + \lambda_{bbox} \mathcal{C}_{L1}(b_i, \hat{b}_j) + \lambda_{giou} \mathcal{C}_{giou}(b_i, \hat{b}_j)
-    \label{eq:match_cost_revised}
-\end{equation}
-The terms $ \lambda_{class}, \lambda_{bbox}, \lambda_{giou} $ correspond to the weights `cost_class`, `cost_bbox`, and `cost_giou` specified in the code's matcher configuration.
+Let us denote the set of predictions for a given timestep as $ \hat{Y} = \{\hat{y}_j\}_{j=1}^N $ and the corresponding set of ground-truth objects for that frame as $ Y = \{y_i\}_{i=1}^M $. At each recurrence (i.e., for each frame/timestep processed), the RPerceiver outputs the entire set of $N$ predictions $\hat{Y}$. Each prediction $\hat{y}_j \in \hat{Y}$ consists of a predicted object representation $\hat{o}_j$ and a predicted class label $\hat{c}_j$ (including the possibility of the no-object class $\emptyset$). The nature of $\hat{o}_j$ depends on the specific task:
 \begin{itemize}
-    \item $ \mathcal{C}_{class}(c_i, \hat{p}_j) $ is the classification cost. The code implements two variants:
-        \begin{itemize}
-            \item If Focal Loss (`focal_loss=True`) is used for matching, this cost is derived from the Focal Loss formulation using predicted sigmoid probabilities for class $c_i$.
-            \item Otherwise, it approximates the negative log-likelihood using $ -\hat{p}_j(c_i) $, where $ \hat{p}_j(c_i) $ is the softmax probability assigned by prediction $j$ to the ground truth class $ c_i $.
-        \end{itemize}
-    \item $ \mathcal{C}_{L1}(b_i, \hat{b}_j) $ is the L1 distance between the predicted and ground truth boxes: $ \|b_i - \hat{b}_j\|_1 $.
-    \item $ \mathcal{C}_{giou}(b_i, \hat{b}_j) $ is the Generalized IoU (GIoU) cost, calculated as $ 1 - \text{GIoU}(b_i, \hat{b}_j) $.
+    \item For the \textbf{bounding box prediction task}, $\hat{o}_j$ is the predicted box $\hat{b}_j = (\hat{b}_x, \hat{b}_y, \hat{b}_w, \hat{b}_h) \in \mathbb{R}^4$, representing center coordinates, height, and width relative to the frame size.
+    \item For the \textbf{center point prediction task}, $\hat{o}_j$ is the predicted center point coordinates $\hat{p}_j = (\hat{p}_x, \hat{p}_y) \in \mathbb{R}^2$ relative to the frame size.
 \end{itemize}
-
-After determining the optimal assignment $ \hat{\sigma} $ using the Hungarian algorithm, the total loss $ \mathcal{L}_{total} $ is calculated by summing loss contributions over all $N$ predictions. Let $ P $ denote the set of index pairs $ (j, i) $ such that prediction $ j = \hat{\sigma}(i) $ is matched to ground truth $ i $ in the optimal assignment. The loss for each prediction depends on whether it was matched.
-\begin{equation}
-    \mathcal{L}_{total}(y, \hat{y}) = \sum_{j=1}^N \mathcal{L}_j
-    \label{eq:total_loss_revised}
+Similarly, each ground-truth object $y_i \in Y$ consists of the ground-truth object representation $o_i$ (either a box $b_i$ or a point $p_i$) and the ground-truth class label $c_i$.
+We define a matching algorithm via an injective function $f: Y \rightarrow \hat{Y}$, where $f(y_i)$ is the candidate hypothesis $\hat{y}_j \in \hat{Y}$ assigned to the ground-truth object $y_i$. Given $f$, we define a loss function on pairs of sets $Y$ and $\hat{Y}$ as \cite{}:
+\begin{equation} \label{eq:set_loss}
+L(Y, \hat{Y}, f ) = \sum_{i: f(y_i) \text{ is defined}} l_{pos}(y_i, f(y_i)) +  \sum_{j=1}^{N} l_c (\hat{y}_j, y_j^{\text{match}})
 \end{equation}
-where $ \mathcal{L}_j $ is the loss for prediction $ \hat{y}_j $.
+where $l_c$ is the class prediction loss, for which we utilize the Focal Loss \cite{}, and $l_{pos}$ is an object localization loss. The formulation of $l_{pos}$ depends on the specific task (bounding box or center point). Details on each loss term are provided below.
 
-If prediction $ j $ is matched to ground truth $ i $ (i.e., $ (j, i) \in P $):
-\begin{equation}
-    \mathcal{L}_j = \mathcal{L}_{class}(c_i, \hat{p}_j) + \mathcal{L}_{box}(b_i, \hat{b}_j)
+\textbf{Focal Loss.} The Focal Loss is used to address the class imbalance between the foreground objects and the numerous potential background predictions. The class loss component $l_c$ for each prediction $\hat{y}_j$ is calculated using the sigmoid Focal Loss, summed over all foreground classes $k \in \{1, ..., C\}$, where $C$ is the number of object categories (excluding the $\emptyset$ class). The Focal Loss for a single class $k$ and prediction $j$ is defined as:
+\begin{equation} \label{eq:focal_loss}
+    \text{FL}(p_{jk}) = - \alpha_t (1 - p_{jk})^\gamma \log(p_{jk})
 \end{equation}
-If prediction $ j $ is unmatched (i.e., $ (j, i) \notin P $ for any $ i $):
+where $p_{jk} = \sigma(x_{jk})$ is the predicted sigmoid probability for class $k$ from the raw logits $x_{jk}$, and $\alpha_t$ and $p_t$ are defined based on the ground-truth label $y_{jk}$ (which is 1 if the matched ground-truth class is $k$, and 0 otherwise):
+\begin{equation*}
+    p_t =
+    \begin{cases}
+        p_{jk} & \text{if } y_{jk} = 1 \\
+        1 - p_{jk} & \text{if } y_{jk} = 0
+    \end{cases}
+\end{equation*}
+The term $\gamma \ge 0$ is the focusing parameter, which reduces the relative loss for well-classified examples, thereby putting more focus on hard, misclassified examples. The term $\alpha_t$ is a weighting factor to address class imbalance, typically $\alpha$ for the positive class ($y_{jk}=1$) and $1-\alpha$ for the negative class ($y_{jk}=0$). The total class loss for prediction $j$ is $l_c(\hat{y}_j, y_j^{\text{match}}) = \sum_{k=1}^{C} \text{FL}(p_{jk})$. For unmatched predictions ($\hat{y}_j$ matched to $\emptyset$), $y_{jk}=0$ for all foreground classes $k$.
+
+\textbf{Bounding Box Loss} is a linear combination of the L1 loss and the Generalized IoU (GIoU) loss \cite{}:
 \begin{equation}
-    \mathcal{L}_j = \mathcal{L}_{class}(c_{\emptyset}, \hat{p}_j)
+    \mathcal{L}_{box}(b_i, \hat{b}_j) = \lambda_{L1} \mathcal{L}_{L1}(b_i, \hat{b}_j) + \lambda_{giou} \mathcal{L}_{giou}(b_i, \hat{b}_j)
+    \label{eq:box_loss_revised}
 \end{equation}
-Here, $ c_{\emptyset} $ represents the special "no object" or background class index (numerically `self.num_classes` in the code).
-
-In practice, this is implemented by constructing a target classification tensor (`target_classes` in the code) of shape `(batch_size, N)`, initially filled with the $ c_{\emptyset} $ index. Then, for each matched pair $ (j, i) \in P $, the entry corresponding to prediction $ j $ in this tensor is updated with the actual ground truth class $ c_i $. The classification loss is then computed between the predicted logits and this target tensor.
-
-The specific loss components, weighted according to the `weight_dict` parameter, are:
+where $y_i = (c_i, b_i)$ and $\hat{y}_j = (\hat{c}_j, \hat{b}_j)$, and:
 \begin{itemize}
-    \item \textbf{Classification Loss ($ \mathcal{L}_{class} $):} Penalizes inaccuracies in class prediction.
-        \begin{itemize}
-            \item For matched predictions, the target is the ground truth class $ c_i $.
-            \item For unmatched predictions, the target is the background class $ c_{\emptyset} $.
-            \item Depending on the configuration (`focal_loss` parameter):
-                \begin{itemize}
-                    \item \textbf{Cross-Entropy Loss:} If `focal_loss=False`, standard cross-entropy loss is used (`loss_labels` function). The loss for the background class $ c_{\emptyset} $ is specifically down-weighted by the `eos_coef` parameter (applied via `empty_weight` tensor) to manage class imbalance.
-                    \begin{equation}
-                         \mathcal{L}_{class}(c, \hat{p}_j) = -\log \hat{p}_j(c) \quad (\text{weighted for } c=c_{\emptyset})
-                    \end{equation}
-                    \item \textbf{Focal Loss:} If `focal_loss=True`, the sigmoid-based Focal Loss (`loss_labels_focal` function using `sigmoid_focal_loss`) is employed, configured with parameters $ \alpha $ (`focal_alpha`) and $ \gamma $ (`focal_gamma`). This inherently handles class imbalance.
-                    \begin{equation}
-                         \mathcal{L}_{class}(c, \hat{p}_j) = \text{FocalLoss}(\hat{p}_j, c; \alpha, \gamma)
-                    \end{equation}
-                \end{itemize}
-        The classification loss term is weighted by `weight_dict['loss_ce']`.
-
-    \item \textbf{Bounding Box Loss ($ \mathcal{L}_{box} $):} This component applies *only* to matched pairs $ (j, i) \in P $. It is a linear combination of L1 loss and Generalized IoU (GIoU) loss (`loss_boxes` function):
-    \begin{equation}
-        \mathcal{L}_{box}(b_i, \hat{b}_j) = \lambda_{L1} \mathcal{L}_{L1}(b_i, \hat{b}_j) + \lambda_{giou} \mathcal{L}_{giou}(b_i, \hat{b}_j)
-        \label{eq:box_loss_revised}
-    \end{equation}
-    where:
-        \begin{itemize}
-            \item $ \mathcal{L}_{L1}(b_i, \hat{b}_j) = \|b_i - \hat{b}_j\|_1 $ is the L1 norm. Weighted by $ \lambda_{L1} $ (`weight_dict['loss_bbox'] * bbox_loss_coef`).
-            \item $ \mathcal{L}_{giou}(b_i, \hat{b}_j) = 1 - \text{GIoU}(box\_ops.box\_cxcywh\_to\_xyxy(b_i), box\_ops.box\_cxcywh\_to\_xyxy(\hat{b}_j)) $. Weighted by $ \lambda_{giou} $ (`weight_dict['loss_giou'] * giou_loss_coef`).
-        \end{itemize}
-        Both $ \mathcal{L}_{L1} $ and $ \mathcal{L}_{giou} $ components are normalized by the total number of actual ground truth boxes ($M$) across the batch (`num_boxes`).
+    \item $ \mathcal{L}_{L1}(b_i, \hat{b}_j) = \|b_i - \hat{b}_j\|_1 $ is the L1 norm, weighted by $ \lambda_{L1} $ (e.g., \texttt{weight\_dict['loss\_bbox'] * bbox\_loss\_coef}).
+    \item $ \mathcal{L}_{giou}(b_i, \hat{b}_j) = 1 - \text{GIoU}(\text{box\_ops.box\_cxcywh\_to\_xyxy}(b_i), \text{box\_ops.box\_cxcywh\_to\_xyxy}(\hat{b}_j)) $, weighted by $ \lambda_{giou} $ (e.g., \texttt{weight\_dict['loss\_giou'] * giou\_loss\_coef}). GIoU is defined in \cite{Rezatofighi2019GeneralizedIO}. % Added GIoU citation
 \end{itemize}
-This combined loss function guides the end-to-end training, encouraging the model to assign high confidence and accurate boxes to predictions matched with ground truth objects, while assigning low confidence (predicting the background class) to unmatched predictions.
+Both the $ \mathcal{L}_{L1} $ and $ \mathcal{L}_{giou} $ components are normalized by the total number of actual ground-truth boxes ($M$) across the batch (denoted as \texttt{num\_boxes}). Thus, for matched pairs in the bounding box task, $l_{pos}(y_i, \hat{y}_j) = \mathcal{L}_{box}(b_i, \hat{b}_j)$.
 
+\textbf{Center Point Loss.} For the center point prediction task, the localization loss $l_{pos}(y_i, \hat{y}_j)$ applies \textit{only} to matched pairs $(i, j)$ where $f(y_i) = \hat{y}_j$. we use the L1 distance between the ground-truth center point $p_i$ and the predicted center point $\hat{p}_j$:
+\begin{equation} \label{eq:point_loss}
+    \mathcal{L}_{point}(p_i, \hat{p}_j) = \|p_i - \hat{p}_j\|_1
+\end{equation}
+where $y_i = (c_i, p_i)$ and $\hat{y}_j = (\hat{c}_j, \hat{p}_j)$. The total localization loss term in Equation \ref{eq:set_loss} for this task involves summing $\mathcal{L}_{point}$ over all matched pairs and normalizing by the total number of ground-truth objects ($M$) in the batch (denoted as \texttt{num\_objects}). Thus, for matched pairs in the center point task, $l_{pos}(y_i, \hat{y}_j) = \mathcal{L}_{point}(p_i, \hat{p}_j)$.
 
-
-
-% TODO double check the N variable
-RPerceiver models infer a fixed-size set of $N$ predictions, in a single pass for the time step, where $N$ is set to be larger than the typical number of objects in an image. The main challange of training is to score predicted objects with respect to the ground truth. Our loss produces an optimal bipartite matching between predicted and ground truth objects, and then optimize object-specific (bounding box) losses.
-
-The training objective was optimized using a composite loss function tailored to the specific task (object detection or center point prediction).
-
-This criterion first employed a Hungarian matching algorithm (matcher) to assign predictions to ground truth targets based on a cost function considering class probabilities and spatial proximity (bounding box L1 distance, GIoU distance, or center point distance). Following the matching, specific loss components were calculated. For classification, either standard cross-entropy or Focal Loss (focal_loss=True) was used to address class imbalance, particularly weighting the 'no-object' class (eos_coef) and configured with α (focal_alpha) and γ (focal_gamma) parameters. For regression, depending on the task, losses included L1 loss for bounding box coordinates (loss_bbox, bbox_loss_coef), Generalized Intersection over Union (GIoU) loss (loss_giou, giou_loss_coef), or L1 loss for center point prediction (loss_center_point, weight_loss_center_point). The relative contribution of each loss component was controlled by specific weight coefficients (e.g., weight_dict).
+\textbf{Matching Function ($ f $):} This optimal assignment is computed efficiently using the Hungarian algorithm \cite{Kuhn1955TheHM, Carion2020EndToEndOD, Stewart2015EndtoendPD}. The pairwise matching cost $\mathcal{L}_{match}(y_i, \hat{y}_j)$ used within the Hungarian algorithm depends on the task. For the \textbf{bounding box task}, it is defined as \cite{Carion2020EndToEndOD}:
+\begin{equation} \label{eq:matching_cost_bbox}
+\mathcal{L}_{match}^{\text{bbox}}(y_i, \hat{y}_j) = - \mathbb{I}\{c_i \neq \emptyset\} \hat{p}_{j}(c_i) + \mathbb{I}\{c_i \neq \emptyset\} \mathcal{L}_{box}(b_i, \hat{b}_{j})
+\end{equation}
+where $\hat{p}_j(c_i)$ is the predicted probability of the ground-truth class $c_i$ for prediction $j$. For the \textbf{center point task}, the cost replaces $\mathcal{L}_{box}$ with the appropriate point localization cost $\mathcal{L}_{point}$:
+\begin{equation} \label{eq:matching_cost_point}
+\mathcal{L}_{match}^{\text{point}}(y_i, \hat{y}_j) = - \mathbb{I}\{c_i \neq \emptyset\} \hat{p}_{j}(c_i) + \mathbb{I}\{c_i \neq \emptyset\} \mathcal{L}_{point}(p_i, \hat{p}_{j})
+\end{equation}
+The optimal assignment $\hat{\sigma}$ minimizes the total matching cost over possible permutations $\sigma$ of the predictions using the task-specific cost:
+\begin{equation} \label{eq:hungarian_argmin}
+\hat{\sigma} = \arg\min_{\sigma \in \mathfrak{S}_N} \sum_{i=1}^{M} \mathcal{L}_{match}^{\text{task}}(y_i, \hat{y}_{\sigma(i)})
+\end{equation}
+where $\mathfrak{S}_N$ is the set of permutations of $\{1, ..., N\}$. The function $f$ used in Equation \ref{eq:set_loss} is then defined by this optimal assignment $\hat{\sigma}$, such that $f(y_i) = \hat{y}_{\hat{\sigma}(i)}$ for matched ground-truth objects $y_i$. The overall loss computed using this optimal matching is referred to as the Hungarian loss, $\mathcal{L}_{Hungarian}(Y, \hat{Y}) = L(Y, \hat{Y}, f_{\hat{\sigma}})$.
 
 \subsection{Dropout and Shuffle} \label{Methods:Training:DropoutAndShuffle}
 
