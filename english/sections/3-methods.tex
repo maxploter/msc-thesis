@@ -3,34 +3,38 @@
 In this section We propose a novel RNN architecture called the Recurrent Perceiver to model an object's changing appearance and motion over time for video object detection.
 This section outlines the procedure used for training the models presented in this thesis.
 
-
 \subsection{Model} \label{Methods:Model}
 
-We build our model architecture based on the Perceiver architecture \cite{jaeglePerceiverGeneralPerception2021}. As discussed in \ref{Background:Perceiver} perceiver has capability of processing high dimantional input which is important for ADS. However, has a limitation of producing only one output per input, which makes it not approapriate for video object detection tasks. To overcome this limitation, we decided to rethink the Perceiver architecture and think of it as a recurrent neural network (RNN) that is capable to process a high dimentional input potentially from different modalities. Hence we have designed a Recurrent Perceiver or RPerciever for short. We have unrolled preceiver in time or in other words we have added a time dinemtion. If previously, the Perceiver was unrolled in depth, we closed the loop and unrolled it in time by propagating the latent array between time steps. For the initial timestamp we still use learnable latent array, the same way it is done in the Perceiver \ref{Background:Perceiver}. The architecture of the perceiver is Figure \ref{fig:figure_methods_recurrent_perceiver}.
-
-% TODO add information about dimentions
-
-% TODO edit fiture and name
+We introduce a new Recurrent Perceiver (RPerceiver), a Recurrent Neural Network (RNN) capable of processing high-dimensional inputs. This architecture is inspired by the Perceiver \cite{jaeglePerceiverGeneralPerception2021} due to its ability to handle high-dimensional data.
+We have re-engineered the Perceiver architecture by adding a temporal dimension, effectively unrolling it over time. This addresses the original Perceiver's limitation of producing only a single output per input, which makes it unsuitable for tasks with a temporal component, such as video object detection. If previously, the Perceiver was only unrolled in depth, now we have closed the loop and unrolled it in time by propagating the latent array between time steps. For the initial time step, we still use a learnable latent array, similar to the original Perceiver \cite{jaeglePerceiverGeneralPerception2021}.
+The architecture of the RPerceiver is illustrated in Figure \ref{fig:figure_methods_recurrent_perceiver}.
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/figure_methods_recurrent_perceiver.png}
-    \caption{The Recurrent Perceiver uses a conventional CNN backbone to learn a 2D representation of an input frame. The model flattens it and supplements it with a positional encoding before passing it to the autoregressive Perceiver model. Additionally, the autoregressive Perceiver takes a hidden state from the previous frame. We pass each output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points.}
+    \caption{The Recurrent Perceiver (RPerceiver) architecture. The model processes inputs along the time dimension by propagating the latent array between time steps. In the depth dimension (within a single time step), this example shows two processing blocks, similar to the original Perceiver, applied to the input and latent arrays.}
     \label{fig:figure_methods_recurrent_perceiver}
 \end{figure}
 
-We designed a variation of the RPerceiver to process multi-modal input. We call this arcitecture as Recurrent Perceiver Multi-Modal or RPerceiverMM for short. Modern ADS process information from multiple sensors. In the scope of the thesis, we consider a multi-view camera setup. \cite{jaeglePerceiverGeneralPerception2021} consider a multi-modality input where modality specific by concatenating a learned, modality-specific encoding to each input. In our work we followed a different approach for multi-modality. ADS is equiped with multiple cameras that are placed in different locations. There's exists a problem of calibrating. Therefore we decided to intorduce a camera specific cross-attention module to the RPerceiverMM. The architecture of the RPerceiverMM is shown on Figure~\ref{fig:figure_methods_model_ar_perceiver_views}.
+% TODO: Read about calibration problem.
+
+We propose a variation of the RPerceiver architecture capable of processing multi-modal inputs, which we call the Recurrent Perceiver Multi-Modal (RPerceiverMM). The original Perceiver paper \cite{jaeglePerceiverGeneralPerception2021} handled multi-modality by concatenating a learned, modality-specific encoding to each input element. Modern Autonomous Driving Systems (ADS) process information from multiple sensors, often including multiple cameras placed in different locations, which presents a calibration challenge. Therefore, our work adopts a different approach to multi-modality. We introduce a camera-specific cross-attention module to the RPerceiverMM. Within the scope of this thesis, we focus on a multi-view camera setup. The architecture of the RPerceiverMM is illustrated in Figure~\ref{fig:figure_methods_model_ar_perceiver_views}.
 
 % TODO edit fiture and name
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver_views.png}
-    \caption{Autoregressive Perceiver with view dimension. The backbone output is supplemented with a learned view-specific positional encoding before passing it to the autoregressive Perceiver model. The autoregressive Perceiver takes a hidden state from the previous frame's last view and iterates through the current frame's views. After the last view, we pass the output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points on the global frame raster.}
-    \label{fig:figure_methods_model_ar_perceiver_views}
+    \includegraphics[width=\textwidth]{figures/figure_methods_recurrent_perceiver_mm.png}
+    \caption{The Recurrent Perceiver Multi-Modal (RPerceiverMM) architecture designed for multi-view camera inputs. It employs camera-specific cross-attention modules to process information from different sensors (views). In this example, separate cross-attention blocks are used for each camera input, integrating modality-specific information.}
+    \label{fig:figure_methods_recurrent_perceiver_mm}
 \end{figure}
 
-Additionally, to the Recurrent Perceiver (including Multi-modal variant), we used a CNN backbone to learn a 2D representation of the input frames, we did not use a pre-trained backbone see Appendix \ref{Appendix:Backbone}. We used a detection heads similar as in DETR model \cite{} with linear layer to project class logits and 3 layer of multi-layer perceptron (MLP) to predict the object coordinates. As for objects coordinates we considered two variants: (i) bounding boxes (ii) center point. Therefore the dimention of output $Lx4$ and $Lx2$ respectively. For bounding boxes we used a sigmoid activateion function to predict coordinates of bounding box center and width and hight. For center points we used a tanh activation function because we placed the center of the coordnate system into the center in order to mimic a berd-eye view, similar as ADS in center with all views around it. The whole and complete architecture is show \ref{fig:figure_methods_model_r_perceiver_complte}.
+In addition to the RPerceiver module, we used a CNN backbone to learn a 2D representation of the input frames. We designed this backbone consisting of four blocks with convolutional layers and ReLU activation. Each block progressively downscales spatial dimensions by a factor of 2 while increasing channel dimensionality, resulting in a final feature map with 128 channels and $\frac{1}{16}$ of the original spatial resolution.
+The output features from the RPerceiver module are passed to the detection heads, which are responsible for predicting object labels and positions. We employed detection heads the same as those in the DETR model \cite{carionEndtoEndObjectDetection2020}. These heads include a linear layer to predict the class label using a softmax function and a 3-layer Multi-Layer Perceptron (MLP) with ReLU activation function to predict object coordinates. We considered two variants for object coordinates: (i) bounding boxes, where the MLP predicts the normalized center coordinates, height, and width relative to the input image, and (ii) center points. The corresponding output dimensions are $N \times 4$ and $N \times 2$, respectively, where $N$ is a fixed number of detection slots (queries). Since $N$ is typically much larger than the actual number of objects, a special class label $\emptyset$ is used to indicate that no object is detected within a slot, playing a role similar to a background class.
+For bounding boxes, we used a sigmoid activation function to predict the normalized coordinates of the bounding box center, as well as its width and height. For center points, we used a tanh activation function. This choice was made because we placed the origin of the coordinate system at the center to mimic a bird's-eye view, similar to an ADS positioned centrally with surrounding views.
+The complete architecture of the model is shown in Figure~\ref{fig:figure_methods_model_r_perceiver_complte}.
+
+% TODO edit fiture and name
 
 \begin{figure}
     \centering
