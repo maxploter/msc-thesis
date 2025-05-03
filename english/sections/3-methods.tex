@@ -18,7 +18,7 @@ The architecture of the RPerceiver is illustrated in Figure \ref{fig:figure_meth
 
 % TODO: Read about calibration problem.
 
-We propose a variation of the RPerceiver architecture capable of processing multi-modal inputs, which we call the Recurrent Perceiver Multi-Modal (RPerceiverMM). The original Perceiver paper \cite{jaeglePerceiverGeneralPerception2021} handled multi-modality by concatenating a learned, modality-specific encoding to each input element. Modern Autonomous Driving Systems (ADS) process information from multiple sensors, often including multiple cameras placed in different locations, which presents a calibration challenge. Therefore, our work adopts a different approach to multi-modality. We introduce a camera-specific cross-attention module to the RPerceiverMM. Within the scope of this thesis, we focus on a multi-view camera setup. The architecture of the RPerceiverMM is illustrated in Figure~\ref{fig:figure_methods_model_ar_perceiver_views}.
+We propose a variation of the RPerceiver architecture capable of processing multi-modal inputs, which we call the Recurrent Perceiver Multi-Modal (RPerceiverMM). The original Perceiver paper \cite{jaeglePerceiverGeneralPerception2021} handled multi-modality by concatenating a learned, modality-specific encoding to each input element. Modern Autonomous Driving Systems (ADS) process information from multiple sensors, often including multiple cameras placed in different locations, which presents a calibration challenge. Therefore, our work adopts a different approach to multi-modality. We introduce a camera-specific cross-attention module to the RPerceiverMM. Within the scope of this thesis, we focus on a multi-view camera setup. The architecture of the RPerceiverMM is illustrated in Figure~\ref{fig:figure_methods_recurrent_perceiver_mm}.
 
 % TODO edit fiture and name
 
@@ -32,15 +32,15 @@ We propose a variation of the RPerceiver architecture capable of processing mult
 In addition to the RPerceiver module, we used a CNN backbone to learn a 2D representation of the input frames. We designed this backbone consisting of four blocks with convolutional layers and ReLU activation. Each block progressively downscales spatial dimensions by a factor of 2 while increasing channel dimensionality, resulting in a final feature map with 128 channels and $\frac{1}{16}$ of the original spatial resolution.
 The output features from the RPerceiver module are passed to the detection heads, which are responsible for predicting object labels and positions. We employed detection heads the same as those in the DETR model \cite{carionEndtoEndObjectDetection2020}. These heads include a linear layer to predict the class label using a softmax function and a 3-layer Multi-Layer Perceptron (MLP) with ReLU activation function to predict object coordinates. We considered two variants for object coordinates: (i) bounding boxes, where the MLP predicts the normalized center coordinates, height, and width relative to the input image, and (ii) center points. The corresponding output dimensions are $N \times 4$ and $N \times 2$, respectively, where $N$ is a fixed number of detection slots (queries). Since $N$ is typically much larger than the actual number of objects, a special class label $\emptyset$ is used to indicate that no object is detected within a slot, playing a role similar to a background class.
 For bounding boxes, we used a sigmoid activation function to predict the normalized coordinates of the bounding box center, as well as its width and height. For center points, we used a tanh activation function. This choice was made because we placed the origin of the coordinate system at the center to mimic a bird's-eye view, similar to an ADS positioned centrally with surrounding views.
-The complete architecture of the model is shown in Figure~\ref{fig:figure_methods_model_r_perceiver_complte}.
+The complete architecture of the model is shown in Figure~\ref{fig:figure_methods_recurrent_perceiver_complete}.
 
 % TODO edit fiture and name
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/figure_methods_model_ar_perceiver_views.png}
+    \includegraphics[width=\textwidth]{figures/figure_methods_recurrent_perceiver_complete.png}
     \caption{Full architecture of our model. The backbone output is supplemented with a learned view-specific positional encoding before passing it to the autoregressive Perceiver model. The autoregressive Perceiver takes a hidden state from the previous frame's last view and iterates through the current frame's views. After the last view, we pass the output embedding of the Perceiver to the feed-forward network (FFN) that predicts class labels and center points on the global frame raster.}
-    \label{fig:figure_methods_model_r_perceiver_complte}
+    \label{fig:figure_methods_recurrent_perceiver_complete}
 \end{figure}
 
 
