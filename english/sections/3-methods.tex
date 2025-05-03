@@ -100,53 +100,61 @@ The FDE measures the distance between the predicted and ground truth center poin
 
 \subsection{Loss Function} \label{Methods:LossFunction}
 
-We adopted the loss calculation approach from DETR \cite{carionEndtoEndObjectDetection2020} and \cite{stewartEndtoendPeopleDetection2015}. The model (\ref{Methods:Model}) predicts a fixed-size set of $N$ potential objects per timestep. The parameter $N$ is a dimension of the latent array and is chosen to be greater than the cardinality of the largest set of ground-truth objects per frame. The model uses an attention mechanism that allows it to attend to all other elements in the attention map. Therefore, there is no predefined structure, like a grid in one-stage image detectors \cite{}, associating predictions with ground-truth objects. This presents the core challenge of how to score the fixed-size prediction set against the variable-size ground-truth set of objects. The loss function calculation consists of two steps: first, finding an optimal bipartite matching between the elements of the predicted and ground-truth sets, and second, calculating a loss.
+We adopted the loss calculation approach from DETR \cite{carionEndtoEndObjectDetection2020} and \cite{stewartEndtoendPeopleDetection2015}. The model (\ref{Methods:Model}) predicts a fixed-size set of $N$ potential objects per timestep. The parameter $N$ is a dimension of the latent array and is chosen to be greater than the cardinality of the largest set of ground-truth objects per frame. The model uses an attention mechanism that allows it to attend to all other elements in the attention map. Therefore, there is no predefined structure, like a grid in one-stage image detectors \cite{redmonYouOnlyLook2016}, associating predictions with ground-truth objects. This presents the core challenge of how to score the fixed-size prediction set against the variable-size ground-truth set. The loss function calculation consists of two steps: first, finding an optimal bipartite matching between the elements of the predicted and ground-truth sets, and second, calculating a loss.
 
-Let us denote the set of predictions for a given timestep as $ \hat{Y} = \{\hat{y}_j\}_{j=1}^N $ and the corresponding set of ground-truth objects for that frame as $ Y = \{y_i\}_{i=1}^M $. At each recurrence (i.e., for each frame/timestep processed), the RPerceiver outputs the entire set of $N$ predictions $\hat{Y}$. Each prediction $\hat{y}_j \in \hat{Y}$ consists of a predicted object representation $\hat{o}_j$ and a predicted class label $\hat{c}_j$ (including the possibility of the no-object class $\emptyset$). The nature of $\hat{o}_j$ depends on the specific task:
+Let us denote the set of predictions for a given timestep as $ \hat{Y} = \{\hat{y}_j\}_{j=1}^N $ and the corresponding set of ground-truth objects for that frame as $ Y = \{y_i\}_{i=1}^M $ where $ N > M $. At each recurrence (i.e., for each frame/timestep processed), the RPerceiver outputs the entire set of $N$ predictions $\hat{Y}$. Each prediction $\hat{y}_j \in \hat{Y}$ consists of a predicted object position $\hat{o}_j$ and a predicted class label $\hat{c}_j$ (including the possibility of the no-object class $\emptyset$). The position $\hat{o}_j$ can represent different objects depending on the specific task:
 \begin{itemize}
     \item For the \textbf{bounding box prediction task}, $\hat{o}_j$ is the predicted box $\hat{b}_j = (\hat{b}_x, \hat{b}_y, \hat{b}_w, \hat{b}_h) \in \mathbb{R}^4$, representing center coordinates, height, and width relative to the frame size.
     \item For the \textbf{center point prediction task}, $\hat{o}_j$ is the predicted center point coordinates $\hat{p}_j = (\hat{p}_x, \hat{p}_y) \in \mathbb{R}^2$ relative to the frame size.
 \end{itemize}
-Similarly, each ground-truth object $y_i \in Y$ consists of the ground-truth object representation $o_i$ (either a box $b_i$ or a point $p_i$) and the ground-truth class label $c_i$.
-We define a matching algorithm via an injective function $f: Y \rightarrow \hat{Y}$, where $f(y_i)$ is the candidate hypothesis $\hat{y}_j \in \hat{Y}$ assigned to the ground-truth object $y_i$. Given $f$, we define a loss function on pairs of sets $Y$ and $\hat{Y}$ as \cite{}:
+Similarly, each ground-truth object $y_i \in Y$ consists of the ground-truth object position $o_i$ (either a box $b_i$ or a point $p_i$) and the ground-truth class label $c_i$.
+We define a matching algorithm via an injective function $f: Y \rightarrow \hat{Y}$, where $f(y_i)$ is the candidate hypothesis $\hat{y}_j \in \hat{Y}$ assigned to the ground-truth object $y_i$. Given $f$, we define a loss function on pairs of sets $Y$ and $\hat{Y}$ as \cite{stewartEndtoendPeopleDetection2015}:
+
 \begin{equation} \label{eq:set_loss}
-L(Y, \hat{Y}, f ) = \sum_{i: f(y_i) \text{ is defined}} l_{pos}(y_i, f(y_i)) +  \sum_{j=1}^{N} l_c (\hat{y}_j, y_j^{\text{match}})
+\mathcal{L}(Y, \hat{Y}, f ) = \sum_{i=1}^{M} \mathcal{L}_{pos}(y_i, f(y_i)) +  \sum_{j=1}^{N} \mathcal{L}_c (\hat{y}_j, y_j)
 \end{equation}
-where $l_c$ is the class prediction loss, for which we utilize the Focal Loss \cite{}, and $l_{pos}$ is an object localization loss. The formulation of $l_{pos}$ depends on the specific task (bounding box or center point). Details on each loss term are provided below.
+where $\mathcal{L}_c$ is the class prediction loss, as a loss function we used the Focal Loss \cite{linFocalLossDense2018}. It is defined from the matching function as $ y_j = \mathbb{I}\{f^{-1}(\hat{y}_j) \neq \emptyset\} $.  
+$\mathcal{L}_{pos}$ is the object localization loss. The specific formulation of $\mathcal{L}_{pos}$ depends on the task (bounding box or center point). Details on each loss term are provided below. 
 
-\textbf{Focal Loss.} The Focal Loss is used to address the class imbalance between the foreground objects and the numerous potential background predictions. The class loss component $l_c$ for each prediction $\hat{y}_j$ is calculated using the sigmoid Focal Loss, summed over all foreground classes $k \in \{1, ..., C\}$, where $C$ is the number of object categories (excluding the $\emptyset$ class). The Focal Loss for a single class $k$ and prediction $j$ is defined as:
-\begin{equation} \label{eq:focal_loss}
-    \text{FL}(p_{jk}) = - \alpha_t (1 - p_{jk})^\gamma \log(p_{jk})
+\textbf{Focal Loss.} The Focal Loss \cite{linFocalLossDense2018} is used to address the class imbalance between the foreground objects and the numerous potential background predictions. The class loss component $\mathcal{L}_c$ for each prediction $\hat{y}_j$ involves the sigmoid Focal Loss. The total class loss for a prediction $\hat{y}_j$ is summed over all foreground classes $k \in \{1, ..., C\}$, where $C$ is the number of object categories (excluding the $\emptyset$ class). The Focal Loss for a single class $k$ and prediction $j$ is defined using the $\alpha$-balanced form:
+\begin{equation} \label{eq:focal_loss_corrected} % Changed label slightly to avoid conflict if original eq:focal_loss is used elsewhere
+    \text{FL}(p_{jk}, y_{jk}) = - \alpha_t (1 - p_t)^\gamma \log(p_t)
 \end{equation}
-where $p_{jk} = \sigma(x_{jk})$ is the predicted sigmoid probability for class $k$ from the raw logits $x_{jk}$, and $\alpha_t$ and $p_t$ are defined based on the ground-truth label $y_{jk}$ (which is 1 if the matched ground-truth class is $k$, and 0 otherwise):
-\begin{equation*}
-    p_t =
-    \begin{cases}
+where $p_{jk} = \sigma(x_{jk})$ is the predicted sigmoid probability for class $k$ derived from the raw logits $x_{jk}$, and $y_{jk}$ is the ground-truth label (1 if the matched ground-truth object $f^{-1}(\hat{y}_j)$ belongs to class $k$, and 0 otherwise). The terms $p_t$ and $\alpha_t$ depend on the ground-truth label $y_{jk}$:
+\begin{align*}
+    p_t &= 
+    \begin{cases} 
         p_{jk} & \text{if } y_{jk} = 1 \\
-        1 - p_{jk} & \text{if } y_{jk} = 0
+        1 - p_{jk} & \text{if } y_{jk} = 0 
+    \end{cases} \\
+    \alpha_t &= 
+    \begin{cases} 
+        \alpha & \text{if } y_{jk} = 1 \\
+        1 - \alpha & \text{if } y_{jk} = 0 
     \end{cases}
+\end{align*}
+The term $\gamma \ge 0$ is the focusing parameter, which reduces the relative loss for well-classified examples ($p_t \to 1$), thereby putting more focus on hard, misclassified examples. The term $\alpha \in [0, 1]$ is a weighting factor to address class imbalance, typically set as a hyperparameter (e.g., $\alpha=0.25$). The total class loss contribution for prediction $j$ in Equation \ref{eq:set_loss} is calculated as:
+\begin{equation*}
+    \mathcal{L}_c(\hat{y}_j, y_j^{\text{match}}) = \sum_{k=1}^{C} \text{FL}(p_{jk}, y_{jk}) 
 \end{equation*}
-The term $\gamma \ge 0$ is the focusing parameter, which reduces the relative loss for well-classified examples, thereby putting more focus on hard, misclassified examples. The term $\alpha_t$ is a weighting factor to address class imbalance, typically $\alpha$ for the positive class ($y_{jk}=1$) and $1-\alpha$ for the negative class ($y_{jk}=0$). The total class loss for prediction $j$ is $l_c(\hat{y}_j, y_j^{\text{match}}) = \sum_{k=1}^{C} \text{FL}(p_{jk})$. For unmatched predictions ($\hat{y}_j$ matched to $\emptyset$), $y_{jk}=0$ for all foreground classes $k$.
+For unmatched predictions ($\hat{y}_j$ such that $y_j^{\text{match}} = 0$), the ground truth is $y_{jk}=0$ for all foreground classes $k$, and the loss calculation correctly handles them as background/$\emptyset$ class predictions.
 
-\textbf{Bounding Box Loss} is a linear combination of the L1 loss and the Generalized IoU (GIoU) loss \cite{}:
+\textbf{Bounding Box Loss} is a linear combination of the L1 loss and the Generalized IoU (GIoU) loss \cite{rezatofighiGeneralizedIntersectionUnion2019}:
 \begin{equation}
     \mathcal{L}_{box}(b_i, \hat{b}_j) = \lambda_{L1} \mathcal{L}_{L1}(b_i, \hat{b}_j) + \lambda_{giou} \mathcal{L}_{giou}(b_i, \hat{b}_j)
     \label{eq:box_loss_revised}
 \end{equation}
-where $y_i = (c_i, b_i)$ and $\hat{y}_j = (\hat{c}_j, \hat{b}_j)$, and:
-\begin{itemize}
-    \item $ \mathcal{L}_{L1}(b_i, \hat{b}_j) = \|b_i - \hat{b}_j\|_1 $ is the L1 norm, weighted by $ \lambda_{L1} $ (e.g., \texttt{weight\_dict['loss\_bbox'] * bbox\_loss\_coef}).
-    \item $ \mathcal{L}_{giou}(b_i, \hat{b}_j) = 1 - \text{GIoU}(\text{box\_ops.box\_cxcywh\_to\_xyxy}(b_i), \text{box\_ops.box\_cxcywh\_to\_xyxy}(\hat{b}_j)) $, weighted by $ \lambda_{giou} $ (e.g., \texttt{weight\_dict['loss\_giou'] * giou\_loss\_coef}). GIoU is defined in \cite{Rezatofighi2019GeneralizedIO}. % Added GIoU citation
-\end{itemize}
-Both the $ \mathcal{L}_{L1} $ and $ \mathcal{L}_{giou} $ components are normalized by the total number of actual ground-truth boxes ($M$) across the batch (denoted as \texttt{num\_boxes}). Thus, for matched pairs in the bounding box task, $l_{pos}(y_i, \hat{y}_j) = \mathcal{L}_{box}(b_i, \hat{b}_j)$.
+where $y_i = (c_i, b_i)$ and $\hat{y}_j = (\hat{c}_j, \hat{b}_j)$. Loss terms $ \mathcal{L}_{L1}, \mathcal{L}_{giou} $ are weighted by hyperparameters $ \lambda_{L1}, \lambda_{giou} \in \mathbb{R} $.
 
-\textbf{Center Point Loss.} For the center point prediction task, the localization loss $l_{pos}(y_i, \hat{y}_j)$ applies \textit{only} to matched pairs $(i, j)$ where $f(y_i) = \hat{y}_j$. we use the L1 distance between the ground-truth center point $p_i$ and the predicted center point $\hat{p}_j$:
+Both the $ \mathcal{L}_{L1} $ and $ \mathcal{L}_{giou} $ components are normalized by the total number of actual ground-truth boxes ($M$) across the batch. Thus, for matched pairs in the bounding box task, $l_{pos}(y_i, \hat{y}_j) = \mathcal{L}_{box}(b_i, \hat{b}_j)$.
+
+\textbf{Center Point Loss.} is L1 distance between the ground-truth center point $p_i$ and the predicted center point $\hat{p}_j$:
 \begin{equation} \label{eq:point_loss}
-    \mathcal{L}_{point}(p_i, \hat{p}_j) = \|p_i - \hat{p}_j\|_1
+    \mathcal{L}_{point}(p_i, \hat{p}_j) = \mathcal{L}_{L1}(p_i, \hat{p}_j)
 \end{equation}
-where $y_i = (c_i, p_i)$ and $\hat{y}_j = (\hat{c}_j, \hat{p}_j)$. The total localization loss term in Equation \ref{eq:set_loss} for this task involves summing $\mathcal{L}_{point}$ over all matched pairs and normalizing by the total number of ground-truth objects ($M$) in the batch (denoted as \texttt{num\_objects}). Thus, for matched pairs in the center point task, $l_{pos}(y_i, \hat{y}_j) = \mathcal{L}_{point}(p_i, \hat{p}_j)$.
+where $y_i = (c_i, p_i)$ and $\hat{y}_j = (\hat{c}_j, \hat{p}_j)$. The total localization loss term in Equation \ref{eq:set_loss} for this task involves summing $\mathcal{L}_{point}$ over all matched pairs and normalizing by the total number of ground-truth objects ($M$) in the batch. Thus, for matched pairs in the center point task, $\mathcal{L}_{pos}(y_i, \hat{y}_j) = \mathcal{L}_{point}(p_i, \hat{p}_j)$.
 
-\textbf{Matching Function ($ f $):} This optimal assignment is computed efficiently using the Hungarian algorithm \cite{Kuhn1955TheHM, Carion2020EndToEndOD, Stewart2015EndtoendPD}. The pairwise matching cost $\mathcal{L}_{match}(y_i, \hat{y}_j)$ used within the Hungarian algorithm depends on the task. For the \textbf{bounding box task}, it is defined as \cite{Carion2020EndToEndOD}:
+\textbf{Hungarian loss.} We use comparison cost function $\mathcal{L}_{match}: Y x \hat{Y} \rightarrow \mathbb{R}$ between hypotheses and ground-truth object. The comparison cost function $\mathcal{L}_{match}(y_i, \hat{y}_j)$ depends on the task. For the \textbf{bounding box task}, it is defined as \cite{carionEndtoEndObjectDetection2020}:
 \begin{equation} \label{eq:matching_cost_bbox}
 \mathcal{L}_{match}^{\text{bbox}}(y_i, \hat{y}_j) = - \mathbb{I}\{c_i \neq \emptyset\} \hat{p}_{j}(c_i) + \mathbb{I}\{c_i \neq \emptyset\} \mathcal{L}_{box}(b_i, \hat{b}_{j})
 \end{equation}
@@ -154,11 +162,8 @@ where $\hat{p}_j(c_i)$ is the predicted probability of the ground-truth class $c
 \begin{equation} \label{eq:matching_cost_point}
 \mathcal{L}_{match}^{\text{point}}(y_i, \hat{y}_j) = - \mathbb{I}\{c_i \neq \emptyset\} \hat{p}_{j}(c_i) + \mathbb{I}\{c_i \neq \emptyset\} \mathcal{L}_{point}(p_i, \hat{p}_{j})
 \end{equation}
-The optimal assignment $\hat{\sigma}$ minimizes the total matching cost over possible permutations $\sigma$ of the predictions using the task-specific cost:
-\begin{equation} \label{eq:hungarian_argmin}
-\hat{\sigma} = \arg\min_{\sigma \in \mathfrak{S}_N} \sum_{i=1}^{M} \mathcal{L}_{match}^{\text{task}}(y_i, \hat{y}_{\sigma(i)})
-\end{equation}
-where $\mathfrak{S}_N$ is the set of permutations of $\{1, ..., N\}$. The function $f$ used in Equation \ref{eq:set_loss} is then defined by this optimal assignment $\hat{\sigma}$, such that $f(y_i) = \hat{y}_{\hat{\sigma}(i)}$ for matched ground-truth objects $y_i$. The overall loss computed using this optimal matching is referred to as the Hungarian loss, $\mathcal{L}_{Hungarian}(Y, \hat{Y}) = L(Y, \hat{Y}, f_{\hat{\sigma}})$.
+
+Given the definition of comparison cost function $\mathcal{L}_{match}$, we find optimal cost bipartite matching between $ Y $ and $ \hat{Y} $ efficiently using the Hungarian algorithm \cite{kuhnHungarianMethodAssignment1955}. The function $f$ used in Equation \ref{eq:set_loss} is then defined by this optimal assignment. The overall loss computed using this optimal matching is referred to as the Hungarian loss, $\mathcal{L}_{Hungarian}(Y, \hat{Y}) = \mathcal{L}(Y, \hat{Y}, f_{Hungarian})$.
 
 \subsection{Dropout and Shuffle} \label{Methods:Training:DropoutAndShuffle}
 
