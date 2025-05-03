@@ -78,25 +78,17 @@ In order for dataset to be more challanging we do not restrict digit overlap in 
 
 We generated the dataset with 60K and 10K train and test splits, respectively. Annotations, automatically generated during sequence creation, include digit classes and digit center point coordinates (keypoint), bounding box coordinates and digit's identity ID.
 
-\subsection{Metrics} \label{Methods:Metrics}
+\subsection{Dropout and Shuffle} \label{Methods:Training:DropoutAndShuffle}
 
-% TODO: mention mAP 75
+We implemented two training procedures: \texttt{shuffle} and \texttt{dropout}. Additionally, we implemented a combination of the two. A model trained without applying these training procedures is considered the baseline.
 
-We used mean Average Precision (mAP) as the primary metric to evaluate the model's performance. A widely used metric in object detection, mAP measures the average precision across various Intersection over Union (IoU) thresholds, adapted from information retrieval evaluation methods and popularized in challenges like PASCAL VOC \cite{everinghamPascalVisualObject2010}. Specifically, we report the mAP at an IoU threshold of 0.5, a common choice established in early object detection benchmarks such as PASCAL VOC \cite{everinghamPascalVisualObject2010}, and the mAP at 0.5-0.95, which represents the mean of the average precision calculated at IoU thresholds ranging from 0.5 to 0.95 with a step of 0.05, as introduced by the COCO challenge \cite{linMicrosoftCOCOCommon2015a}.
+\begin{description}
+    \item[\texttt{shuffle}] In this procedure, the sensor inputs are randomly permuted within each time step. Consequently, the model receives inputs from the sensors in a random order for that specific time step. This shuffling only occurs for sensor inputs within the same time step. This training procedure is only applicable to a multi-view setup.
 
-We used the Average Displacement Error (ADE) and Final Displacement Error (FDE) metrics to evaluate the model's performance. The ADE measures the average distance between the predicted and ground truth center points over the sequence of frames \ref{eq:ade}.
+    \item[\texttt{dropout}] This procedure simulates scenarios where sensor information is missing. To achieve this, we train the model by intermittently dropping sensor inputs (input dropout). We keep the first half of the input sequence intact (no dropout), allowing the model to accumulate features in its hidden state. The second half of the sequence may undergo frame dropout depending on the dropout probability. During training, we gradually increase the probability of an information dropout from 10\% up to 86.6\%.
+\end{description}
 
-\begin{equation}
-    \text{ADE} = \frac{1}{N \cdot T} \sum_{i=1}^{N} \sum_{t=1}^{T} || \hat{y}_{i,t} - y_{i,t} ||_2
-    \label{eq:ade}
-\end{equation}
-
-The FDE measures the distance between the predicted and ground truth center points at the last frame of the sequence \ref{eq:fde}.
-
-\begin{equation}
-    \text{FDE} = \frac{1}{N} \sum_{i=1}^{N} || \hat{y}_{i,T} - y_{i,T} ||_2
-    \label{eq:fde}
-\end{equation}
+% TODO add schema of shuffle and dropout
 
 \subsection{Loss Function} \label{Methods:LossFunction}
 
@@ -117,7 +109,7 @@ where $\mathcal{L}_c$ is the class prediction loss, as a loss function we used t
 $\mathcal{L}_{pos}$ is the object localization loss. The specific formulation of $\mathcal{L}_{pos}$ depends on the task (bounding box or center point). Details on each loss term are provided below. 
 
 \textbf{Focal Loss.} The Focal Loss \cite{linFocalLossDense2018} is used to address the class imbalance between the foreground objects and the numerous potential background predictions. The class loss component $\mathcal{L}_c$ for each prediction $\hat{y}_j$ involves the sigmoid Focal Loss. The total class loss for a prediction $\hat{y}_j$ is summed over all foreground classes $k \in \{1, ..., C\}$, where $C$ is the number of object categories (excluding the $\emptyset$ class). The Focal Loss for a single class $k$ and prediction $j$ is defined using the $\alpha$-balanced form:
-\begin{equation} \label{eq:focal_loss_corrected} % Changed label slightly to avoid conflict if original eq:focal_loss is used elsewhere
+\begin{equation} \label{eq:focal_loss_corrected}
     \text{FL}(p_{jk}, y_{jk}) = - \alpha_t (1 - p_t)^\gamma \log(p_t)
 \end{equation}
 where $p_{jk} = \sigma(x_{jk})$ is the predicted sigmoid probability for class $k$ derived from the raw logits $x_{jk}$, and $y_{jk}$ is the ground-truth label (1 if the matched ground-truth object $f^{-1}(\hat{y}_j)$ belongs to class $k$, and 0 otherwise). The terms $p_t$ and $\alpha_t$ depend on the ground-truth label $y_{jk}$:
@@ -165,17 +157,26 @@ where $\hat{p}_j(c_i)$ is the predicted probability of the ground-truth class $c
 
 Given the definition of comparison cost function $\mathcal{L}_{match}$, we find optimal cost bipartite matching between $ Y $ and $ \hat{Y} $ efficiently using the Hungarian algorithm \cite{kuhnHungarianMethodAssignment1955}. The function $f$ used in Equation \ref{eq:set_loss} is then defined by this optimal assignment. The overall loss computed using this optimal matching is referred to as the Hungarian loss, $\mathcal{L}_{Hungarian}(Y, \hat{Y}) = \mathcal{L}(Y, \hat{Y}, f_{Hungarian})$.
 
-\subsection{Dropout and Shuffle} \label{Methods:Training:DropoutAndShuffle}
+\subsection{Metrics} \label{Methods:Metrics}
 
-We implemented two training procedures: \texttt{shuffle} and \texttt{dropout}. Additionally, we implemented a combination of the two. A model trained without applying these training procedures is considered the baseline.
+We used mean Average Precision (mAP) as the primary metric to evaluate the model's object detection performance. A widely used metric in object detection, mAP measures the average precision across various Intersection over Union (IoU) thresholds, adapted from information retrieval evaluation methods and popularized in challenges like PASCAL VOC \cite{everinghamPascalVisualObject2010}. Specifically, we report the mAP at an IoU threshold of 0.5 (mAP@0.5), a common choice established in early object detection benchmarks such as PASCAL VOC \cite{everinghamPascalVisualObject2010}. We also report the mAP at an IoU threshold of 0.75 (mAP@0.75), which provides a stricter evaluation criterion. Additionally, we include the mAP averaged over IoU thresholds ranging from 0.5 to 0.95 with a step of 0.05 (mAP@0.5:0.95), as introduced by the COCO challenge \cite{linMicrosoftCOCOCommon2015a}.
 
-\begin{description}
-    \item[\texttt{shuffle}] In this procedure, the sensor inputs are randomly permuted within each time step. Consequently, the model receives inputs from the sensors in a random order for that specific time step. This shuffling only occurs for sensor inputs within the same time step. This training procedure is only applicable to a multi-view setup.
+For evaluating the model's center point prediction performance, we used the Average Displacement Error (ADE) and Final Displacement Error (FDE) metrics. The ADE measures the average Euclidean distance between the predicted and ground truth center points over the sequence of frames, as shown in Equation \ref{eq:ade}.
 
-    \item[\texttt{dropout}] This procedure simulates scenarios where sensor information is missing. To achieve this, we train the model by intermittently dropping sensor inputs (input dropout). We keep the first half of the input sequence intact (no dropout), allowing the model to accumulate features in its hidden state. The second half of the sequence may undergo frame dropout depending on the dropout probability. During training, we gradually increase the probability of an information dropout from 10\% up to 86.6\%.
-\end{description}
+% TODO: refine equations
 
+\begin{equation}
+    \text{ADE} = \frac{1}{M \cdot T} \sum_{i=1}^{M} \sum_{t=1}^{T} || \hat{p}_{i,t} - p_{i,t} ||_2
+    \label{eq:ade}
+\end{equation}
 
-% TODO add schema of shuffle and dropout
+where, $N$ is fixed-size of potential center point predictions p, $T$ is the number of time steps in each sequence, $\hat{y}_{i,t}$ is the predicted center point for sequence $i$ at time step $t$, and $y_{i,t}$ is the corresponding ground truth center point.
 
-% TASK DEFINITION
+The FDE measures the Euclidean distance between the predicted and ground truth center points only at the final time step ($T$) of the sequence, normalized by the number of ground truth center points, as defined in Equation \ref{eq:fde}.
+
+\begin{equation}
+    \text{FDE} = \frac{1}{M} \sum_{i=1}^{M} || f(p_{i,T}) - p_{i,T} ||_2
+    \label{eq:fde}
+\end{equation}
+
+where, $ f(p_{i,T}) $ is matching function introduced \ref{Methods:LossFunction} takes predicted center point for ground truth center point $i$ at the final time step $T$, and $p_{i,T}$ is the ground truth center point at that same final time step.
