@@ -103,10 +103,20 @@ Similarly, each ground-truth object $y_i \in Y$ consists of the ground-truth obj
 We define a matching algorithm via an injective function $f: Y \rightarrow \hat{Y}$, where $f(y_i)$ is the candidate hypothesis $\hat{y}_j \in \hat{Y}$ assigned to the ground-truth object $y_i$. Given $f$, we define a loss function on pairs of sets $Y$ and $\hat{Y}$ as \cite{stewartEndtoendPeopleDetection2015}:
 
 \begin{equation} \label{eq:set_loss}
-\mathcal{L}(Y, \hat{Y}, f ) = \sum_{i=1}^{M} \mathcal{L}_{pos}(y_i, f(y_i)) +  \sum_{j=1}^{N} \mathcal{L}_c (\hat{y}_j, y_j)
+\mathcal{L}(Y, \hat{Y}, f ) = \sum_{i=1}^{M} \mathcal{L}_{pos}(y_i, f(y_i)) +  \sum_{j=1}^{N} \mathcal{L}_c (\hat{y}_j, f^{-1}(\hat{y}_j))
 \end{equation}
-where $\mathcal{L}_c$ is the class prediction loss, as a loss function we used the Focal Loss \cite{linFocalLossDense2018}. It is defined from the matching function as $ y_j = \mathbb{I}\{f^{-1}(\hat{y}_j) \neq \emptyset\} $.  
-$\mathcal{L}_{pos}$ is the object localization loss. The specific formulation of $\mathcal{L}_{pos}$ depends on the task (bounding box or center point). Details on each loss term are provided below. 
+
+where $\mathcal{L}_{pos}$ is the object localization loss. The specific formulation of $\mathcal{L}_{pos}$ depends on the task (bounding box or center point). $\mathcal{L}_c$ is the class prediction loss, for which we used Focal Loss \cite{linFocalLossDense2018}. $f^{-1}(\cdot)$ is an inverse of the matching function $f$:
+
+\begin{equation*}
+f^{-1}(\hat{y}_j) =
+\begin{cases}
+y_i & \exists \, y_i \in Y, f(y_i) = \hat{y}_j \\
+\emptyset & \text{otherwise} \\
+\end{cases}
+\end{equation*}
+Details on each loss term are provided below.
+
 
 \textbf{Focal Loss.} The Focal Loss \cite{linFocalLossDense2018} is used to address the class imbalance between the foreground objects and the numerous potential background predictions. The class loss component $\mathcal{L}_c$ for each prediction $\hat{y}_j$ involves the sigmoid Focal Loss. The total class loss for a prediction $\hat{y}_j$ is summed over all foreground classes $k \in \{1, ..., C\}$, where $C$ is the number of object categories (excluding the $\emptyset$ class). The Focal Loss for a single class $k$ and prediction $j$ is defined using the $\alpha$-balanced form:
 \begin{equation} \label{eq:focal_loss_corrected}
@@ -163,20 +173,33 @@ We used mean Average Precision (mAP) as the primary metric to evaluate the model
 
 For evaluating the model's center point prediction performance, we used the Average Displacement Error (ADE) and Final Displacement Error (FDE) metrics. The ADE measures the average Euclidean distance between the predicted and ground truth center points over the sequence of frames, as shown in Equation \ref{eq:ade}.
 
-% TODO: refine equations
-
 \begin{equation}
-    \text{ADE} = \frac{1}{M \cdot T} \sum_{i=1}^{M} \sum_{t=1}^{T} || \hat{p}_{i,t} - p_{i,t} ||_2
+    \text{ADE} = \frac{\sum_{t=1}^{T} \sum_{i=1}^{M_t} || \pi_{\text{pos}}(f_t(y_{i,t})) - \pi_{\text{pos}}(y_{i,t}) ||_2}{\sum_{t=1}^{T} M_t}
     \label{eq:ade}
 \end{equation}
 
-where, $N$ is fixed-size of potential center point predictions p, $T$ is the number of time steps in each sequence, $\hat{y}_{i,t}$ is the predicted center point for sequence $i$ at time step $t$, and $y_{i,t}$ is the corresponding ground truth center point.
+where:
+\begin{itemize}
+    \item $T$ is the total number of time steps (frames) in the sequence.
+    \item $M_t$ is the number of ground truth objects $y_{i,t}$ present at time step $t$.
+    \item $y_{i,t}$ is the ground truth object (containing class and position $p_{i,t}$) at time $t$.
+    \item $f_t$ is the matching function at time $t$ mapping ground truth objects $Y_t$ to predictions $\hat{Y}_t$ and introduced in \ref{Methods:LossFunction}.
+    \item $\pi_{\text{pos}}(\cdot)$ is a function extracting the center point position coordinates from its argument (e.g., $\pi_{\text{pos}}(y_{i,t}) = p_{i,t}$ and $\pi_{\text{pos}}(f_t(y_{i,t}))$ extracts the coordinates $\hat{p}$ from the matched prediction $\hat{y}=f_t(y_{i,t})$).
+\end{itemize}
+
 
 The FDE measures the Euclidean distance between the predicted and ground truth center points only at the final time step ($T$) of the sequence, normalized by the number of ground truth center points, as defined in Equation \ref{eq:fde}.
 
 \begin{equation}
-    \text{FDE} = \frac{1}{M} \sum_{i=1}^{M} || f(p_{i,T}) - p_{i,T} ||_2
+    \text{FDE} = \frac{1}{M_T} \sum_{i=1}^{M_T} || \pi_{\text{pos}}(f_T(y_{i,T})) - \pi_{\text{pos}}(y_{i,T}) ||_2
     \label{eq:fde}
 \end{equation}
 
-where, $ f(p_{i,T}) $ is matching function introduced \ref{Methods:LossFunction} takes predicted center point for ground truth center point $i$ at the final time step $T$, and $p_{i,T}$ is the ground truth center point at that same final time step.
+where:
+\begin{itemize}
+    \item $T$ is the final time step of the sequence being evaluated.
+    \item $M_T$ is the number of ground truth objects $y_{i,T}$ present at the final time step $T$. (Note: This calculation assumes $M_T > 0$).
+    \item $y_{i,T}$ is the $i$-th ground truth object at the final time step $T$.
+    \item $f_T$ is the matching function specific to the final time step $T$, mapping ground truths $Y_T$ to predictions $\hat{Y}_T$ and introduced in \ref{Methods:LossFunction}.
+    \item $\pi_{\text{pos}}(\cdot)$ is the function extracting the center point position coordinates from its argument.
+\end{itemize}
