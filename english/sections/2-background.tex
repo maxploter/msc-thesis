@@ -20,79 +20,13 @@ For Levels 4 and 5 ADS, if a driving automation system can perform the entire DD
 
 The high safety requirements defined by SAE imply significant robustness expectations for ADS. This means that an ADS should be capable of, first, performing the DDT for a few seconds following a performance-relevant system failure until DDT fallback, and second, in the case of Levels 4 and 5, it must be able to reach a minimal risk condition despite such a system failure\cite{sae:j3016:2021apr}.
 
-Automated Driving Systems (ADS) should be capable of perceiving data from different sources. The Dynamic Driving Task (DDT) is defined as all real-time operational and tactical functions required to operate a vehicle in on-road traffic. Object and Event Detection and Response (OEDR) refers to the subtasks of the DDT that include monitoring the driving environment (detecting, recognizing, and classifying objects and events, and preparing to respond as needed) and executing an appropriate response to such objects and events (i.e., actions required to complete the DDT and/or DDT fallback). Performing the OEDR is necessary to complete the DDT and DDT fallback, and the capability of a Driving Automation System to handle OEDR allows it to be classified as Level 3 automation or higher.
-
-
-The DDT encompasses all real-time operational and tactical functions required for driving, including lateral and longitudinal motion control, and Object and Event Detection and Response (OEDR).
-
-
-
-
-ADS term is used to describe the last three and the most advanced SAE Levels 3 (Conditional), 4 (High), and 5 (Full) driving automation. ADS operate under high safety requirements, therefore crash mitigation and avoidance capability is part of ADS functionality.
-
-An Automated Driving System (ADS) refers to the hardware and software
-collectively capable of performing the entire Dynamic Driving Task (DDT)
-on a sustained basis, applicable to SAE Levels 3 (Conditional), 4
-(High), and 5 (Full) driving automation{ \textsuperscript{} }.
-
-Unlike
-lower levels of automation which merely assist a human driver, an ADS
-takes full responsibility for operating the vehicle within its specified
-Operational Design Domain (ODD), if applicable{ \textsuperscript{} }.
-
-This transfer of complete, real-time operational and tactical control {
-\textsuperscript{} } inherently necessitates that Autonomous Driving
-Systems operate under high safety requirements. The complexity involved
-in perceiving the environment, making safety-critical decisions, and
-executing maneuvers without human oversight demands rigorous design,
-validation, and operational safeguards, particularly concerning the
-system\textquotesingle s ability to manage unforeseen events and
-internal malfunctions safely{ \textsuperscript{} }. { ~ }
-
-A critical aspect supporting the high safety requirements for ADS
-revolves around \textbf{Failure Mitigation and Safe States}. ADS are
-complex integrations of hardware, software, and sensors, components of
-which are inevitably subject to DDT performance-relevant system failures
--- malfunctions preventing the reliable performance of the driving task
-{ \textsuperscript{} } (P1). To uphold safety during such occurrences,
-ADS must incorporate predefined strategies for DDT fallback{
-\textsuperscript{} }. This involves the system responding appropriately
-to a failure or ODD exit, which for Level 4 and 5 systems means the ADS
-must automatically achieve a Minimal Risk Condition (MRC) -- a stable,
-stopped state designed to reduce crash risk{ \textsuperscript{} }. For
-Level 3 systems, fallback may involve issuing a timely request to
-intervene to a fallback-ready user, expecting them to resume the DDT or
-achieve an MRC { \textsuperscript{} } (P2). During such a transition in
-Level 3, the ADS is expected to continue performing the DDT safely for a
-period to allow the user time to respond appropriately {
-\textsuperscript{} } (P3). Consequently, robust failure detection
-capabilities coupled with comprehensive mitigation strategies are
-essential for ADS to reliably transition the vehicle to an appropriate
-safe state -- whether that is under user control following a fallback
-request or an automatically achieved MRC -- upon system malfunction or
-performance degradation { \textsuperscript{} } (C1). { }
-
-
-There's an expectation of 
-
-State-of-the-art ADS employ a wide variety of sensors, often with redundancy, to ensure safety. These sensors can be categorized based on their purpose. In this thesis, we focus on exteroceptive sensors, which are primarily used for perceiving the surrounding environment to accomplish tasks necessary for the ADS.
-
-
-
-
-
-% goal: explain relevance between ADS and video object detection task
-
-Autonomous vehicle are complex on multi-sensor perception, integrating data from various sources such as LiDAR, cameras, and radar to create a comprehensive understanding of the environment.
-
-Definition of autonomous driving systems. Explain architecture.
-
-Type of sensors in ADS.
-
-\subsection{Sensors} \label{Background:Sensors}
-
 % goal: explain relevance between sensors and video object detection task
 
+ADS should be capable of perceiving data from various sources. The DDT is defined as all real-time operational and tactical functions required to operate a vehicle in on-road traffic. Object and Event Detection and Response (OEDR) refers to the subtasks of the DDT that include monitoring the driving environment (detecting, recognizing, and classifying objects and events, and preparing to respond as needed) and executing an appropriate response to such objects and events (i.e., actions required to complete the DDT and/or DDT fallback). Performing the OEDR is necessary to complete the DDT and DDT fallback, and the capability of a Driving Automation System to handle OEDR allows it to be classified as Level 3 automation or higher. OEDR is also known as perception and a variety of computer vision tasks fall under this category, such as object detection, semantic segmentation, 3D object detection, and others.
+
+OEDR tasks rely on exteroceptive sensors for perception hardware, which is susceptible to system failures that can compromise overall system safety. ADS system architecture is predominantly realized with two approaches: modular \cite{} or end-to-end \cite{} see Figure \ref{}. In both approaches, pipelines \cite{} start with feeding raw sensor inputs to downstream system, either localization and object detection modules or an end-to-end model. Exteroceptive sensors, mainly used for commonly employed modalities for perceiving the environment, include cameras, LiDAR (light detection and ranging), radar, and ultrasonic sensors. These sensors vary in technologies and may exhibit various failures \cite{}. The scope of this thesis will specifically investigate two critical failure modes: (1) non-deterministic sensor input availability, where the system receives inconsistent or temporally varying subsets of data from its sensors, and (2) the complete failure of a sensor component, where it provides no signal. Temporal Calibration, a mitigation strategy, establishes the synchronization rate of multiple sensor data streams \cite{}. While Temporal Calibration aims to mitigate the first failure mode of non-deterministic sensor input, it cannot rule it out completely. This limitation stems from the asynchronous publish-subscribe communication model inherent in common ADS middleware frameworks like the Robot Operating System (ROS). In such systems, message delivery times for sensor data are not strictly guaranteed and can be influenced by variable factors including network latency, system processing load, and underlying operating system scheduling priorities. Consequently, even when employing ROS tools designed for time synchronization, these inherent timing uncertainties and potential for message delays or drops mean that perfect, deterministic, real-time alignment of all sensor data streams cannot always be achieved, leaving residual non-determinism in sensor input availability. The complete sensor failure has no mitigation strategy except sensor redundancy \cite{}.
+
+% TODO: add figure architecture
 
 \subsection{Video Object Detection} \label{Background:VideoObjectDetection}
 
