@@ -30,6 +30,20 @@ First, we consider the task of object detection using the detection-moving-mnist
     \end{tblr}
 \end{table}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.33\textwidth]{figures/figure_methods_val_batch2_pred_recurrent_perceiver.jpg}
+    \caption{Visualization of RPerceiver predictions across sequential frames. Bounding boxes and confidence scores are displayed for detected digits. Notably, confidence scores can be less than 1.0 even for relatively clear objects (e.g., digits in frame 1). Two challenging scenarios are analyzed: overlapping digits and digits near boundaries. The model shows limitations such as mi with overlapping digits, as illustrated by the central cluster involving digits such as '1's and a '2' between frames 8 and 15. In contrast, predictions appear consistent between frames 5 and 13 for several digits near boundaries: the '2' and '6' on the left boundary, the '6' and '8' near the bottom boundary, and the '6' on the right boundary.}
+    \label{fig:figure_methods_val_batch2_pred_recurrent_perceiver}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.33\textwidth]{figures/figure_methods_val_batch2_pred_YOLO.jpg}
+    \caption{Visualization of YOLO predictions across sequential frames. Bounding boxes and confidence scores are displayed for detected digits. Notably, confidence scores are typically high (often 1.0) for relatively clear objects (e.g., digits in frame 1). Two challenging scenarios are analyzed: overlapping digits and digits near boundaries. The model appears to handle overlapping digits relatively effectively, maintaining distinct detections with high confidence and a few false positives and false negarives in the central cluster involving digits such as '1's and a '2' between frames 8 and 15. In contrast, predictions appear inconsistent between frames 5 and 13 for several digits near boundaries: the '2' and '6' on the left boundary, the '6' and '8' near the bottom boundary, and the '6' on the right boundary.}
+    \label{fig:figure_methods_val_batch2_pred_YOLO}
+\end{figure}
+
 % YOLO:
 % Raw Overlap mAP Results (Evaluator): {'map': tensor(0.8266), 'map_50': tensor(0.9133), 'map_75': tensor(0.8788), 'map_small': tensor(0.8266), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7744), 'mar_10': tensor(0.8536), 'mar_100': tensor(0.8536), 'mar_small': tensor(0.8536), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
 
