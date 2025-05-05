@@ -1,10 +1,14 @@
 \section{Experiments}  \label{Experiments}
 
-In this section, we first present a comparative analysis of the proposed model on the video object detection task. Second, we present an ablation study analyzing the effects of different training procedures on the robustness of the model to sensor failure scenarios.
+This section details the empirical evaluation of the proposed models and training methodologies. We begin by presenting a comparative analysis that assesses the performance of our RPerceiver model on the video object detection task against a relevant baseline. Following this, we conduct an ablation study to investigate how different training procedures, specifically dropout and input shuffling, influence the robustness of the RPerceiver and RPerceiverMM models, particularly in simulated sensor failure scenarios. The training details for each task are outlined first, followed by the comparative results and the ablation study findings.
 
-\subsection{Training for Bounding Boxes} \label{Experiments:TrainingBoundingBoxes}
+\subsection{Training for Bounding Boxes Prediction Task} \label{Experiments:TrainingBoundingBoxesTask}
 
-We train the RPerceiver with used AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} setting the initial learning rates for the movel $ 10^{-4} $. We trained for 31 epochs with a learning rate drop by a factor of 10 at epoch 18 and 28. Data augmentation pipeline includes normalization based on pre-calculated dataset statistics, and frames are resized to a fixed dimension 320 x 320 \cite{redmonYOLO9000BetterFaster2016}. Other training hyperparameters can be found in section \ref{Appendix:TrainingHyperparameters}.
+We trained the RPerceiver model for the bounding box prediction task using the AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} with an initial learning rate of $10^{-4}$. The training was conducted for 31 epochs, with learning rate drops by a factor of 10 at epochs 18 and 28. The training pipeline included data augmentation, normalization based on pre-calculated dataset statistics, and resizing frames to a fixed dimension of $ 320 \times 320 $ \cite{redmonYOLO9000BetterFaster2016}. For a complete list of training hyperparameters, refer to Appendix \ref{Appendix:TrainingHyperparameters}.
+
+\subsection{Training for Center Points Prediction Task} \label{Experiments:TrainingCenterPointsTask}
+
+We trained the RPerceiverMM model for the center point prediction task using the AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} with an initial learning rate of $10^{-4}$. The training was conducted for 21 epochs, with a learning rate drop by a factor of 10 at epoch 18. The training pipeline included data augmentation and normalization, ensuring robust performance. For a complete list of training hyperparameters, refer to Appendix \ref{Appendix:TrainingHyperparameters}.
 
 \subsection{Comparison Analysis} \label{Experiments:ComparisonAnalysis}
 
