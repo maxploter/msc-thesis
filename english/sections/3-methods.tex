@@ -78,7 +78,7 @@ In order for dataset to be more challanging we do not restrict digit overlap in 
 
 We generated the dataset with 60K and 10K train and test splits, respectively. Annotations, automatically generated during sequence creation, include digit classes and digit center point coordinates (keypoint), bounding box coordinates and digit's identity ID.
 
-\subsection{Dropout and Shuffle} \label{Methods:Training:DropoutAndShuffle}
+\subsection{Dropout and Shuffle} \label{Methods:DropoutAndShuffle}
 
 As previously discussed in Section \ref{Background:AutonomousDrivingSystems}, ADSs face challenges related to sensor reliability. Two critical issues identified are the potential for complete sensor failure, where a sensor modality ceases to provide any data, and the non-deterministic availability of sensor inputs. To enhance the resilience of perception models against these real-world imperfections, this work investigates training strategies designed to improve model robustness. Specifically, we aim to experimentally evaluate how models perform when subjected to simulated conditions mimicking both complete sensor data loss (akin to sensor failure) and non-deterministic input sequences (akin to middleware-induced timing variations). The following training procedures, \texttt{dropout} and \texttt{shuffle}, are introduced to directly address these challenges during the model training phase. A model trained without applying these training procedures is considered the baseline.
 

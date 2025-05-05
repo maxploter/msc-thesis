@@ -78,27 +78,26 @@ To quantify the observations regarding model performance in challenging scenario
 
 \subsection{Ablation Study} \label{Experiments:AblationStudy}
 
-We evaluate how is robustness the RPercevier and RPerceiverMM against sensor complete failure or non-detemenistic input of sensor input. We run use center point prediction task. We experimented with two setup configurations: \texttt{single-view} and \texttt{multi-view}. First, the single-view configuration used a single camera sensor, representing the most basic object detection task for video input. Second, we used a multi-view camera setting where the model processed information from different cameras to perform object detection within a unified spatial representation generated from these inputs.
+In this ablation study, we evaluate the robustness of the RPerceiver and RPerceiverMM models against complete sensor failure and non-deterministic sensor input. The evaluation employs the center point prediction task. We experimented with two primary configurations: \texttt{single-view} and \texttt{multi-view}. First, the \texttt{single-view} configuration utilized a single camera sensor, representing a basic object detection task using video input. Second, the \texttt{multi-view} setting involved processing information from multiple cameras to perform object detection within a unified spatial representation derived from these inputs.
 
-We considered three distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, we evaluated a combination of the last two.
+We considered three distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, we evaluated a combination of the latter two procedures.
 
 \begin{description}
-    \item[\texttt{default}] This procedure represents the normal operational regime where all sensors function as expected.
+    \item[\texttt{default}] This procedure represents the normal operational regime where all sensors function as expected without any induced faults or input shuffle.
 
-    \item[\texttt{shuffle}] In this procedure, the sensor inputs are randomly permuted within each time step. Consequently, the model receives inputs from the sensors in a random order for that specific time step. Shuffling only occurs for the sensors inputs within the same time step. This procedure is only applicable to a multi-view setup.
+    \item[\texttt{shuffle}] In this procedure, the sensor inputs are randomly permuted within each time step. Consequently, the model receives inputs from the sensors in a random order for that specific time step. Shuffling occurs only for sensor inputs within the same time step. This procedure is applicable only to the \texttt{multi-view} setup.
 
-    \item[\texttt{blind}] This procedure simulates a sensor failure mode where the input from one or more camera sensors is unavailable. The \texttt{blind} evaluation procedure is implemented by dropping the input stream from the affected sensor(s) after a midpoint time step $t_{half}$. Therefore, information from sensor(s) for the second half of the sequence becomes unavailable to the model. 
+    \item[\texttt{blind}] This procedure simulates a complete sensor(s) failure scenario where the input from camera sensor(s) becomes unavailable. The \texttt{blind} procedure is implemented by dropping the input stream from the sensor(s) after a midpoint time step, $t_{half}$. Consequently, information from the sensor(s) is unavailable to the model for the second half of the sequence.
 \end{description}
 
-% TODO: Explain relevance of dropout and blind
+It is important to note the conceptual link between the \texttt{dropout} training procedure described in Section \ref{Methods:DropoutAndShuffle} and the \texttt{blind} evaluation procedure defined here. The \texttt{blind} procedure can be viewed as a specific, deterministic instance of the \texttt{dropout} mechanism applied during evaluation. Specifically, it corresponds to a scenario where the probability of dropping the sensor input becomes 1.0. While \texttt{dropout} during training introduces stochasticity with varying probabilities to enhance general robustness, the \texttt{blind} evaluation tests the model's resilience to a complete and sustained sensor failure.
 
+We initiate our analysis by comparing the performance of the baseline RPerceiver (RP) model against its counterpart trained using the dropout procedure (RP (d)), as described in Section \ref{Methods:DropoutAndShuffle}. This comparison is conducted under the \texttt{single-view} configuration using the \texttt{default} evaluation procedure. The results of this evaluation are presented in Table~\ref{tab:results_single_view_default}.
 
-Table~\ref{tab:results_single_view_default} shows the inference results for single-view setup under default evaluation procedure. We compare models under two training procedures. 
-
-We ran a "default" evaluation where none of the frames were dropped. We evaluated the performance separately for each different number of digits per video sequence. 
 \begin{table}[htb!]
     \centering
-    \caption{Results for single-view the "default" evaluation where none of the frames were dropped. (d) next to the model name indicates a training procedure with frame dropout. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \caption{Comparison of RPerceiver (RP) and RPerceiver trained with dropout (RP (d)) under the \texttt{single-view} configuration and \texttt{default} evaluation procedure. The '(d)' denotes training with dropout. Results are presented based on the number of digits in the input sequence. Metrics shown are Average Displacement Error (ADE), calculated over the second half of the sequence, and Final Displacement Error (FDE), calculated for the final frame. The results indicate that the baseline RPerceiver consistently outperforms the RPerceiver trained with dropout, achieving lower error rates for both ADE and FDE across all tested sequence complexities.
+    }
     \label{tab:results_single_view_default}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                     colspec = { l c c c c c c c c c c },
@@ -112,17 +111,18 @@ We ran a "default" evaluation where none of the frames were dropped. We evaluate
     \end{tblr}
 \end{table}
 
-We conducted a "blind" evaluation where the second half of the sequence was dropped. Table~\ref{tab:results_frame_dropout_blind} shows the results. We observed an increase in error metrics for the model trained without frame drops. Conversely, the model trained with frame drops maintains low errors.
+Next, we compare the same models, RPerceiver (RP) and RPerceiver trained with dropout (RP (d)). This comparison is conducted under the \texttt{single-view} configuration using the \texttt{blind} evaluation procedure. The results for this \texttt{blind} test are detailed in Table~\ref{tab:results_frame_dropout_blind}.
 
 \begin{table}[htb!]
     \centering
-    \caption{Results for the "blind" evaluation where the second half of the sequences is dropped. (d) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \caption{Comparison of RPerceiver (RP) and RPerceiver trained with dropout (RP (d)) under the \texttt{single-view} configuration and \texttt{blind} evaluation procedure. The '(d)' denotes training with dropout. Results are presented based on the number of digits in the input sequence. Metrics shown are Average Displacement Error (ADE), calculated over the second half of the sequence, and Final Displacement Error (FDE), calculated for the final frame. The results under the \texttt{blind} condition demonstrate a significant advantage for the RPerceiver trained with dropout (RP (d)). This model maintains substantially lower error rates compared to the baseline RP, which exhibits a sharp degradation in performance under the \texttt{blind} evaluation procedure.
+    }
     \label{tab:results_frame_dropout_blind}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                     colspec = { l c c c c c c c c c c },
                     row{1} = {font=\bfseries},
                     row{2} = {font=\bfseries},
-                    colsep=3pt, % Reduced column separation
+                    colsep=3pt,
                 }
         \SetCell[r=2]{l} Model & \SetCell[c=2]{c}1 digit & & \SetCell[c=2]{c}2 digits & & \SetCell[c=2]{c}4 digits & & \SetCell[c=2]{c}8 digits & & \SetCell[c=2]{c}10 digits & \\
         & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE \\
@@ -131,8 +131,7 @@ We conducted a "blind" evaluation where the second half of the sequence was drop
     \end{tblr}
 \end{table}
 
-
-For the purpose of some of the experiment we additionally divide the frame into grid views. In this way we mimic a Bird Eye View (BEV) (see Figure~\ref{fig:figure_methods_dataset_image_view_bev}).
+For the \texttt{multi-view} configuration, we introduce a tile augmentation technique to the dataset pipeline. This process divides each frame into a specified grid of views, partitioning the corresponding ground truths as well. In our experiments, we utilize a $2 \times 2$ grid configuration. This effectively treats the tiled frame as a simplified spatial layout, akin to a Bird's-Eye View (BEV) where each tile represents a spatial region. Figure~\ref{fig:figure_methods_dataset_image_view_bev} illustrates an example of a frame divided using this grid approach.
 
 \begin{figure}
     \centering
@@ -141,14 +140,14 @@ For the purpose of some of the experiment we additionally divide the frame into 
     \label{fig:figure_methods_dataset_image_view_bev}
 \end{figure}
 
-Table~\ref{tab:results_multi_view} shows the inference results for multi-view setup we breakdown reasults by evaluation procedure. We train models under training schemas. 
+We now extend our ablation study to the \texttt{multi-view} configuration, evaluating the RPerceiverMM (RPMM) model and its variants trained with training procedures from Section \ref{Methods:DropoutAndShuffle}: shuffle training (RPMM (s)), dropout training (RPMM (d)), and combined shuffle and dropout training (RPMM (d, s)). These models are compared against the baseline RPMM under four distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, \texttt{blind}, and a combined \texttt{blind} and \texttt{shuffle} scenario. The performance metrics for these multi-view evaluations are presented in Table~\ref{tab:results_multi_view}.
 
 % Results: https://docs.google.com/spreadsheets/d/1shITm2iWIKzAAlWpRwED-g1H6YurMJoJgxagRU2x6Gg/edit?gid=290835343#gid=290835343
-% TODO Consider to reduce width of the table
 
 \begin{table}[htb!]
     \centering
-    \caption{Results for the "default" and "blind" experiments with sensor output shuffle. An asterisk (*) next to the model name indicates a training procedure with sensor output drops. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \caption{Comparison of RPerceiverMM (RPMM) variants under the \texttt{multi-view} configuration across different evaluation procedures: \texttt{default}, \texttt{shuffle}, \texttt{blind}, and combined \texttt{blind, shuffle}. Model notations indicate training procedures: '(s)' for shuffle training, '(d)' for dropout training, and '(d, s)' for combined dropout and shuffle training. Metrics shown are Average Displacement Error (ADE), calculated over the second half of the sequence, Final Displacement Error (FDE), calculated for the final frame, and the number of model parameters in millions (Params (M)). The results highlight trade-offs: baseline RPMM performs best under \texttt{default} conditions. While these training procedures introduce a small performance penalty in the \texttt{default} evaluation, they provide substantial improvements under performance-degrading evaluation strategies. Models trained with shuffle (s) excel in the \texttt{shuffle} evaluation, while dropout-trained models (d) show superior robustness in the \texttt{blind} scenario. The combined training (d, s) yields the most robust performance under the combined \texttt{blind, shuffle} condition, demonstrating the effectiveness of targeted training strategies for specific failure modes. Interestingly, RPMM (d) also shows notable robustness under the \texttt{shuffle} evaluation, despite not being explicitly trained for this condition.
+    }
     \label{tab:results_multi_view}
     \begin{tblr}{
         hlines, vlines,
