@@ -117,7 +117,7 @@ y_i & \exists \, y_i \in Y, f(y_i) = \hat{y}_j \\
 \end{equation*}
 Details on each loss term are provided below.
 
-
+% TODO Mention hyperparameters
 \textbf{Focal Loss.} The Focal Loss \cite{linFocalLossDense2018} is used to address the class imbalance between the foreground objects and the numerous potential background predictions. The class loss component $\mathcal{L}_c$ for each prediction $\hat{y}_j$ involves the sigmoid Focal Loss. The total class loss for a prediction $\hat{y}_j$ is summed over all foreground classes $k \in \{1, ..., C\}$, where $C$ is the number of object categories (excluding the $\emptyset$ class). The Focal Loss for a single class $k$ and prediction $j$ is defined using the $\alpha$-balanced form:
 \begin{equation} \label{eq:focal_loss_corrected}
     \text{FL}(p_{jk}, y_{jk}) = - \alpha_t (1 - p_t)^\gamma \log(p_t)
