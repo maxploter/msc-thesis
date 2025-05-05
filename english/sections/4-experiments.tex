@@ -21,7 +21,7 @@ First, we consider the task of object detection using the detection-moving-mnist
     \caption{Comparison with the baseline still image detector YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on the detection-moving-mnist-easy test split. 'Post' indicates the use of postprocessing heuristics. RPerceiver achieves slightly better $mAP_{50}$ and $mAP_{75}$, but shows worse $mAP_{50-95}$ results. However, RPerceiver achieves these results with significantly fewer parameters and lower computational cost.}
     \label{tab:model_comparison}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
-                  colspec = { l c c c c c },
+                  colspec = { l c c c c c c },
                   row{1} = {font=\bfseries},
                  }
         Model      & Post & mAP_{50} & mAP_{75} & mAP_{50-95} & Params (M)   & GFLOPS         \\
@@ -32,17 +32,21 @@ First, we consider the task of object detection using the detection-moving-mnist
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.33\textwidth]{figures/figure_methods_val_batch2_pred_recurrent_perceiver.jpg}
-    \caption{Visualization of RPerceiver predictions across sequential frames. Bounding boxes and confidence scores are displayed for detected digits. Notably, confidence scores can be less than 1.0 even for relatively clear objects (e.g., digits in frame 1). Two challenging scenarios are analyzed: overlapping digits and digits near boundaries. The model shows limitations such as mi with overlapping digits, as illustrated by the central cluster involving digits such as '1's and a '2' between frames 8 and 15. In contrast, predictions appear consistent between frames 5 and 13 for several digits near boundaries: the '2' and '6' on the left boundary, the '6' and '8' near the bottom boundary, and the '6' on the right boundary.}
+    \includegraphics[width=\textwidth]{figures/figure_methods_val_batch2_pred_recurrent_perceiver.jpg}
+    \caption{Visualization of RPerceiver predictions across sequential frames. Bounding boxes and confidence scores are displayed for detected digits. Notably, confidence scores can be less than 1.0 even for clear objects (e.g. digits in frame 1). Two challenging scenarios are analyzed: overlapping digits and digits near the frame border. The model shows limitations such as exhibiting false negatives with overlapping digits, as illustrated by the central cluster involving digits such as '1's and a '2' between frames 8 and 15. In contrast, predictions appear consistent between frames 5 and 13 for several digits near frame borders: the '2' and '6' on the left border, the '6' and '8' near the bottom border, and the '6' on the right border.}
     \label{fig:figure_methods_val_batch2_pred_recurrent_perceiver}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.33\textwidth]{figures/figure_methods_val_batch2_pred_YOLO.jpg}
-    \caption{Visualization of YOLO predictions across sequential frames. Bounding boxes and confidence scores are displayed for detected digits. Notably, confidence scores are typically high (often 1.0) for relatively clear objects (e.g., digits in frame 1). Two challenging scenarios are analyzed: overlapping digits and digits near boundaries. The model appears to handle overlapping digits relatively effectively, maintaining distinct detections with high confidence and a few false positives and false negarives in the central cluster involving digits such as '1's and a '2' between frames 8 and 15. In contrast, predictions appear inconsistent between frames 5 and 13 for several digits near boundaries: the '2' and '6' on the left boundary, the '6' and '8' near the bottom boundary, and the '6' on the right boundary.}
+    \includegraphics[width=\textwidth]{figures/figure_methods_val_batch2_pred_YOLO.jpg}
+    \caption{Visualization of YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} predictions across sequential frames. Bounding boxes and confidence scores are displayed for detected digits. Notably, confidence scores are typically high (often 1.0) for relatively clear objects (e.g., digits in frame 1). Two challenging scenarios are analyzed: overlapping digits and digits near the frame border. The model appears to handle overlapping digits relatively effectively, with a few false negatives in the central cluster involving digits such as '1's and a '2' between frames 8 and 15. In contrast, predictions appear inconsistent between frames 5 and 13 for several digits near frame borders: the '2' on the left border, the '6' and '8' near the bottom border.}
     \label{fig:figure_methods_val_batch2_pred_YOLO}
 \end{figure}
+
+% TODO: recompute with tighter IoU threshold
+
+To quantify the observations regarding model performance in challenging scenarios, as illustrated in Figures \ref{fig:figure_methods_val_batch2_pred_recurrent_perceiver} and \ref{fig:figure_methods_val_batch2_pred_YOLO}, we specifically evaluated the models on filtered subsets of the ground truth data. These subsets isolate two challenging conditions: overlapping objects (defined as pairs of ground truth objects with an Intersection over Union (IoU) greater than 0.01) and border objects (defined as ground truth objects whose bounding boxes intersect with the frame border). The resulting performance metrics for these specific cases are presented in Table \ref{tab:model_comparison_detailed}.
 
 % YOLO:
 % Raw Overlap mAP Results (Evaluator): {'map': tensor(0.8266), 'map_50': tensor(0.9133), 'map_75': tensor(0.8788), 'map_small': tensor(0.8266), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7744), 'mar_10': tensor(0.8536), 'mar_100': tensor(0.8536), 'mar_small': tensor(0.8536), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
@@ -54,13 +58,12 @@ First, we consider the task of object detection using the detection-moving-mnist
 
 % Raw Boundary mAP Results (Evaluator): {'map': tensor(0.8470), 'map_50': tensor(0.9552), 'map_75': tensor(0.9101), 'map_small': tensor(0.8470), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.8512), 'mar_10': tensor(0.8739), 'mar_100': tensor(0.8739), 'mar_small': tensor(0.8739), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
 
-% TODO: complete table
-
-
 
 \begin{table}[htb!]
     \centering
-    \caption{Comparison with baseline still image detector model YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on subset of detection-moving-mnist-easy dataset test split. Post stands for postprocessing heuristics after detection.}
+    \caption{Comparative analysis of YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} and RPerceiver on specific scenarios within the detection-moving-mnist-easy test split: object overlaps ('Overlap') and proximity to image borders ('Border'). Postprocessing ('Post') is applied to both models. The data indicates that the still-image detector YOLOv8n achieves higher accuracy on overlapping objects. In contrast, RPerceiver significantly outperforms YOLOv8n on border cases, supporting the hypothesis that it effectively leverages temporal information from the video sequence.}
+\label{tab:model_comparison_detailed}
+
     \label{tab:model_comparison_detailed}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                   colspec = { l c c c c c },
@@ -73,13 +76,9 @@ First, we consider the task of object detection using the detection-moving-mnist
     \end{tblr}
 \end{table}
 
-
 \subsection{Ablation Study} \label{Experiments:AblationStudy}
-% Content for ablation study goes here
 
 We experimented with two setup configurations: \texttt{single-view} and \texttt{multi-view}. First, the single-view configuration used a single camera sensor, representing the most basic object detection task for video input. Second, we used a multi-view camera setting where the model processed information from different cameras to perform object detection within a unified spatial representation generated from these inputs.
-
-% TODO Read about formatting 
 
 We considered three distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, we evaluated a combination of the last two.
 
@@ -91,12 +90,14 @@ We considered three distinct evaluation procedures: \texttt{default}, \texttt{sh
     \item[\texttt{blind}] This procedure simulates a sensor failure mode where the input from one or more camera sensors is unavailable. The \texttt{blind} evaluation procedure is implemented by dropping the input stream from the affected sensor(s) after a midpoint time step $t_{half}$. Therefore, information from sensor(s) for the second half of the sequence becomes unavailable to the model. 
 \end{description}
 
+% TODO: Explain relevance of dropout and blind
+
 Table~\ref{tab:results_single_view_default} shows the inference results for single-view setup under default evaluation procedure. We compare models under two training procedures. 
 
 We ran a "default" evaluation where none of the frames were dropped. We evaluated the performance separately for each different number of digits per video sequence. 
 \begin{table}[htb!]
     \centering
-    \caption{Results for single-view the "default" evaluation where none of the frames were dropped. An asterisk (*) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \caption{Results for single-view the "default" evaluation where none of the frames were dropped. (d) next to the model name indicates a training procedure with frame dropout. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
     \label{tab:results_single_view_default}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                     colspec = { l c c c c c c c c c c },
@@ -105,8 +106,8 @@ We ran a "default" evaluation where none of the frames were dropped. We evaluate
                 }
         \SetCell[r=2]{l} Model & \SetCell[c=2]{c}1 digit & & \SetCell[c=2]{c}2 digits & & \SetCell[c=2]{c}4 digits & & \SetCell[c=2]{c}8 digits & & \SetCell[c=2]{c}10 digits & \\
         & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE \\
-        Perceiver              & \textbf{0.717} & \textbf{0.725} & \textbf{0.794} & \textbf{0.793} & \textbf{0.958} & \textbf{0.934} & \textbf{1.520} & \textbf{1.382} & \textbf{3.273} & \textbf{2.611} \\
-        Perceiver (d) & 0.745 & 0.793 & 0.838 & 0.882 & 1.034 & 1.065 & 1.656 & 1.583 & 3.626 & 3.12 \\
+        RP              & \textbf{0.717} & \textbf{0.725} & \textbf{0.794} & \textbf{0.793} & \textbf{0.958} & \textbf{0.934} & \textbf{1.520} & \textbf{1.382} & \textbf{3.273} & \textbf{2.611} \\
+        RP (d) & 0.745 & 0.793 & 0.838 & 0.882 & 1.034 & 1.065 & 1.656 & 1.583 & 3.626 & 3.12 \\
     \end{tblr}
 \end{table}
 
@@ -114,7 +115,7 @@ We conducted a "blind" evaluation where the second half of the sequence was drop
 
 \begin{table}[htb!]
     \centering
-    \caption{Results for the "blind" evaluation where the second half of the sequences is dropped. An asterisk (*) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
+    \caption{Results for the "blind" evaluation where the second half of the sequences is dropped. (d) next to the model name indicates a training procedure with frame drops. Results are broken down by the number of digits in the frame. The Average Displacement Error (ADE) measures the error for the second half of the sequence. The Final Displacement Error (FDE) evaluates the error for the last frame in the sequence.}
     \label{tab:results_frame_dropout_blind}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                     colspec = { l c c c c c c c c c c },
@@ -124,8 +125,8 @@ We conducted a "blind" evaluation where the second half of the sequence was drop
                 }
         \SetCell[r=2]{l} Model & \SetCell[c=2]{c}1 digit & & \SetCell[c=2]{c}2 digits & & \SetCell[c=2]{c}4 digits & & \SetCell[c=2]{c}8 digits & & \SetCell[c=2]{c}10 digits & \\
         & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE \\
-        Perceiver              & 42.210 & 34.754 & 36.087 & 28.83014 & 32.146 & 24.397 & 31.32972 & 23.730 & 33.334 & 25.935 \\
-        Perceiver*             & \textbf{1.541} & \textbf{1.101} & \textbf{1.907} & \textbf{1.364} & \textbf{2.658} & \textbf{1.905} & \textbf{5.084} & \textbf{3.679} & \textbf{8.198} & \textbf{6.627} \\
+        RP              & 42.210 & 34.754 & 36.087 & 28.83014 & 32.146 & 24.397 & 31.32972 & 23.730 & 33.334 & 25.935 \\
+        RP (d)             & \textbf{1.541} & \textbf{1.101} & \textbf{1.907} & \textbf{1.364} & \textbf{2.658} & \textbf{1.905} & \textbf{5.084} & \textbf{3.679} & \textbf{8.198} & \textbf{6.627} \\
     \end{tblr}
 \end{table}
 
@@ -156,9 +157,9 @@ Table~\ref{tab:results_multi_view} shows the inference results for multi-view se
     }
         \SetCell[r=2]{l}Model & \SetCell[c=2]{c}Default & & \SetCell[c=2]{c}Shuffle & & \SetCell[c=2]{c}Blind & & \SetCell[c=2]{c}Blind, Shuffle & & \SetCell[r=2]{l}{Params \\ (M)} \\
         & ADE & FDE & ADE & FDE & ADE & FDE & ADE & FDE &\\
-        Perceiver & 0.760 & 0.753 & 23.701 & 23.759 & 17.952 & 25.568 & 25.559 & 24.696 & 1.2 \\
-        Perceiver (s) & 0.823 & 0.814 & 0.812 & 0.799 & 13.644 & 20.124 & 13.670 & 20.080 & 1.2 \\
-        Perceiver (d) & 0.881 & 0.937 & 4.043 & 4.345 & 1.471 & 2.093 & 5.648 & 7.341 & 1.2 \\
-        Perceiver (d, s) & 1.073 & 1.152 & 0.956 & 1.022 & 1.729 & 2.345 & 1.632 & 2.287 & 1.2 \\
+        RPMM & 0.760 & 0.753 & 23.701 & 23.759 & 17.952 & 25.568 & 25.559 & 24.696 & 1.2 \\
+        RPMM (s) & 0.823 & 0.814 & 0.812 & 0.799 & 13.644 & 20.124 & 13.670 & 20.080 & 1.2 \\
+        RPMM (d) & 0.881 & 0.937 & 4.043 & 4.345 & 1.471 & 2.093 & 5.648 & 7.341 & 1.2 \\
+        RPMM (d, s) & 1.073 & 1.152 & 0.956 & 1.022 & 1.729 & 2.345 & 1.632 & 2.287 & 1.2 \\
     \end{tblr}
 \end{table}
