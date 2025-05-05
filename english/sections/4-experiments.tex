@@ -78,7 +78,7 @@ To quantify the observations regarding model performance in challenging scenario
 
 \subsection{Ablation Study} \label{Experiments:AblationStudy}
 
-We experimented with two setup configurations: \texttt{single-view} and \texttt{multi-view}. First, the single-view configuration used a single camera sensor, representing the most basic object detection task for video input. Second, we used a multi-view camera setting where the model processed information from different cameras to perform object detection within a unified spatial representation generated from these inputs.
+We evaluate how is robustness the RPercevier and RPerceiverMM against sensor complete failure or non-detemenistic input of sensor input. We run use center point prediction task. We experimented with two setup configurations: \texttt{single-view} and \texttt{multi-view}. First, the single-view configuration used a single camera sensor, representing the most basic object detection task for video input. Second, we used a multi-view camera setting where the model processed information from different cameras to perform object detection within a unified spatial representation generated from these inputs.
 
 We considered three distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, we evaluated a combination of the last two.
 
@@ -91,6 +91,7 @@ We considered three distinct evaluation procedures: \texttt{default}, \texttt{sh
 \end{description}
 
 % TODO: Explain relevance of dropout and blind
+
 
 Table~\ref{tab:results_single_view_default} shows the inference results for single-view setup under default evaluation procedure. We compare models under two training procedures. 
 
