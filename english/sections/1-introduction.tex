@@ -1,40 +1,32 @@
 \section{Introduction} \label{Introduction}
 
 % Justification for the choice of topic
-Autonomous driving systems promise to revolutionize transportation by increasing road safety, improving traffic efficiency, and reducing emissions \cite{litmanAutonomousVehicleImplementationb}.
 % actuality
-Autonomous driving systems are complex systems equipped with multi-sensor perception, integrating data from various sources. Autonomous driving systems should be capable of operating in various environments under diverse weather conditions. Autonomous vehicles are not yet ready, and mistakes or technical failures can cause accidents and undermine public trust.
 
-% novelty
-Autonomous driving systems heavily rely on deep learning for multiple perception tasks. Object detection is foundational among these tasks. Despite the significant progress in this area, there is still a need for an effective and efficient general model architecture that is capable of understanding input from multiple sensors and is robust.
+Autonomous Driving Systems (ADS) hold immense promise, envisioning a future of transportation with enhanced road safety, improved traffic flow, and reduced environmental impact \cite{litmanAutonomousVehicleImplementationb}. Achieving this vision requires ADS to operate reliably under a wide spectrum of diverse and often challenging environmental conditions. This operational requirement necessitates a sophisticated perception stack, heavily reliant on data integrated from multiple sensors. Crucially, the hardware components of this stack are susceptible to system failures, including non-deterministic sensor input availability and complete sensor outages, the two failure modes specifically investigated in this thesis. Such failures in the perception system can have catastrophic consequences, potentially leading to accidents and undermining public trust in autonomous technology \cite{}. Therefore, ADS necessitate perception models that possess two critical requirements: inherent capability to support the multi-modal hardware stack typical of these systems and robustness against sensor failure.
 
 % Overview Theoretical Background -- background information to contextualize the problem
 % review of state of the art solutions
-
-Simple still-image detectors \cite{} cannot be applied directly to video data because it presents challenges such as motion blur, occlusion, etc. \cite{}. Other approaches \cite{hanSeqNMSVideoObject2016, kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016} integrate post-processing after object detection to improve results, but these solutions are not end-to-end solutions.
-
-Another line of approaches \cite{Lu_2017_ICCV, xiaoVideoObjectDetection2018} leverages a second model to integrate motion and temporal information during training.
+The task of object detection is central to the perception capabilities of ADS and has seen significant advancements driven by deep learning. While video sequences offer rich spatio-temporal information compared to static images, they also introduce unique challenges for object detection, such as motion blur, varying object appearances, and frequent occlusions. Direct application of standard still-image detectors is often insufficient to address these complexities \cite{redmonYouOnlyLook2016}. Consequently, various specialized video object detection techniques have emerged, broadly falling into categories based on how they incorporate temporal information. One category involves applying post-processing heuristics like Sequence NMS \cite{hanSeqNMSVideoObject2016} or flow-guided feature aggregation \cite{kangTCNNTubeletsConvolutional2018, kangObjectDetectionVideo2016} to refine outputs from static detectors, aiming for temporal consistency but often lacking end-to-end integration. Another category directly models temporal dependencies during training, utilizing additional components like LSTM networks \cite{Lu_2017_ICCV} or spatio-temporal memory modules (e.g., STMM with ConvGRU) \cite{xiaoVideoObjectDetection2018} to explicitly capture motion and appearance dynamics across frames. More recently, Transformer-based architectures like DETR and its variants \cite{carionEndtoEndObjectDetection2020,} have shown promise by reformulating the task.
 
 % Problem statement -- if necessary, it should include the posed hypothesis/hypotheses, research questions, and subject of research
 
-All of these detection pipelines for video object detection are overly sophisticated, require many hand-crafted components, and are not capable of handling modalities other than images.
+Despite these advancements, a significant gap remains concerning the development of truly generalist perception architectures suitable for the demands of ADS. Many existing state-of-the-art models function as specialists, often built upon architectures with strong inductive biases tailored for specific data types, like 2D video frames processed by CNNs or specific RNN structures. This specialization limits their flexibility and inherent capacity to handle the diverse range of sensor modalities (e.g., LiDAR point clouds, radar returns, thermal imagery alongside video) commonly employed in ADS perception stacks. These models typically lack native mechanisms to process and effectively fuse information from such heterogeneous, high-dimensional inputs without resorting to complex, hand-tuned, multi-component systems. Consequently, building a unified and robust understanding of the driving environment from multi-modal data remains a challenge. This underscores the pressing need for more general-purpose perception architectures, which capable of processing diverse data types without domain-specific assumptions and scale efficiently to large inputs, paving the way for more versatile and robust ADS perception.
+
 
 % Purpose of the Thesis -- overall aim and objective of the research, "why" of the research—why are you conducting this study?
 
-In this thesis, our goal is to present a novel recurrent architecture, which we call Recurrent Perceiver, inspired by the Perceiver architecture. We present a training framework to assess the robustness of the model.
-Our main contributions are as follows:
+% novelty
+
+To address these limitations, this thesis introduces novel recurrent architectures, the Recurrent Perceiver (RPerceiver) and its multi-modal variant, Recurrent Perceiver Multi-Modal (RPerceiverMM). These models are designed as highly generalist recurrent modules, inspired by the Perceiver architecture \cite{jaeglePerceiverGeneralPerception2021}, capable of processing diverse and high-dimensional sequential inputs, including multi-sensor data streams. We present a comprehensive training framework and experimental setup specifically designed to assess not only the object detection performance but also the robustness of these architectures against simulated sensor failure scenarios, demonstrating their potential for safety-critical applications like ADS. Our main contributions are as follows:
 
 \begin{itemize}
-\item We propose a Recurrent Perceiver architecture that, when unrolled in time, can be interpreted as a recurrent neural network (RNN). Furthermore, the model supports multiple sensory inputs.
-\item We propose a task to predict object center points and introduce custom-created benchmarks, which we call "detection-moving-mnist-easy," for evaluating this task.
-\item We designed an experiment to simulate degraded input scenarios for single-sensor or multi-sensor (camera) setups. We evaluate the proposed Recurrent Perceiver, demonstrating that our training procedure involving omitted input consistently achieves improved performance compared to training without dropout.
+    \item We propose a Recurrent Perceiver architecture that, when unrolled in time, can be interpreted as a recurrent neural network (RNN). Furthermore, the model supports multiple sensory inputs.
+    \item We introduce a custom-created benchmark dataset, which we call "detection-moving-mnist-easy", designed to evaluate performance on two distinct tasks: bounding box detection and object center point (keypoint) prediction.    
+    \item We propose specific training procedures (e.g., input dropout, shuffling) and evaluation protocols designed to simulate and assess model robustness against potential hardware and software failures, such as complete sensor outages or non-deterministic input availability in single-sensor and multi-sensor setups.
 \end{itemize}
 
-% [//]: # (The description of the structure of the thesis by chapter)
-
-% A brief section giving background information may be necessary, especially if your work spans two or more traditional fields. That means that your readers may not have any experience with some of the material needed to follow your thesis, so you need to give it to them. A different title than that given above is usually better; e.g., "A Brief Review of Frammis Algebra.
-
-Section~\ref{Background} provides background information on autonomous driving system architecture, overviews relevant video object detection approaches, and introduces the original Perceiver model architecture. Section~\ref{Methods} presents the novel Recurrent Perceiver architecture, introduces the benchmark used for training and testing, and explains the training procedure. Section~\ref{Experiments} explains the experiments and presents the results.
+Section \ref{Background} provides background information on autonomous driving system architecture, overviews state of the art video object detection approaches, and introduces the original Perceiver model architecture \cite{jaeglePerceiverGeneralPerception2021}. Section \ref{Methods} presents the novel Recurrent Perceiver architecture, introduces the benchmark used for training and testing, and explains the training procedure. Section \ref{Experiments} explains the experiments and presents the results.
 
 % a short overview of appendices including the content of attached materials
 % TODO
