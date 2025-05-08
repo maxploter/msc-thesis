@@ -32,6 +32,7 @@ OEDR tasks rely on exteroceptive sensors for perception hardware, which can be s
 
 % Object detection definition. Deep learning pushed performance of single image object detection.
 
+%TODO: add more exampleas of the progress in CV
 Object detection is a foundational challenge in computer vision and has been a subject of research for several decades \cite{fischlerRepresentationMatchingPictorial1973}. The goal of the object detection task is to find objects of a given description in images and videos.
 Advancements in deep learning techniques for feature representation learning \cite{hintonReducingDimensionalityData2006, lecunDeepLearning2015}, coupled with the significant development and application of deep convolutional neural networks (CNNs), have driven remarkable progress in various computer vision tasks, such as image classification \cite{krizhevskyImageNetClassificationDeep2012}, object detection \cite{girshickRichFeatureHierarchies2014a} etc..
 Extending detection capabilities from static images to video sequences introduces the task of video object detection (VID), which involves not only localizing objects within each frame but also leveraging temporal information across frames for improved accuracy and consistency.
@@ -39,9 +40,12 @@ The introduction of specific challenges, such as the video object detection trac
 
 % State-of-the-Art
 % Still-image detector
-Due to the inherent similarity between detecting objects in single images and in video frames, the most straightforward approach to VID is to apply a single-image object detector independently to each frame \cite{redmonYouOnlyLook2016, redmonYOLO9000BetterFaster2016}. This method, often referred to as frame-by-frame detection, treats each frame as independent image. However, such an approach ignores the rich temporal and contextual information available across consecutive video frames. Neglecting this temporal dimension often leads to suboptimal performance, characterized by issues like inconsistent bounding box predictions across frames, flickering detections, and reduced robustness to challenges specific to video, such as motion blur or partial occlusion \cite{placeholder_vid_limitations_survey}. Consequently, while applying static detectors frame-by-frame serves as a simple baseline, it is generally not considered an effective or optimal solution for the complexities of video object detection.
+Due to the inherent similarity between detecting objects in single images and in video frames, the most straightforward approach to VID is to apply a single-image object detector independently to each frame. 
+This method, often referred to as frame-by-frame detection, treats each frame as independent image. %TODO: add citation where it's refered as f-to-f
+However, such an approach ignores the rich temporal and contextual information available across consecutive video frames. Neglecting this temporal dimension often leads to suboptimal performance, characterized by issues like inconsistent bounding box predictions across frames, flickering detections, and reduced robustness to challenges specific to video, such as motion blur, occlusion, morphological diversity, and illumination variations within the video \cite{jiaoNewGenerationDeep2022}. 
+Consequently, while applying static detectors frame-by-frame serves as a simple baseline, it is generally not considered an effective or optimal solution for the complexities of video object detection. %TODO: Add citation with examples
 
-Video object detection methods can be broadly classified based on their architectural approaches to incorporating temporal information. A survey \cite{jiaoNewGenerationDeep2022} categorizes these techniques into several groups: including postprocessing methods, approaches introducing additional models, feature filtering mechanisms, and other effective networks.
+Video object detection algorithms can be broadly classified based on their architectural solution to VOD task. We consider the classification proposed by the survey \cite{jiaoNewGenerationDeep2022}, which categorizes these algorithms into four categories: based on image detection (postprocessing methods), motion information (introducing additional models), feature filtering and other effective network structure.
 
 \begin{figure}
     \centering
