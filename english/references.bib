@@ -261,6 +261,27 @@ booktitle = {Proceedings of the IEEE International Conference on Computer Vision
 month = {Oct},
 year = {2017}
 }
+
+@incollection{liuSSDSingleShot2016,
+  title = {{{SSD}}: {{Single Shot MultiBox Detector}}},
+  shorttitle = {{{SSD}}},
+  author = {Liu, Wei and Anguelov, Dragomir and Erhan, Dumitru and Szegedy, Christian and Reed, Scott and Fu, Cheng-Yang and Berg, Alexander C.},
+  date = {2016},
+  volume = {9905},
+  eprint = {1512.02325},
+  eprinttype = {arXiv},
+  eprintclass = {cs},
+  pages = {21--37},
+  doi = {10.1007/978-3-319-46448-0_2},
+  url = {http://arxiv.org/abs/1512.02325},
+  urldate = {2024-07-31},
+  abstract = {We present a method for detecting objects in images using a single deep neural network. Our approach, named SSD, discretizes the output space of bounding boxes into a set of default boxes over different aspect ratios and scales per feature map location. At prediction time, the network generates scores for the presence of each object category in each default box and produces adjustments to the box to better match the object shape. Additionally, the network combines predictions from multiple feature maps with different resolutions to naturally handle objects of various sizes. SSD is simple relative to methods that require object proposals because it completely eliminates proposal generation and subsequent pixel or feature resampling stages and encapsulates all computation in a single network. This makes SSD easy to train and straightforward to integrate into systems that require a detection component. Experimental results on the PASCAL VOC, COCO, and ILSVRC datasets confirm that SSD has competitive accuracy to methods that utilize an additional object proposal step and is much faster, while providing a unified framework for both training and inference. For 300 × 300 input, SSD achieves 74.3\% mAP1 on VOC2007 test at 59 FPS on a Nvidia Titan X and for 512 × 512 input, SSD achieves 76.9\% mAP, outperforming a comparable state-of-the-art Faster R-CNN model. Compared to other single stage methods, SSD has much better accuracy even with a smaller input image size. Code is available at: https://github.com/weiliu89/caffe/tree/ssd .},
+  langid = {english},
+  keywords = {_st/New,Computer Science - Computer Vision and Pattern Recognition},
+  file = {/Users/maksimploter/Zotero/storage/HJZSP5LX/Liu et al. - 2016 - SSD Single Shot MultiBox Detector.pdf}
+}
+
+
 @ARTICLE{6795963,
   author={Hochreiter, Sepp and Schmidhuber, Jürgen},
   journal={Neural Computation},
@@ -290,6 +311,25 @@ year = {2017}
   file = {/Users/maksimploter/Zotero/storage/KK76QNMC/Xiao and Lee - 2018 - Video Object Detection with an Aligned Spatial-Temporal Memory.pdf;/Users/maksimploter/Zotero/storage/LRYHDLY5/1712.html}
 }
 
+
+@online{choPropertiesNeuralMachine2014,
+  title = {On the {{Properties}} of {{Neural Machine Translation}}: {{Encoder-Decoder Approaches}}},
+  shorttitle = {On the {{Properties}} of {{Neural Machine Translation}}},
+  author = {Cho, Kyunghyun and family=Merrienboer, given=Bart, prefix=van, useprefix=false and Bahdanau, Dzmitry and Bengio, Yoshua},
+  date = {2014-10-07},
+  eprint = {1409.1259},
+  eprinttype = {arXiv},
+  eprintclass = {cs},
+  doi = {10.48550/arXiv.1409.1259},
+  url = {http://arxiv.org/abs/1409.1259},
+  urldate = {2025-05-08},
+  abstract = {Neural machine translation is a relatively new approach to statistical machine translation based purely on neural networks. The neural machine translation models often consist of an encoder and a decoder. The encoder extracts a fixed-length representation from a variable-length input sentence, and the decoder generates a correct translation from this representation. In this paper, we focus on analyzing the properties of the neural machine translation using two models; RNN Encoder--Decoder and a newly proposed gated recursive convolutional neural network. We show that the neural machine translation performs relatively well on short sentences without unknown words, but its performance degrades rapidly as the length of the sentence and the number of unknown words increase. Furthermore, we find that the proposed gated recursive convolutional network learns a grammatical structure of a sentence automatically.},
+  pubstate = {prepublished},
+  keywords = {_st/Cited,_st/New,Computer Science - Computation and Language,Statistics - Machine Learning},
+  file = {/Users/maksimploter/Zotero/storage/55D4YK45/Cho et al. - 2014 - On the Properties of Neural Machine Translation Encoder-Decoder Approaches.pdf;/Users/maksimploter/Zotero/storage/MP46AMVV/1409.html}
+}
+
+
 @misc{ballasDelvingDeeperConvolutional2016,
   title = {Delving {{Deeper}} into {{Convolutional Networks}} for {{Learning Video Representations}}},
   author = {Ballas, Nicolas and Yao, Li and Pal, Chris and Courville, Aaron},
@@ -307,6 +347,75 @@ year = {2017}
   file = {/Users/maksimploter/Zotero/storage/8P8DALFN/Ballas et al. - 2016 - Delving Deeper into Convolutional Networks for Learning Video Representations.pdf;/Users/maksimploter/Zotero/storage/W3L9ZQBZ/1511.html}
 }
 
+
+@online{liuMobileVideoObject2018,
+  title = {Mobile {{Video Object Detection}} with {{Temporally-Aware Feature Maps}}},
+  author = {Liu, Mason and Zhu, Menglong},
+  date = {2018-03-28},
+  eprint = {1711.06368},
+  eprinttype = {arXiv},
+  eprintclass = {cs},
+  doi = {10.48550/arXiv.1711.06368},
+  url = {http://arxiv.org/abs/1711.06368},
+  urldate = {2025-04-07},
+  abstract = {This paper introduces an online model for object detection in videos designed to run in real-time on low-powered mobile and embedded devices. Our approach combines fast single-image object detection with convolutional long short term memory (LSTM) layers to create an interweaved recurrent-convolutional architecture. Additionally, we propose an efficient Bottleneck-LSTM layer that significantly reduces computational cost compared to regular LSTMs. Our network achieves temporal awareness by using Bottleneck-LSTMs to refine and propagate feature maps across frames. This approach is substantially faster than existing detection methods in video, outperforming the fastest single-frame models in model size and computational cost while attaining accuracy comparable to much more expensive single-frame models on the Imagenet VID 2015 dataset. Our model reaches a real-time inference speed of up to 15 FPS on a mobile CPU.},
+  pubstate = {prepublished},
+  keywords = {_st/Cited,_st/Skimmed,Computer Science - Computer Vision and Pattern Recognition},
+  file = {/Users/maksimploter/Zotero/storage/EERM3MMP/Liu and Zhu - 2018 - Mobile Video Object Detection with Temporally-Aware Feature Maps.pdf;/Users/maksimploter/Zotero/storage/LHCBF7WA/1711.html}
+}
+
+@online{guoProgressiveSparseLocal2019,
+  title = {Progressive {{Sparse Local Attention}} for {{Video}} Object Detection},
+  author = {Guo, Chaoxu and Fan, Bin and Gu, Jie and Zhang, Qian and Xiang, Shiming and Prinet, Veronique and Pan, Chunhong},
+  date = {2019-08-16},
+  eprint = {1903.09126},
+  eprinttype = {arXiv},
+  eprintclass = {cs},
+  doi = {10.48550/arXiv.1903.09126},
+  url = {http://arxiv.org/abs/1903.09126},
+  urldate = {2025-05-12},
+  abstract = {Transferring image-based object detectors to the domain of videos remains a challenging problem. Previous efforts mostly exploit optical flow to propagate features across frames, aiming to achieve a good trade-off between accuracy and efficiency. However, introducing an extra model to estimate optical flow can significantly increase the overall model size. The gap between optical flow and high-level features can also hinder it from establishing spatial correspondence accurately. Instead of relying on optical flow, this paper proposes a novel module called Progressive Sparse Local Attention (PSLA), which establishes the spatial correspondence between features across frames in a local region with progressively sparser stride and uses the correspondence to propagate features. Based on PSLA, Recursive Feature Updating (RFU) and Dense Feature Transforming (DenseFT) are proposed to model temporal appearance and enrich feature representation respectively in a novel video object detection framework. Experiments on ImageNet VID show that our method achieves the best accuracy compared to existing methods with smaller model size and acceptable runtime speed.},
+  pubstate = {prepublished},
+  keywords = {_st/Cited,_st/New,Computer Science - Computer Vision and Pattern Recognition},
+  file = {/Users/maksimploter/Zotero/storage/YXRH6PRC/Guo et al. - 2019 - Progressive Sparse Local Attention for Video object detection.pdf;/Users/maksimploter/Zotero/storage/89E6LK76/1903.html}
+}
+
+
+@online{bahdanauNeuralMachineTranslation2016a,
+  title = {Neural {{Machine Translation}} by {{Jointly Learning}} to {{Align}} and {{Translate}}},
+  author = {Bahdanau, Dzmitry and Cho, Kyunghyun and Bengio, Yoshua},
+  date = {2016-05-19},
+  eprint = {1409.0473},
+  eprinttype = {arXiv},
+  eprintclass = {cs},
+  doi = {10.48550/arXiv.1409.0473},
+  url = {http://arxiv.org/abs/1409.0473},
+  urldate = {2025-05-12},
+  abstract = {Neural machine translation is a recently proposed approach to machine translation. Unlike the traditional statistical machine translation, the neural machine translation aims at building a single neural network that can be jointly tuned to maximize the translation performance. The models proposed recently for neural machine translation often belong to a family of encoder-decoders and consists of an encoder that encodes a source sentence into a fixed-length vector from which a decoder generates a translation. In this paper, we conjecture that the use of a fixed-length vector is a bottleneck in improving the performance of this basic encoder-decoder architecture, and propose to extend this by allowing a model to automatically (soft-)search for parts of a source sentence that are relevant to predicting a target word, without having to form these parts as a hard segment explicitly. With this new approach, we achieve a translation performance comparable to the existing state-of-the-art phrase-based system on the task of English-to-French translation. Furthermore, qualitative analysis reveals that the (soft-)alignments found by the model agree well with our intuition.},
+  pubstate = {prepublished},
+  keywords = {_st/Cited,_st/New,Computer Science - Computation and Language,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing,Statistics - Machine Learning},
+  file = {/Users/maksimploter/Zotero/storage/MZXBRFL6/Bahdanau et al. - 2016 - Neural Machine Translation by Jointly Learning to Align and Translate.pdf;/Users/maksimploter/Zotero/storage/JYTPHI2L/1409.html}
+}
+
+@online{vaswaniAttentionAllYou2023,
+  title = {Attention {{Is All You Need}}},
+  author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Lukasz and Polosukhin, Illia},
+  date = {2023-08-01},
+  eprint = {1706.03762},
+  eprinttype = {arXiv},
+  eprintclass = {cs},
+  url = {http://arxiv.org/abs/1706.03762},
+  urldate = {2024-06-28},
+  abstract = {The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.},
+  langid = {english},
+  pubstate = {prepublished},
+  keywords = {_r/5_classical_cite,_st/Skimmed,Computer Science - Computation and Language,Computer Science - Machine Learning},
+  file = {/Users/maksimploter/Zotero/storage/T8DF74YF/Vaswani et al. - 2023 - Attention Is All You Need.pdf}
+}
+
+
+
+
 @online{jaeglePerceiverGeneralPerception2021,
   title = {Perceiver: {{General Perception}} with {{Iterative Attention}}},
   shorttitle = {Perceiver},
@@ -323,6 +432,7 @@ year = {2017}
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning,Computer Science - Sound,Electrical Engineering and Systems Science - Audio and Speech Processing},
   file = {/Users/maksimploter/Zotero/storage/7SFRYG4J/Jaegle et al. - 2021 - Perceiver General Perception with Iterative Atten.pdf}
 }
+
 
 
 
