@@ -1,6 +1,6 @@
 \section{Experiments}  \label{Experiments}
 
-
+This section details the experimental setup and results. It begins by outlining the training procedures for the RPerceiver model in the bounding box prediction task and the RPerceiverMM model for the center point prediction task. Subsequently, a comparative analysis is presented, evaluating the RPerceiver architecture against the YOLOv8n baseline for object detection on the detection-moving-mnist-easy benchmark, with a focus on how spatio-temporal information is utilized and performance in challenging scenarios like overlapping objects and objects near frame borders. Finally, an extensive ablation study investigates the robustness of the RPerceiver and RPerceiverMM models under various conditions, including complete sensor failure and non-deterministic sensor input, across single-view and multi-view configurations using default, shuffle, and blind evaluation procedures.
 
 \subsection{Training for Bounding Boxes Prediction Task} \label{Experiments:TrainingBoundingBoxesTask}
 
@@ -48,19 +48,40 @@ First, the task of object detection using the detection-moving-mnist-easy benchm
     \label{fig:figure_methods_val_batch2_pred_YOLO}
 \end{figure}
 
-% TODO: recompute with tighter IoU threshold
-
-To quantify the observations regarding model performance in challenging scenarios, as illustrated in Figures \ref{fig:figure_methods_val_batch2_pred_recurrent_perceiver} and \ref{fig:figure_methods_val_batch2_pred_YOLO}, the models were specifically evaluated on filtered subsets of the ground truth data. These subsets isolate two challenging conditions: overlapping objects (defined as pairs of ground truth objects with an Intersection over Union (IoU) greater than 0.01) and border objects (defined as ground truth objects whose bounding boxes intersect with the frame border). The resulting performance metrics for these specific cases are presented in Table \ref{tab:model_comparison_detailed}.
+To quantify the observations regarding model performance in challenging scenarios, as illustrated in Figures \ref{fig:figure_methods_val_batch2_pred_recurrent_perceiver} and \ref{fig:figure_methods_val_batch2_pred_YOLO}, the models were specifically evaluated on filtered subsets of the ground truth data. These subsets isolate two challenging conditions: overlapping objects (defined as pairs of ground truth objects with an Intersection over Union (IoU) greater than $10\%$) and border objects (defined as ground truth objects whose bounding boxes intersect with the frame border). These subsets represent $10.4\%$ and $11.5\%$ of the entire test set. The resulting performance metrics for these specific cases are presented in Table \ref{tab:model_comparison_detailed}.
 
 % YOLO:
-% Raw Overlap mAP Results (Evaluator): {'map': tensor(0.8266), 'map_50': tensor(0.9133), 'map_75': tensor(0.8788), 'map_small': tensor(0.8266), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7744), 'mar_10': tensor(0.8536), 'mar_100': tensor(0.8536), 'mar_small': tensor(0.8536), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+% ### OVERLAP IOU 0.1
+
+% Raw mAP Results (Evaluator): {'map': tensor(0.9231), 'map_50': tensor(0.9621), 'map_75': tensor(0.9410), 'map_small': tensor(0.9231), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7471), 'mar_10': tensor(0.9393), 'mar_100': tensor(0.9393), 'mar_small': tensor(0.9393), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+
+% Raw Overlap mAP Results (Evaluator): {'map': tensor(0.7570), 'map_50': tensor(0.8749), 'map_75': tensor(0.8246), 'map_small': tensor(0.7570), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7398), 'mar_10': tensor(0.7959), 'mar_100': tensor(0.7959), 'mar_small': tensor(0.7959), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
 
 % Raw Boundary mAP Results (Evaluator): {'map': tensor(0.6989), 'map_50': tensor(0.7667), 'map_75': tensor(0.7365), 'map_small': tensor(0.6989), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7119), 'mar_10': tensor(0.7280), 'mar_100': tensor(0.7280), 'mar_small': tensor(0.7280), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
 
-% RPerceiver
-% Raw Overlap mAP Results (Evaluator): {'map': tensor(0.6940), 'map_50': tensor(0.8853), 'map_75': tensor(0.7777), 'map_small': tensor(0.6940), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.6686), 'mar_10': tensor(0.7389), 'mar_100': tensor(0.7389), 'mar_small': tensor(0.7389), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+% num_total_gt_objects: 851740.0000
+% num_overlap_gt_objects: 88680.0000
+% num_boundary_gt_objects: 97997.0000
+% percentage_overlap_gt_objects: 10.4116
+% percentage_boundary_gt_objects: 11.5055
+
+% RPerceiver:
+% ### OVERLAP IOU 0.1
+
+% Raw mAP Results (Evaluator): {'map': tensor(0.9025), 'map_50': tensor(0.9688), 'map_75': tensor(0.9442), 'map_small': tensor(0.9025), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7367), 'mar_10': tensor(0.9240), 'mar_100': tensor(0.9240), 'mar_small': tensor(0.9240), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+
+% Raw Overlap mAP Results (Evaluator): {'map': tensor(0.6100), 'map_50': tensor(0.8396), 'map_75': tensor(0.6883), 'map_small': tensor(0.6100), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.6138), 'mar_10': tensor(0.6676), 'mar_100': tensor(0.6676), 'mar_small': tensor(0.6676), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
 
 % Raw Boundary mAP Results (Evaluator): {'map': tensor(0.8470), 'map_50': tensor(0.9552), 'map_75': tensor(0.9101), 'map_small': tensor(0.8470), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.8512), 'mar_10': tensor(0.8739), 'mar_100': tensor(0.8739), 'mar_small': tensor(0.8739), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
+
+% num_total_gt_objects: 851740.0000
+% num_overlap_gt_objects: 88680.0000
+% num_boundary_gt_objects: 97997.0000
+% percentage_overlap_gt_objects: 10.4116
+% percentage_boundary_gt_objects: 11.5055
 
 
 \begin{table}[htb!]
@@ -73,8 +94,8 @@ To quantify the observations regarding model performance in challenging scenario
                  }
         \SetCell[r=2]{l}Model  & \SetCell[c=3]{c}Overlap & & & \SetCell[c=3]{c}Border & & \\
                    & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95}  \\
-        YOLOv8n    & \textbf{91.3}  & \textbf{87.9} & \textbf{82.7} & 76.7  & 73.7 & 69.9 \\
-        RPerceiver & 88.5 & 77.8 & 69.4  & \textbf{95.5} & \textbf{91.0} & \textbf{84.7}\\
+        YOLOv8n    & \textbf{87.5}  & \textbf{82.4} & \textbf{75.7} & 76.7  & 73.7 & 69.9 \\
+        RPerceiver & 84.0 & 68.8 & 61.0  & \textbf{95.5} & \textbf{91.0} & \textbf{84.7}\\
     \end{tblr}
 \end{table}
 
@@ -92,13 +113,13 @@ Three distinct evaluation procedures were considered: \texttt{default}, \texttt{
     \item[\texttt{blind}] This procedure simulates a complete sensor(s) failure scenario where the input from camera sensor(s) becomes unavailable. The \texttt{blind} procedure is implemented by dropping the input stream from the sensor(s) after a midpoint time step, $t_{half}$. Consequently, information from the sensor(s) is unavailable to the model for the second half of the sequence.
 \end{description}
 
-It is important to note the conceptual link between the \texttt{dropout} training procedure described in Section \ref{Methods:DropoutAndShuffle} and the \texttt{blind} evaluation procedure defined here. The \texttt{blind} procedure can be viewed as a specific, deterministic instance of the \texttt{dropout} mechanism applied during evaluation. Specifically, it corresponds to a scenario where the probability of dropping the sensor input becomes 1.0. While \texttt{dropout} during training introduces stochasticity with varying probabilities to enhance general robustness, the \texttt{blind} evaluation tests the model's resilience to a complete and sustained sensor failure.
+It is important to note that the distinct terms "\texttt{dropout}" for the training procedure described in Section \ref{Methods:DropoutAndShuffle} and "\texttt{blind}" for the evaluation procedure were chosen intentionally, even though they represent a similar goal of removing the input data. The \texttt{blind} procedure can be understood as a specific case of the \texttt{dropout} mechanism, where the probability of dropping a sensor's input is set to 1.0, effectively "blinding" the model to that sensor's input.
 
 The analysis begins by comparing the performance of the baseline RPerceiver (RP) model against its counterpart trained using the dropout procedure (RP (d)), as described in Section \ref{Methods:DropoutAndShuffle}. This comparison is conducted under the \texttt{single-view} configuration using the \texttt{default} evaluation procedure. The results of this evaluation are presented in Table~\ref{tab:results_single_view_default}.
 
 \begin{table}[htb!]
     \centering
-    \caption{Comparison of RPerceiver (RP) and RPerceiver trained with dropout (RP (d)) under the \texttt{single-view} configuration and \texttt{default} evaluation procedure. The '(d)' denotes training with dropout. Results are presented based on the number of digits in the input sequence. Metrics shown are Average Displacement Error (ADE), calculated over the second half of the sequence, and Final Displacement Error (FDE), calculated for the final frame. The results indicate that the baseline RPerceiver consistently outperforms the RPerceiver trained with dropout, achieving lower error rates for both ADE and FDE across all tested sequence complexities.
+    \caption{Comparison of RPerceiver (RP) and RPerceiver trained with dropout (RP (d)) under the \texttt{single-view} configuration and \texttt{default} evaluation procedure. The '(d)' denotes training with dropout. Results are presented based on the number of digits in the input sequence. Metrics shown are Average Displacement Error (ADE), calculated over the second half of the sequence, and Final Displacement Error (FDE), calculated for the final frame. The results indicate that the baseline RPerceiver consistently outperforms the RPerceiver trained with dropout, although the difference is not very large, achieving lower error rates for both ADE and FDE across all tested sequence complexities.
     }
     \label{tab:results_single_view_default}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
