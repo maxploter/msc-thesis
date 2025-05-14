@@ -3,7 +3,7 @@
 % Justification for the choice of topic
 % actuality
 
-Autonomous Driving Systems (ADS) hold immense promise, envisioning a future of transportation with enhanced road safety, improved traffic flow, and reduced environmental impact \cite{litmanAutonomousVehicleImplementationb}. Achieving this vision requires ADS to operate reliably under a wide spectrum of diverse and often challenging environmental conditions. This operational requirement necessitates a sophisticated perception stack, heavily reliant on data integrated from multiple sensors. Crucially, the hardware components of this stack are susceptible to system failures, including non-deterministic sensor input availability and complete sensor outages, the two failure modes specifically investigated in this thesis. Such failures in the perception system can have catastrophic consequences, potentially leading to accidents and undermining public trust in autonomous technology \cite{}. Therefore, ADS necessitate perception models that possess two critical requirements: inherent capability to support the multi-modal hardware stack typical of these systems and robustness against sensor failure.
+Autonomous Driving Systems (ADS) hold immense promise, envisioning a future of transportation with enhanced road safety, improved traffic flow, and reduced environmental impact \cite{litmanAutonomousVehicleImplementationb}. Achieving this vision requires ADS to operate reliably under a wide spectrum of diverse and often challenging environmental conditions. This operational requirement necessitates a sophisticated perception stack, heavily reliant on data integrated from multiple sensors. Crucially, the hardware components of this stack are susceptible to system failures, including non-deterministic sensor input availability and complete sensor outages, the two failure modes specifically investigated in this thesis. Such failures in the perception system can have catastrophic consequences, potentially leading to accidents and undermining public trust in autonomous technology \cite{yurtseverSurveyAutonomousDriving2020}. Therefore, ADS necessitate perception models that possess two critical requirements: inherent capability to support the multi-modal hardware stack typical of these systems and robustness against sensor failure.
 
 % Overview Theoretical Background -- background information to contextualize the problem
 % review of state of the art solutions
@@ -22,7 +22,7 @@ To address these limitations, this thesis introduces novel recurrent architectur
 
 \begin{itemize}
     \item We propose a Recurrent Perceiver architecture that, when unrolled in time, can be interpreted as a recurrent neural network (RNN). Furthermore, the model supports multiple sensory inputs.
-    \item We introduce a custom-created benchmark dataset, which we call "detection-moving-mnist-easy", designed to evaluate performance on two distinct tasks: bounding box detection and object center point (keypoint) prediction.    
+    \item We introduce a novel benchmark dataset, which we call "detection-moving-mnist-easy", designed to evaluate performance on two distinct tasks: bounding box detection and object center point (keypoint) prediction.    
     \item We propose specific training procedures (e.g., input dropout, shuffling) and evaluation protocols designed to simulate and assess model robustness against potential hardware and software failures, such as complete sensor outages or non-deterministic input availability in single-sensor and multi-sensor setups.
 \end{itemize}
 
