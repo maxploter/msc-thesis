@@ -1,18 +1,18 @@
 \section{Experiments}  \label{Experiments}
 
-This section details the empirical evaluation of the proposed models and training methodologies. We begin by presenting a comparative analysis that assesses the performance of our RPerceiver model on the video object detection task against a relevant baseline. Following this, we conduct an ablation study to investigate how different training procedures, specifically dropout and input shuffling, influence the robustness of the RPerceiver and RPerceiverMM models, particularly in simulated sensor failure scenarios. The training details for each task are outlined first, followed by the comparative results and the ablation study findings.
+
 
 \subsection{Training for Bounding Boxes Prediction Task} \label{Experiments:TrainingBoundingBoxesTask}
 
-We trained the RPerceiver model for the bounding box prediction task using the AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} with an initial learning rate of $10^{-4}$. The training was conducted for 31 epochs, with learning rate drops by a factor of 10 at epochs 18 and 28. The training pipeline included data augmentation, normalization based on pre-calculated dataset statistics, and resizing frames to a fixed dimension of $ 320 \times 320 $ \cite{redmonYOLO9000BetterFaster2016}. For a complete list of training hyperparameters, refer to Appendix \ref{Appendix:TrainingHyperparameters}.
+The RPerceiver model was trained for the bounding box prediction task using the AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} with an initial learning rate of $10^{-4}$. Training was conducted for 31 epochs, with the learning rate reduced by a factor of 10 at epochs 18 and 28. The training pipeline included data augmentation, normalization based on pre-calculated dataset statistics, and resizing frames to a fixed dimension of $320 \times 320$ pixels \cite{redmonYOLO9000BetterFaster2016}. For a complete list of training hyperparameters, refer to Appendix~\ref{Appendix:TrainingHyperparameters}.
 
 \subsection{Training for Center Points Prediction Task} \label{Experiments:TrainingCenterPointsTask}
 
-We trained the RPerceiverMM model for the center point prediction task using the AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} with an initial learning rate of $10^{-4}$. The training was conducted for 21 epochs, with a learning rate drop by a factor of 10 at epoch 18. The training pipeline included data augmentation and normalization, ensuring robust performance. For a complete list of training hyperparameters, refer to Appendix \ref{Appendix:TrainingHyperparameters}.
+The RPerceiverMM model was trained for the center point prediction task using the AdamW optimizer \cite{loshchilovDecoupledWeightDecay2019a} with an initial learning rate of $10^{-4}$. Training was conducted for 21 epochs, with the learning rate reduced by a factor of 10 at epoch 18. The training pipeline included data augmentation and normalization, ensuring robust performance. For a complete list of training hyperparameters, refer to Appendix \ref{Appendix:TrainingHyperparameters}.
 
 \subsection{Comparison Analysis} \label{Experiments:ComparisonAnalysis}
 
-First, we consider the task of object detection using the detection-moving-mnist-easy benchmark from Section \ref{Methods:Dataset}. We perform a comparative analysis against a still-image object detector of comparable size, YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023}. The primary goal is to evaluate how the proposed RPerceiver architecture utilizes spatio-temporal information from the video input. Results are shown in Table \ref{tab:model_comparison}.
+First, the task of object detection using the detection-moving-mnist-easy benchmark from Section \ref{Methods:Dataset} is considered. A comparative analysis against a still-image object detector of comparable size, YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023}, is performed. The primary goal is to evaluate how the proposed RPerceiver architecture utilizes spatio-temporal information from the video input. The results are shown in Table~\ref{tab:model_comparison}.
 
 % YOLO: Raw mAP Results (Evaluator): {'map': tensor(0.9231), 'map_50': tensor(0.9621), 'map_75': tensor(0.9410), 'map_small': tensor(0.9231), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7471), 'mar_10': tensor(0.9393), 'mar_100': tensor(0.9393), 'mar_small': tensor(0.9393), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
 
@@ -22,15 +22,15 @@ First, we consider the task of object detection using the detection-moving-mnist
 
 \begin{table}[htb!]
     \centering
-    \caption{Comparison with the baseline still image detector YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on the detection-moving-mnist-easy test split. 'Post' indicates the use of postprocessing heuristics. RPerceiver achieves slightly better $mAP_{50}$ and $mAP_{75}$, but shows worse $mAP_{50-95}$ results. However, RPerceiver achieves these results with significantly fewer parameters and lower computational cost.}
+    \caption{Comparison with the baseline still image detector YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on the detection-moving-mnist-easy test split. RPerceiver achieves slightly better $mAP_{50}$ and $mAP_{75}$, but shows worse $mAP_{50-95}$ results. However, RPerceiver achieves these results with significantly fewer parameters and lower computational cost.}
     \label{tab:model_comparison}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
-                  colspec = { l c c c c c c },
+                  colspec = { l c c c c c },
                   row{1} = {font=\bfseries},
                  }
-        Model      & Post & mAP_{50} & mAP_{75} & mAP_{50-95} & Params (M)   & GFLOPS         \\
-        YOLOv8n    & X & 96.2  & 94.1 & \textbf{92.3}  & 3            & 8.1            \\
-        RPerceiver & X & \textbf{96.9} & \textbf{94.4} & 90.3 &\textbf{1} & \textbf{1.2}   \\
+        Model      & mAP_{50} & mAP_{75} & mAP_{50-95} & Params (M)   & GFLOPS         \\
+        YOLOv8n    & 96.2  & 94.1 & \textbf{92.3}  & 3            & 8.1            \\
+        RPerceiver & \textbf{96.9} & \textbf{94.4} & 90.3 &\textbf{1} & \textbf{1.2}   \\
     \end{tblr}
 \end{table}
 
@@ -50,7 +50,7 @@ First, we consider the task of object detection using the detection-moving-mnist
 
 % TODO: recompute with tighter IoU threshold
 
-To quantify the observations regarding model performance in challenging scenarios, as illustrated in Figures \ref{fig:figure_methods_val_batch2_pred_recurrent_perceiver} and \ref{fig:figure_methods_val_batch2_pred_YOLO}, we specifically evaluated the models on filtered subsets of the ground truth data. These subsets isolate two challenging conditions: overlapping objects (defined as pairs of ground truth objects with an Intersection over Union (IoU) greater than 0.01) and border objects (defined as ground truth objects whose bounding boxes intersect with the frame border). The resulting performance metrics for these specific cases are presented in Table \ref{tab:model_comparison_detailed}.
+To quantify the observations regarding model performance in challenging scenarios, as illustrated in Figures \ref{fig:figure_methods_val_batch2_pred_recurrent_perceiver} and \ref{fig:figure_methods_val_batch2_pred_YOLO}, the models were specifically evaluated on filtered subsets of the ground truth data. These subsets isolate two challenging conditions: overlapping objects (defined as pairs of ground truth objects with an Intersection over Union (IoU) greater than 0.01) and border objects (defined as ground truth objects whose bounding boxes intersect with the frame border). The resulting performance metrics for these specific cases are presented in Table \ref{tab:model_comparison_detailed}.
 
 % YOLO:
 % Raw Overlap mAP Results (Evaluator): {'map': tensor(0.8266), 'map_50': tensor(0.9133), 'map_75': tensor(0.8788), 'map_small': tensor(0.8266), 'map_medium': tensor(-1.), 'map_large': tensor(-1.), 'mar_1': tensor(0.7744), 'mar_10': tensor(0.8536), 'mar_100': tensor(0.8536), 'mar_small': tensor(0.8536), 'mar_medium': tensor(-1.), 'mar_large': tensor(-1.), 'map_per_class': tensor(-1.), 'mar_100_per_class': tensor(-1.), 'classes': tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=torch.int32)}
@@ -68,21 +68,21 @@ To quantify the observations regarding model performance in challenging scenario
     \caption{Comparative analysis of YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} and RPerceiver on specific scenarios within the detection-moving-mnist-easy test split: object overlaps ('Overlap') and proximity to image borders ('Border'). Postprocessing ('Post') is applied to both models. The data indicates that the still-image detector YOLOv8n achieves higher accuracy on overlapping objects. In contrast, RPerceiver significantly outperforms YOLOv8n on border cases, supporting the hypothesis that it effectively leverages temporal information from the video sequence.}
     \label{tab:model_comparison_detailed}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
-                  colspec = { l c c c c c },
+                  colspec = { l c c c c },
                   row{1} = {font=\bfseries},
                  }
-        \SetCell[r=2]{l}Model & \SetCell[r=2]{l}Post & \SetCell[c=3]{c}Overlap & & & \SetCell[c=3]{c}Border & & \\
-                   &   & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95}  \\
-        YOLOv8n    & X & \textbf{91.3}  & \textbf{87.9} & \textbf{82.7} & 76.7  & 73.7 & 69.9 \\
-        RPerceiver & X & 88.5 & 77.8 & 69.4  & \textbf{95.5} & \textbf{91.0} & \textbf{84.7}\\
+        \SetCell[r=2]{l}Model  & \SetCell[c=3]{c}Overlap & & & \SetCell[c=3]{c}Border & & \\
+                   & mAP_{50} & mAP_{75}  & mAP_{50-95}       & mAP_{50} & mAP_{75}  & mAP_{50-95}  \\
+        YOLOv8n    & \textbf{91.3}  & \textbf{87.9} & \textbf{82.7} & 76.7  & 73.7 & 69.9 \\
+        RPerceiver & 88.5 & 77.8 & 69.4  & \textbf{95.5} & \textbf{91.0} & \textbf{84.7}\\
     \end{tblr}
 \end{table}
 
 \subsection{Ablation Study} \label{Experiments:AblationStudy}
 
-In this ablation study, we evaluate the robustness of the RPerceiver and RPerceiverMM models against complete sensor failure and non-deterministic sensor input. The evaluation employs the center point prediction task. We experimented with two primary configurations: \texttt{single-view} and \texttt{multi-view}. First, the \texttt{single-view} configuration utilized a single camera sensor, representing a basic object detection task using video input. Second, the \texttt{multi-view} setting involved processing information from multiple cameras to perform object detection within a unified spatial representation derived from these inputs.
+This ablation study evaluates the robustness of the RPerceiver and RPerceiverMM models against complete sensor failure and non-deterministic sensor input. The evaluation employs the center point prediction task. Two primary configurations were experimented with: \texttt{single-view} and \texttt{multi-view}. First, the \texttt{single-view} configuration utilized a single camera sensor, representing a basic object detection task using video input. Second, the \texttt{multi-view} setting involved processing information from multiple cameras to perform object detection within a unified spatial representation derived from these inputs.
 
-We considered three distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, we evaluated a combination of the latter two procedures.
+Three distinct evaluation procedures were considered: \texttt{default}, \texttt{shuffle}, and \texttt{blind}. Additionally, a combination of the latter two procedures was evaluated.
 
 \begin{description}
     \item[\texttt{default}] This procedure represents the normal operational regime where all sensors function as expected without any induced faults or input shuffle.
@@ -94,7 +94,7 @@ We considered three distinct evaluation procedures: \texttt{default}, \texttt{sh
 
 It is important to note the conceptual link between the \texttt{dropout} training procedure described in Section \ref{Methods:DropoutAndShuffle} and the \texttt{blind} evaluation procedure defined here. The \texttt{blind} procedure can be viewed as a specific, deterministic instance of the \texttt{dropout} mechanism applied during evaluation. Specifically, it corresponds to a scenario where the probability of dropping the sensor input becomes 1.0. While \texttt{dropout} during training introduces stochasticity with varying probabilities to enhance general robustness, the \texttt{blind} evaluation tests the model's resilience to a complete and sustained sensor failure.
 
-We initiate our analysis by comparing the performance of the baseline RPerceiver (RP) model against its counterpart trained using the dropout procedure (RP (d)), as described in Section \ref{Methods:DropoutAndShuffle}. This comparison is conducted under the \texttt{single-view} configuration using the \texttt{default} evaluation procedure. The results of this evaluation are presented in Table~\ref{tab:results_single_view_default}.
+The analysis begins by comparing the performance of the baseline RPerceiver (RP) model against its counterpart trained using the dropout procedure (RP (d)), as described in Section \ref{Methods:DropoutAndShuffle}. This comparison is conducted under the \texttt{single-view} configuration using the \texttt{default} evaluation procedure. The results of this evaluation are presented in Table~\ref{tab:results_single_view_default}.
 
 \begin{table}[htb!]
     \centering
@@ -113,7 +113,7 @@ We initiate our analysis by comparing the performance of the baseline RPerceiver
     \end{tblr}
 \end{table}
 
-Next, we compare the same models, RPerceiver (RP) and RPerceiver trained with dropout (RP (d)). This comparison is conducted under the \texttt{single-view} configuration using the \texttt{blind} evaluation procedure. The results for this \texttt{blind} test are detailed in Table~\ref{tab:results_frame_dropout_blind}.
+Next, the same models, RPerceiver (RP) and RPerceiver trained with dropout (RP (d)), are compared. This comparison is conducted under the \texttt{single-view} configuration using the \texttt{blind} evaluation procedure. The results for this \texttt{blind} test are detailed in Table~\ref{tab:results_frame_dropout_blind}.
 
 \begin{table}[htb!]
     \centering
@@ -133,7 +133,7 @@ Next, we compare the same models, RPerceiver (RP) and RPerceiver trained with dr
     \end{tblr}
 \end{table}
 
-For the \texttt{multi-view} configuration, we introduce a tile augmentation technique to the dataset pipeline. This process divides each frame into a specified grid of views, partitioning the corresponding ground truths as well. In our experiments, we utilize a $2 \times 2$ grid configuration. This effectively treats the tiled frame as a simplified spatial layout, akin to a Bird's-Eye View (BEV) where each tile represents a spatial region. Figure~\ref{fig:figure_methods_dataset_image_view_bev} illustrates an example of a frame divided using this grid approach.
+For the \texttt{multi-view} configuration, a tile augmentation technique is introduced to the dataset pipeline. This process divides each frame into a specified grid of views, partitioning the corresponding ground truths as well. In the experiments, a $2 \times 2$ grid configuration is utilized. This effectively treats the tiled frame as a simplified spatial layout, akin to a Bird's-Eye View (BEV) where each tile represents a spatial region. Figure~\ref{fig:figure_methods_dataset_image_view_bev} illustrates an example of a frame divided using this grid approach.
 
 \begin{figure}
     \centering
@@ -142,7 +142,7 @@ For the \texttt{multi-view} configuration, we introduce a tile augmentation tech
     \label{fig:figure_methods_dataset_image_view_bev}
 \end{figure}
 
-We now extend our ablation study to the \texttt{multi-view} configuration, evaluating the RPerceiverMM (RPMM) model and its variants trained with training procedures from Section \ref{Methods:DropoutAndShuffle}: shuffle training (RPMM (s)), dropout training (RPMM (d)), and combined shuffle and dropout training (RPMM (d, s)). These models are compared against the baseline RPMM under four distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, \texttt{blind}, and a combined \texttt{blind} and \texttt{shuffle} scenario. The performance metrics for these multi-view evaluations are presented in Table~\ref{tab:results_multi_view}.
+The ablation study is now extended to the \texttt{multi-view} configuration, evaluating the RPerceiverMM (RPMM) model and its variants trained with training procedures from Section \ref{Methods:DropoutAndShuffle}: shuffle training (RPMM (s)), dropout training (RPMM (d)), and combined shuffle and dropout training (RPMM (d, s)). These models are compared against the baseline RPMM under four distinct evaluation procedures: \texttt{default}, \texttt{shuffle}, \texttt{blind}, and a combined \texttt{blind} and \texttt{shuffle} scenario. The performance metrics for these multi-view evaluations are presented in Table~\ref{tab:results_multi_view}.
 
 % Results: https://docs.google.com/spreadsheets/d/1shITm2iWIKzAAlWpRwED-g1H6YurMJoJgxagRU2x6Gg/edit?gid=290835343#gid=290835343
 
