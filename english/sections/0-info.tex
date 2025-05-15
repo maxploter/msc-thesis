@@ -5,10 +5,10 @@
 % English information
 \begin{info}
 \begin{abstract}
-Write here the abstract of your work. The abstract could provide a brief introduction to the topic but should, in the majority, cover Your thesis work. When reading the abstract, it should become clear what can be read about in the rest of Your thesis. Write about the purpose of the thesis, method(s), results, and findings of Your work. For a bachelor’s thesis, both the Estonian and English abstracts should fit into a single page. For a master’s thesis or when necessary, the Estonian and English sections of this page could be on separate pages. Come up with good keywords for Your work and find your CERCS code(s).
+Autonomous Driving Systems (ADS) promise safer roads, better traffic flow, and reduced environmental impact. The Society of Automotive Engineers (SAE) International's J3016 standard \cite{sae:j3016:2021apr} stipulates stringent safety requirements for ADS, particularly concerning their operational behavior during dynamic driving task performance-relevant system failures. The perception task, which includes the fundamental computer vision task of object detection, is a key capability that distinguishes ADS from a “regular” vehicle. In the last decade, there has been remarkable progress in various computer vision tasks, and the object detection task in particular. However, many contemporary state-of-the-art models are specialists, with strong inductive biases for specific data types, making them difficult, if not impossible, to use for ADS. To address this limitation, the thesis introduces two novel recurrent architectures: the Recurrent Perceiver (RPerceiver) and its multi-modal variant, the Recurrent Perceiver Multi-Modal (RPerceiverMM). The efficacy of these architectures was evaluated on a novel benchmark dataset, "detection-moving-mnist-easy," proposed in this thesis. The experimental results suggest the proposed models' effectiveness in leveraging temporal information, particularly in challenging cases such as objects that are partially visible while leaving the video frame. Furthermore, this research investigated specific training procedures designed to simulate complete sensor failures and non-deterministic data availability. The findings indicate that these proposed training strategies significantly improve model robustness, demonstrating enhanced performance when faced with conditions analogous to real-world ADS sensor system failures. This work contributes to the development of more resilient perception systems crucial for the safe deployment of ADS.
 \end{abstract}
 
-\keywords{Deep learning, Transformer, Computer Vision, Video Object Detection}
+\keywords{Autonomous Driving Systems, Deep Learning, Transformer, Computer Vision, Video Object Detection}
 
 \cercs{P170, P175, P176, T111}
 % Codes can be found at: https://www.etis.ee/Portal/Classifiers/Index/26
@@ -21,15 +21,14 @@ Write here the abstract of your work. The abstract could provide a brief introdu
 \end{info}
 
 
-
 % Estonian information
-\begin{otherInfo}{estonian}{Lõputöö pealkiri eesti keeles}
+\begin{otherInfo}{estonian}{Silmad Pärani Kinni: Objektituvastuse Jõudluse Analüüs Halvenenud Sensori Sisendiga Stsenaariumides.}
 \begin{abstract}
-Siia kirjutage oma lõputöö lühikokkuvõte. See võib lühidalt teemasse sisse juhatada, kuid peaks enamikus katma ära Teie lõputöö sisu. Seda lugedes peaks olema üheselt selge, millest Teie lõputöös lugeda võib. Kirjutage eesmärgi, meetodi, tulemuste ja järelduste kohta. Bakalaureusetöö korral võiksid nii eesti kui inglise keeles olevad lühikokkuvõtted mahtuda ühele leheküljele. Magistritöö või vajaduse korral võib eesti ja inglise keeles olevad osad kirjutada eraldi lehekülgedele. Mõelge oma tööd kirjeldavad võtmesõnad ning leidke CERCS kood(id).
+Autonoomsed juhtimissüsteemid (ADS) lubavad ohutumaid teid, paremat liiklusvoogu ja väiksemat keskkonnamõju. Autotööstuse Inseneride Ühingu (SAE) Internationali standard J3016 \cite{sae:j3016:2021apr} sätestab ranged ohutusnõuded ADS-idele, eriti mis puudutab nende talitlust dünaamilise sõiduülesande täitmisega seotud süsteemirikete korral. Tajufunktsioon, mis hõlmab fundamentaalset arvutinägemise ülesannet – objektituvastust –, on võtmevõimekus, mis eristab ADS-e tavalistest sõidukitest. Viimasel kümnendil on toimunud märkimisväärne edasiminek erinevates arvutinägemise ülesannetes, eriti objektituvastuses. Paljud kaasaegsed tipptasemel mudelid on aga spetsialiseerunud, omades tugevaid induktiivseid eelarvamusi konkreetsete andmetüüpide suhtes, mis muudab nende kasutamise ADS-ide jaoks keeruliseks, kui mitte võimatuks. Selle piirangu lahendamiseks tutvustab käesolev magistritöö kahte uudset rekurrentset arhitektuuri: Rekurrentne Perceiver (RPerceiver) ja selle mitmemodaalne variant, Rekurrentne Perceiver MitmeModaalne (RPerceiverMM). Nende arhitektuuride tõhusust hinnati käesolevas töös välja pakutud uudsel võrdlusandmestikul "detection-moving-mnist-easy". Eksperimentaalsed tulemused viitavad väljapakutud mudelite efektiivsusele ajalise teabe ärakasutamisel, eriti keerulistes olukordades, näiteks objektide puhul, mis on kaadrist väljudes osaliselt nähtavad. Lisaks uuriti selles töös spetsiifilisi treeningprotseduure, mis on loodud simuleerima täielikke anduririkkeid ja andmete mittedeterministlikku kättesaadavust. Tulemused näitavad, et need väljapakutud treeningstrateegiad parandavad oluliselt mudeli robustsust, demonstreerides paremat jõudlust tingimustes, mis sarnanevad reaalsete ADS-i andurisüsteemide riketele. See töö aitab kaasa vastupidavamate tajusüsteemide arendamisele, mis on ADS-ide ohutu kasutuselevõtu jaoks üliolulised.
 \end{abstract}
 
-\keywords{Kujundus, paigutus, mall}
+\keywords{Autonoomsed Juhtimissüsteemid, Süvaõpe, Transformer, Masinnägemine, Video Objektituvastus}
 
-\cercs{KOOD Koodi nimi eesti keeles}
+\cercs{P170, P175, P176, T111}
 \end{otherInfo}
 
