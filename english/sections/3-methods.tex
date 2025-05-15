@@ -66,7 +66,7 @@ To make the dataset more challenging, digit overlap is not restricted in subsequ
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/figure_method_dataset_train_digits_per_frame.png}
-    \caption{Distribution of classes in the "detection-moving-mnist-easy" dataset.}
+    \caption{Normalized frequency distribution of the number of digits per frame for the \textbf{train split} of the "detection-moving-mnist-easy" dataset. The histogram illustrates that frames containing a smaller number of digits (notably 1 to 3) are observed with the highest normalized frequency. This distribution, skewed towards fewer digits per frame, is a characteristic outcome of the dataset's generation process where digits can move and exit the frame boundaries over time, as their movement is not confined within the frame.}
     \label{fig:figure_method_dataset_train_digits_per_frame}
 \end{figure}
 
@@ -81,52 +81,14 @@ As previously discussed in Section~\ref{Background:AutonomousDrivingSystems}, Au
     \item[\texttt{dropout}] This procedure simulates scenarios where sensor information is missing, directly addressing the challenge of potential complete sensor failure for one or more modalities. To achieve this, the model is trained by intermittently dropping sensor inputs (input dropout). The first half of the input sequence is kept intact (no dropout), allowing the model to accumulate features in its hidden state. The second half of the sequence may undergo frame dropout depending on the dropout probability. During training, the probability of an information dropout is gradually increased from 10\% up to 86.6\%.
 \end{description}
 
-% TODO move to appendix
+The \texttt{dropout} procedure is shown in Figure~\ref{fig:figure_methods_recurrent_perceiver_with_dropout}. The pseudo code is shown in Appendix~\ref{Appendix:TrainProcedures}.
 
-The Python code snippet below details the implementation of the \texttt{shuffle} and \texttt{dropout} procedures within the model's forward pass method. The \texttt{shuffle} mechanism, activated when \texttt{self.apply\_shuffle} is true, randomizes the processing order of sensor views (\texttt{view\_indices}) within each timestep using \texttt{get\_shuffled\_order}, mimicking potential real-world asynchronicity. The \texttt{dropout} strategy is applied conditionally based on the timestep: dropout is only considered for timesteps in the second half of the input sequence (i.e., where \texttt{timestep >= midpoint}, with \texttt{midpoint} being the sequence's halfway point). For these eligible timesteps, a probabilistic check (\texttt{should\_drop\_view(dropout\_probability)}) determines if the current view (\texttt{drop\_this\_view}) is actually dropped. When a view is dropped, the code bypasses both the feature extraction via the \texttt{backbone} and the \texttt{cross\_attention} step within the perceiver layers for that view. However, the \texttt{self\_attention} mechanism within each layer is executed unconditionally. The model's core state, represented by \texttt{latent\_array}, is updated iteratively within the loop processing each view: after every perceiver layer's self-attention step, the \texttt{latent\_array} is updated. If the view was not dropped, this update incorporates information fused via cross-attention before the self-attention step; otherwise, the self-attention refines the \texttt{latent\_array} based solely on the state propagated from processing the previous view. Finally, after processing all views for a timestep, a prediction is generated from the updated \texttt{latent\_array}.
-
-\begin{minted}[tabsize=4, showtabs=true]{python}
-
-def forward(self, sequence_of_frames, dropout_probability):
-    latent_array = self.initial_learned_hidden_state
-    all_predictions = []
-    midpoint = len(sequence_of_frames) // 2
-    for timestep, frame_views in enumerate(sequence_of_frames):
-        should_apply_dropout = (timestep >= midpoint)
-
-        view_indices = list(range(len(frame_views)))
-        if self.apply_shuffle:
-            view_indices = get_shuffled_order(view_indices)
-
-        for view_index in view_indices:
-            view_data = frame_views[view_index]
-            drop_this_view = should_apply_dropout
-            if drop_this_view:
-                drop_this_view = should_drop_view(dropout_probability)
-
-            extracted_features = None
-            if not drop_this_view:
-                extracted_features = self.backbone(view_data)
-
-            for perceiver_layer in self.perceiver.layers:
-                if not drop_this_view:
-                    latent_array = perceiver_layer.cross_attention(
-                        q=latent_array,
-                        kv=extracted_features,
-                        sensor_id=view_index,
-                    )
-
-                latent_array = perceiver_layer.self_attention(
-                    qkv=latent_array,
-                )
-
-        prediction = self.detection_head(latent_array)
-        all_predictions.append(prediction)
-
-    return all_predictions
-
-\end{minted}
-
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/figure_methods_recurrent_perceiver_with_dropout.png}
+    \caption{Diagram of the \texttt{dropout} mechanism in action. Timestep 1 shows normal operation where the input feature map is processed by the backbone (implied before cross-attention) and then fused with the latent array via cross-attention, followed by self-attention. Timestep 2 illustrates a dropout event: the input feature map and the cross-attention block are shown faded, indicating that this sensor view's data is dropped. Consequently, the cross-attention step, which incorporates new sensor information (K, V), is skipped. However, the latent array is still updated by the self-attention mechanism, demonstrating the model's reliance on its internal memory when an input is missing. Intuitively, this self-attention acts like a 'propagate forward' step in a tracker: it updates the object's presumed state based on prior motion even without current sensor input. This internal prediction maintains continuity and can be corrected by cross-attention when new sensor data becomes available and is processed.}
+    \label{fig:figure_methods_recurrent_perceiver_with_dropout}
+\end{figure}
 
 \subsection{Loss Function} \label{Methods:LossFunction}
 
