@@ -22,7 +22,7 @@ First, the task of object detection using the detection-moving-mnist-easy benchm
 
 \begin{table}[htb!]
     \centering
-    \caption{Comparison with the baseline still image detector YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on the detection-moving-mnist-easy test split. RPerceiver achieves slightly better $mAP_{50}$ and $mAP_{75}$, but shows worse $mAP_{50-95}$ results. However, RPerceiver achieves these results with significantly fewer parameters and lower computational cost.}
+    \caption{Comparison with the baseline still image detector YOLOv8n \cite{Jocher_Ultralytics_YOLO_2023} on the detection-moving-mnist-easy test split. RPerceiver achieves slightly better $mAP_{50}$ and $mAP_{75}$, but shows worse $mAP_{50-95}$ results. One initial hypothesis was that YOLOv8n's superior performance stemmed from its fine-tuning on a pretrained model, which could have provided an inherent advantage. However, experiments conducted with a non-pretrained YOLOv8n did not confirm this hypothesis. However, RPerceiver achieves these results with significantly fewer parameters and lower computational cost.}
     \label{tab:model_comparison}
     \begin{tblr}{width=1\textwidth, hlines, vlines,
                   colspec = { l c c c c c },
