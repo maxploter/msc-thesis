@@ -325,11 +325,11 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+7.5
 ##### Left
-1
+2.65
 ##### Height
-15
+11
 ## Title
 Methods: Training for Robustness
 ## Content
