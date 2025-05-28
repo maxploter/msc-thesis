@@ -183,15 +183,15 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-8
-##### Left
-1
-##### Height
 9
+##### Left
+2.65
+##### Height
+9.5
 ## Title
 Methods: Perceiver
 ## Content
-The Perceiver uses a cross-attention module to project a high-dimensional input byte array to a fixed-dimensional latent bottleneck (the number of input indices M is much larger than the number of latent indices N) before processing it using a deep stack of Transformer-style self-attention blocks in the latent space. The Perceiver iteratively attends to the input byte array by alternating cross-attention and latent self-attention blocks
+The Perceiver uses a cross-attention module to project a high-dimensional input byte array to a fixed-dimensional latent bottleneck (the number of input indices M is much larger than the number of latent indices N) before processing it using a deep stack of Transformer-style self-attention blocks in the latent space. The Perceiver iteratively attends to the input byte array by alternating cross-attention and latent self-attention blocks.
 ## Image
 ![Perceiver Architecture Diagram](/content/msc-thesis/english/figures/figure_background_perceiver_architecture.png)
 ## Presenter notes
@@ -222,11 +222,11 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+7.5
 ##### Left
-1
+2.65
 ##### Height
-15
+11
 ## Title
 Methods: Recurrent Perceiver (RPerceiver)
 ## Content
@@ -261,15 +261,15 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+7.5
 ##### Left
-1
+2.65
 ##### Height
-15
+11
 ## Title
 Methods: Recurrent Perceiver Multi-Modal (RPerceiverMM)
 ## Content
-TODO
+The Recurrent Perceiver Multi-Modal (RPerceiverMM) architecture operates along time, depth, and an additional modality dimension. It employs camera-specific cross-attentions (shown in different colors), which have their own weights, to process information from different sensors.
 ## Image
 ![RPerceiverMM Architecture Diagram](/content/msc-thesis/english/figures/figure_methods_recurrent_perceiver_mm.png)
 ## Presenter notes
@@ -291,19 +291,15 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+7.5
 ##### Left
-1
+2.65
 ##### Height
-15
+11
 ## Title
 Methods: Complete Model Architecture
 ## Content
-Complete architecture of the model, including RPerceiver, Backbone, and Detection Heads.
-Input frames are processed by a Backbone network to extract a feature map. This flattened
-feature map, along with a latent array propagated from the previous time step, is fed into a
-Recurrent Perceiver (RPerceiver). The RPerceiver’s output embedding is then used by
-Prediction Heads to determine class labels and object positions for the current frame.
+Complete architecture of the model includes RPerceiver, Backbone, and Detection Heads. Input frames are processed by a Backbone network to extract a feature map. The RPerceiver’s output embeddings are fed into Prediction Heads to determine class labels and object positions for the current frame.
 ## Image
 ![Complete Model Architecture Diagram](/content/msc-thesis/english/figures/figure_methods_recurrent_perceiver_complete.png)
 ## Presenter notes
@@ -337,11 +333,14 @@ picture
 ## Title
 Methods: Training for Robustness
 ## Content
-Diagram of the dropout procedure. Timestep 1 shows normal operation. Timestep 2 illustrates a dropout event: the input feature map and the cross-attention block are shown faded, indicating that this sensor's data is dropped. Consequently, the cross-attention step, which incorporates new sensor information (K, V), is skipped. However, the latent array is still updated by the self-attention mechanism, demonstrating the model’s reliance on its internal memory when an input is missing. Intuitively, self-attention acts like a ’propagate forward’ step in a tracker: it updates the object’s presumed state based on prior motion even without current sensor input. This internal prediction maintains continuity and can be corrected by cross-attention when new sensor data becomes available and is processed.
+The following training procedures, dropout and shuffle. Diagram of the dropout procedure. Timestep 1 shows normal operation. Timestep 2 illustrates a dropout event: the input feature map and the cross-attention block are shown faded, indicating that this sensor's data is dropped. Consequently, the cross-attention step is skipped.
 ## Image
-![Dropout Mechanism Illustrated](/content/msc-thesis/english/figures/figure_methods_recurrent_perceiver_with_dropout.png)
+![figure_methods_recurrent_perceiver_with_dropout](/content/msc-thesis/english/figures/figure_methods_recurrent_perceiver_with_dropout.png)
 ## Presenter notes
 As it was mentioned previously ADS faces  
+
+However, the latent array is still updated by the self-attention mechanism, demonstrating the model’s reliance on its internal memory when an input is missing. Intuitively, self-attention acts like a ’propagate forward’ step in a tracker: it updates the object’s presumed state based on prior motion even without current sensor input. This internal prediction maintains continuity and can be corrected by cross-attention when new sensor data becomes available and is processed.
+
 
 * Reiterate the motivation for these training procedures: making models robust to real-world sensor issues.
 * Explain **Dropout**:
@@ -371,11 +370,11 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+8
 ##### Left
-1
+2.65
 ##### Height
-15
+9.38
 ## Title
 Methods: Dataset
 ## Content
@@ -403,7 +402,7 @@ picture
 ##### Top
 8
 ##### Left
-1
+2.65
 ##### Height
 7
 ## Title
@@ -432,15 +431,28 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+3
 ##### Left
-1
+17.5
 ##### Height
 15
 ## Title
 Experiments and Results: Comparison Analysis (2)
 ## Content
-TODO
+Visualization of YOLOv8n predictions across 
+sequential frames. 
+Confidence scores are typically high (often 1.0) 
+for relatively clear objects. 
+
+Two challenging scenarios are analyzed: 
+overlapping digits and 
+digits near the frame border. 
+
+The model appears to handle overlapping 
+digits relatively effectively
+
+In contrast, predictions appear inconsistent 
+for several digits near frame borders.
 ## Image
 ![figure_methods_val_batch2_pred_YOLO](/content/msc-thesis/english/figures/figure_methods_val_batch2_pred_YOLO.jpg)
 ## Presenter notes
@@ -457,6 +469,16 @@ Pealkiri ja sisu (nt graafik)
 0
 #### Content
 10
+### Shapes
+#### Image
+##### Type
+picture
+##### Top
+3
+##### Left
+17.5
+##### Height
+15
 ## Title
 Experiments and Results: Comparison Analysis (3)
 ## Content
@@ -482,16 +504,15 @@ Pealkiri ja sisu (nt graafik)
 ##### Type
 picture
 ##### Top
-1
+8
 ##### Left
-1
+2.65
 ##### Height
-15
+9.3
 ## Title
 Experiments and Results: Comparison Analysis (4)
 ## Content
-Comparative analysis on specific scenarios: object overlaps (’Overlap’) and proximity to image borders (’Border’). The data indicates that the still-image detector YOLOv8n achieves higher accuracy on overlapping objects. In contrast,
-RPerceiver significantly outperforms YOLOv8n on border cases, supporting the hypothesis that it effectively leverages temporal information from the video sequence.
+Comparative analysis on specific scenarios: object overlaps (’Overlap’) and proximity to image borders (’Border’). The data indicates that the still-image detector YOLOv8n achieves higher accuracy on overlapping objects. In contrast, RPerceiver significantly outperforms YOLOv8n on border cases, supporting the hypothesis that it effectively leverages temporal information from the video sequence.
 ## Image
 ![figure_methods_val_batch2_pred_recurrent_perceiver](/content/msc-thesis/english/figures/table_experiments_comparison_analysis_challanging_cases.png)
 
@@ -508,22 +529,22 @@ Pealkiri ja sisu (nt graafik)
 0
 #### Content
 10
+### Shapes
 #### Image
 ##### Type
 picture
 ##### Top
-1
+8
 ##### Left
-1
+2.65
 ##### Height
-15
+8
 ## Title
 Experiments and Results: Ablation Study
 ## Content
 Comparison of RPerceiverMM (RPMM) variants under the multi-view configuration across different evaluation procedures: default, shuffle, blind, and combined blind, shuffle. Model notations indicate training procedures: ’(s)’ for shuffle training, ’(d)’ for dropout training, and ’(d, s)’ for combined dropout and shuffle training. Metrics shown are Average Displacement Error (ADE), calculated over the second half of the sequence, Final Displacement Error (FDE), calculated for the final frame, and the number of model parameters in millions (Params (M)). The results highlight trade-offs: baseline RPMM performs best under defaultconditions. While these training procedures introduce a small performance penalty in the defaultevaluation, they provide substantial improvements under performance-degrading evaluation strategies. Models trained with shuffle (s) excel in the shuffle evaluation, while dropout-trained models (d) show superior robustness in the blind scenario. The combined training (d, s) yields the most robust performance under the combined blind, shuffle condition, demonstrating the effectiveness of targeted training strategies for specific failure modes. Interestingly, RPMM (d) also shows notable robustness under the shuffle evaluation, despite not being explicitly trained for this condition.
 ## Image
 ![table_experiments_ablation_study_multi](/content/msc-thesis/english/figures/table_experiments_ablation_study_multi-view.png)
-
 ## Presenter notes
 * Acknowledge the limitations of your work honestly. This shows critical thinking.
   * RPerceiver's precision at high IoUs.
